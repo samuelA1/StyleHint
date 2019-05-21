@@ -1,6 +1,8 @@
 {
   "name": "StyleHint",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "435d32df"
 }
