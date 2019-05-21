@@ -1,0 +1,57 @@
+ion-slides {
+    height: 100vh;
+    flex-direction: column;
+    color: white;
+}
+
+.slide-logo {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    display: inherit;
+}
+
+.slide-content {
+    margin-top: auto;
+}
+
+p {
+    font-weight: inherit !important;
+}
+
+h2 {
+    padding-bottom: 18px !important;
+}
+
+h5 {
+    font-weight: 900 !important;
+}
+
+ion-img {
+    max-width: 50vw;
+    width: 50px !important;
+}
+
+ion-button {
+    letter-spacing: 2px;
+    margin-left: 22px;
+    margin-right: 22px;
+    z-index: 2;
+}
+
+
+// slides styles
+.step-one {
+    background: url("../../assets/jonathan-borba-1562173-unsplash.jpg") 0/100% 100% no-repeat;
+    z-index: -100;
+}
+
+.step-two {
+    background: url("../../assets/drew-roberts-298300-unsplash.jpg") 0/100% 100% no-repeat;
+    z-index: -100;
+}
+
+.step-three {
+    background: url("../../assets/ben-white-148435-unsplash.jpg") 0/100% 100% no-repeat;
+    z-index: -100;
+}
