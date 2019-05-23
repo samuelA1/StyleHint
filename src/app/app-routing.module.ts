@@ -16,7 +16,8 @@ const routes: Routes = [
     loadChildren: './list/list.module#ListPageModule'
   },
   { path: 'slides', loadChildren: './slides/slides.module#SlidesPageModule' },
-  { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' }
+  { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
+  { path: 'customize', loadChildren: './customize/customize.module#CustomizePageModule' }
 ];
 
 @NgModule({

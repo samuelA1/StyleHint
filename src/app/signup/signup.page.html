@@ -14,16 +14,16 @@
         <h2>StyleHint</h2>
     </span>
   <form #f="ngForm">
-      <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Username" autofocus="true" required></ion-input>
+      <ion-select (keyup)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" value="notifications" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+          <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
+      </ion-select>
+      <small *ngIf="error.country">{{error.country}}</small>
+      <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Username" required></ion-input>
       <small *ngIf="error.username">{{error.username}}</small>
       <ion-input (keyup)="removeErrors()" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
       <small *ngIf="error.email">{{error.email}}</small>
       <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
       <small *ngIf="error.password">{{error.password}}</small>
-      <ion-select (keyup)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" value="notifications" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
-          <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
-      </ion-select>
-      <small *ngIf="error.country">{{error.country}}</small>
       <ion-button color="warning" shape="round" (click)="register()" expand="block" size="large" [disabled]="!f.valid">
           Create my account
       </ion-button>

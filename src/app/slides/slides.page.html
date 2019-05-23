@@ -1,7 +1,7 @@
-<ion-content>
-    <ion-slides pager="true">
+<ion-content scrollY="false" scrollX="false">
+    <ion-slides pager="true" (ionSlideReachEnd)="stopSlideNext()" (ionSlideReachStart)="stopSlidePrev()" #slides>
       
-        <ion-slide class="step-one">
+        <ion-slide class="step-one" >
           <span class="slide-logo">
               <ion-img src="../../assets/towel.svg"></ion-img>
               <h1>StyleHint</h1>

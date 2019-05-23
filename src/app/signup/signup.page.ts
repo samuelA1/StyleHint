@@ -19,6 +19,7 @@ loading: boolean = false; //loader on the page after the user clicks the create 
     setTimeout(() => {
       if (this.validation(this.user)) {
         this.loading = false;
+        this.navCtrl.navigateRoot('/customize')
       } else {
         this.loading = false;
       }
