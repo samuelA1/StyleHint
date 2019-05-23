@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-slides',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SlidesPage implements OnInit {
 
-  constructor() { }
+  constructor(private navCtrl: NavController) { }
+
+  toRegister() {
+    this.navCtrl.navigateForward('/signup')
+  }
 
   ngOnInit() {
   }
