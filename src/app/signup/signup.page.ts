@@ -28,24 +28,32 @@ loading: boolean = false; //loader on the page after the user clicks the create 
 
 //Validate user inputs
   validation(user: any) {
-    var word = '.com'
+    var comWord = '.com';
+    var mailWord = 'mail';
     if (user['username'].length >= 3) {
     } else {
-      this.error.username = 'Sorry, your username must be at least 3 characters.'
+      this.error.username = 'Sorry, your username must be at least 3 characters.';
     }
     if (user['password'].length >= 8) {
+      return true;
     } else {
-      this.error.password = 'Sorry, your password must be at least 8 characters'
-    }
-    if (user['email'].includes(word)) {
-    } else {
-      this.error.email = 'Please enter a valid com email.'
+      this.error.password = 'Sorry, your password must be at least 8 characters';
     }
     if (user['email'].includes('@')) {
+      if (user['email'].includes(mailWord)) {
+        if (user['email'].includes(comWord)) {
+        } else {
+          this.error.email = 'Please enter a valid email.';
+        }
+      } else {
+        this.error.email = 'Please enter a valid email.';
+      }
     } else {
-      this.error.email = 'Please enter a valid @ email.'
+      this.error.email = 'Please enter a valid email.';
     }
-    return true;
+   
+    
+    return false;
   }
 
   //remove validation errors

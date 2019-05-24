@@ -13,25 +13,45 @@
               </ion-text>
               <h3>Are you?</h3>
             <!-- gender content -->
-            <ion-button (click)="maleGender()" [class.gender]="maleElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+            <ion-button (click)="maleGender()" [class.chosen]="maleElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
                 Male
+                <ion-select interface="action-sheet" (ionChange)="genderSelection($event)" value="adult" cancelText="Dismiss">
+                    <ion-select-option value="adult">Adult</ion-select-option>
+                    <ion-select-option value="kid">Kid</ion-select-option>
+                </ion-select>
             </ion-button>
-            <ion-button (click)="femaleGender()" [class.gender]="femaleElement" class="ion-text-uppercase ion-margin-top female" shape="round" expand="full" size="default">
+            <ion-button (click)="femaleGender()"  (ionChange)="genderSelection($event)" [class.chosen]="femaleElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
                 Female
+                <ion-select interface="action-sheet" value="adult" cancelText="Dismiss">
+                    <ion-select-option value="adult">Adult</ion-select-option>
+                    <ion-select-option value="kid">Kid</ion-select-option>
+                </ion-select>
             </ion-button>
-            <ion-button (click)="kidGender()" [class.gender]="kidElement" class="ion-text-uppercase ion-margin-top kid" shape="round" expand="full" size="default">
-                Kid
-            </ion-button>
-    
             <!-- next button -->
             <ion-button class="next" color="dark" (click)="nextSlide()" size="small" [disabled]="!genderSelected">next</ion-button>
           </ion-slide>
           
+          <!-- slide two -->
           <ion-slide color="warning" class="step-two">
-            <div class="slide-logo">
+            <span class="slide-logo">
                 <ion-img src="../../assets/towel.svg"></ion-img>
                 <h1>StyleHint</h1>
-            </div>
+            </span>
+            <h3>I am?</h3>
+            <!-- size content -->
+            <ion-button (click)="petiteSize()" [class.chosen]="petiteElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Petite
+            </ion-button>
+            <small>5'3" or shorter</small>
+            <ion-button (click)="plusSize()" [class.chosen]="plusElement"  class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Plus size
+            </ion-button>
+            <small>size 10 and above</small>
+            <ion-button (click)="tallSize()" [class.chosen]="tallElement"  class="ion-text-uppercase ion-margin-top " shape="round" expand="full" size="default">
+                Tall
+            </ion-button>
+            <small>5'4" to 5'8"</small>
+            <!-- next and previous buttons -->
             <div class="next size">
               <ion-buttons>
                   <ion-button (click)="prevSlide()" size="small">
@@ -39,26 +59,40 @@
                   </ion-button>
               </ion-buttons>
               <ion-buttons>
-                  <ion-button (click)="nextSlide()" size="small">
+                  <ion-button [disabled]="sizeSelected" (click)="nextSlide()" size="small">
                       <ion-icon  name="arrow-forward"></ion-icon>
                   </ion-button>
               </ion-buttons>
             </div>
           </ion-slide>
       
+          <!-- slide three -->
           <ion-slide color="secondary" class="step-three">
             <div class="slide-logo">
                 <ion-img src="../../assets/towel.svg"></ion-img>
                 <h1>StyleHint</h1>
             </div>
-            <div class="next size">
+
+            <h3>What style are you more interested in?</h3>
+            <!-- size content -->
+            <ion-button (click)="expensive()" [class.chosen]="expensiveElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Expensive
+            </ion-button>
+            <ion-button (click)="casual()" [class.chosen]="casualElement"  class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Casual
+            </ion-button>
+            <span class="prev">
                 <ion-buttons>
-                    <ion-button (click)="prevSlide()" size="small">
-                        <ion-icon  name="arrow-back"></ion-icon>
-                    </ion-button>
+                        <ion-button color="dark" (click)="prevSlide()" size="large">
+                            <ion-icon  name="arrow-back"></ion-icon>
+                        </ion-button>
                 </ion-buttons>
-                <ion-button (click)="nextSlide()"  size="small">All set</ion-button>
-              </div>
+            </span>
+            <div class="next">
+                <ion-button [disabled]="interestSelected" class="ion-margin-top" (click)="toHome()" color="light" shape="round" expand="full" size="large">
+                    All set to go
+                </ion-button>
+            </div>
           </ion-slide>
       </ion-slides>
 </ion-content>

@@ -17,11 +17,13 @@ export class SlidesPage implements OnInit {
 
   //prevent slide movements
   stopSlideNext() {
-    this.slides.lockSwipeToNext(true)
+    this.slides.lockSwipeToNext(true);
+    this.slides.lockSwipeToPrev(false);
   }
 
   stopSlidePrev() {
-    this.slides.lockSwipeToPrev(true)
+    this.slides.lockSwipeToPrev(true);
+    this.slides.lockSwipeToNext(false)
   }
 
   ngOnInit() {

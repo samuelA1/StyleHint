@@ -7,7 +7,8 @@ ion-slide {
 .slide-logo {
     display: inline-flex;
     text-align: center;
-    margin: 50px 0px;
+    margin-top: 70px;
+    margin-bottom: 50px;
 }
 
 ion-img {
@@ -21,13 +22,19 @@ ion-img {
 }
 
 .step-two {
-    background-color: greenyellow;
+    background-color: blueviolet;
     z-index: -100;
 }
 
 .step-three {
-    background-color: black;
+    background-color: blueviolet;
     z-index: -100;
+}
+
+.prev {
+    position: absolute;
+    top: 30px;
+    left: 10px;
 }
 
 .next {
@@ -43,6 +50,6 @@ h6, h3 {
     font-style: italic;
 }
 
-.gender {
+.chosen {
     --background: black !important;
 }
