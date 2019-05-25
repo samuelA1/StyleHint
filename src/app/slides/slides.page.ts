@@ -10,9 +10,12 @@ export class SlidesPage implements OnInit {
   constructor(private navCtrl: NavController) { }
   @ViewChild('slides') slides: IonSlides;
 
-
   toRegister() {
     this.navCtrl.navigateForward('/signup')
+  }
+
+  prevSlide() {
+    this.slides.slidePrev();
   }
 
   //prevent slide movements

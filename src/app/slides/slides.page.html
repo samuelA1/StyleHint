@@ -1,67 +1,77 @@
 <ion-content scrollY="false">
     <ion-slides pager="true" (ionSlideReachEnd)="stopSlideNext()" (ionSlideReachStart)="stopSlidePrev()"  #slides>
       
-        <ion-slide class="step-one" >
-          <span class="slide-logo">
-              <ion-img src="../../assets/towel.svg"></ion-img>
-              <h1>StyleHint</h1>
-          </span>
-          <!-- slide content -->
-          <div class="slide-content">
-              <h5>Welcome</h5>
-              <p>Sign up to get free fashion tips that will boost your confidence whenever and wherever</p>
-              <div class="slide-buttons">
-                <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
-                  Create Account
-                </ion-button>
-                <small>Already have an account?</small>
-                <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
-                    Log In
-                </ion-button>
+        <!-- Gender slide -->
+          <ion-slide  class="step-one">
+              <span class="slide-logo">
+                  <ion-img src="../../assets/towel.svg"></ion-img>
+                  <h1>StyleHint</h1>
+              </span>
+              <div class="slide-content">
+                  <h5>Welcome</h5>
+                  <p>Sign up to get free fashion tips that will boost your confidence whenever and wherever</p>
+                  <div class="slide-buttons">
+                    <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
+                      Create Account
+                    </ion-button>
+                    <small>Already have an account?</small>
+                    <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
+                        Log In
+                    </ion-button>
+                  </div>
               </div>
-          </div>
-        </ion-slide>
-        
-        <ion-slide class="step-two">
-          <span class="slide-logo">
-              <ion-img src="../../assets/towel.svg"></ion-img>
-              <h1>StyleHint</h1>
-          </span>
-          <!-- slide 2 content -->
-          <div class="slide-content">
-              <h5>Glance</h5>
-              <p>Go through hundreds of styling tips that take into account your event, climate and gender regardless of your size</p>
-              <div class="slide-buttons">
-                <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
-                  Create Account
-                </ion-button>
-                <small>Already have an account?</small>
-                <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
-                    Log In
-                </ion-button>
+          </ion-slide>
+          
+          <!-- slide two -->
+          <ion-slide  class="step-two">
+              <span class="slide-logo">
+                  <ion-img src="../../assets/towel.svg"></ion-img>
+                  <h1>StyleHint</h1>
+              </span>
+              <!-- slide 2 content -->
+              <div class="slide-content">
+                  <h5>Glance</h5>
+                  <p>Go through hundreds of styling tips that take into account your event, climate and gender regardless of your size</p>
+                  <div class="slide-buttons">
+                    <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
+                      Create Account
+                    </ion-button>
+                    <small>Already have an account?</small>
+                    <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
+                        Log In
+                    </ion-button>
+                  </div>
               </div>
-          </div>
-        </ion-slide>
-    
-        <ion-slide class="step-three">
-          <span class="slide-logo">
-              <ion-img src="../../assets/towel.svg"></ion-img>
-              <h1>StyleHint</h1>
-          </span>
-          <!-- slide 3 content -->
-          <div class="slide-content">
-              <h5>Explore</h5>
-              <p>Useful for all age groups, sexes and body sizes. Saves you time and improves your confidence</p>
-              <div class="slide-buttons">
-                <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
-                  Create Account
-                </ion-button>
-                <small>Already have an account?</small>
-                <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
-                    Log In
-                </ion-button>
-              </div>
-          </div>
-        </ion-slide>
-    </ion-slides>
+          </ion-slide>
+      
+          <!-- slide three -->
+          <ion-slide  class="step-three">
+            <div class="slide-logo">
+                <ion-img src="../../assets/towel.svg"></ion-img>
+                <h1>StyleHint</h1>
+            </div>
+
+            <!-- slide 3 content -->
+            <div class="slide-content">
+                <h5>Explore</h5>
+                <p>Useful for all age groups, sexes and body sizes. Saves you time and improves your confidence</p>
+                <div class="slide-buttons">
+                  <ion-button (click)="toRegister()" class="ion-text-uppercase" color="primary" shape="round" expand="block" size="default">
+                    Create Account
+                  </ion-button>
+                  <small>Already have an account?</small>
+                  <ion-button style="margin-bottom: 30px" class="ion-text-uppercase" color="light" shape="round" expand="block" size="default">
+                      Log In
+                  </ion-button>
+                </div>
+            </div>
+            <span class="prev">
+                <ion-buttons>
+                        <ion-button color="dark" (click)="prevSlide()" size="large">
+                            <ion-icon  name="arrow-back"></ion-icon>
+                        </ion-button>
+                </ion-buttons>
+            </span>
+          </ion-slide>
+      </ion-slides>
 </ion-content>

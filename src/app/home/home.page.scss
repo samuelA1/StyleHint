@@ -1,4 +1,18 @@
-.welcome-card ion-img {
-  max-height: 35vh;
-  overflow: hidden;
+ion-card {
+  display: inline-grid;
+  width: 32vw;
+  margin: 2px !important;
+  max-width: 32vw;
+  height: 102px;
+  max-height: 102px;
+  cursor: pointer;
+}
+//divs containing cards
+.selection-panes {
+  margin-top: 20px !important;
+}
+
+ion-card .chose {
+  background-color: black;
+  color: white;
 }

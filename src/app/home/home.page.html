@@ -10,5 +10,41 @@
 </ion-header>
 
 <ion-content>
-    
+    <!-- weather showcase -->
+    <div></div>
+
+    <!-- Season cards -->
+    <h5>Season</h5>
+    <small>It's currently Summer in your area, you can select the season which best suits you.</small>
+    <div class="selection-panes">
+      <ion-card *ngFor="let season of seasons">
+          <ion-card-content [class.chose]="season.isChosen" (click)="chooseSeason(season.icon)">
+              <ion-icon [name]="season.icon"></ion-icon>
+              <p>{{season.name | titlecase}}</p>
+          </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- Weather cards -->
+    <h5>Weather</h5>
+    <small>It's currently Rainy in your area, you can select the weather condition which best suits you.</small>
+    <div class="selection-panes">
+      <ion-card *ngFor="let weather of weathers">
+        <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.icon)">
+            <ion-icon [name]="weather.icon"></ion-icon>
+            <p>{{weather.name | titlecase}}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- Occasion cards -->
+    <h5>Occasion</h5>
+    <small>Choose the occasion or event you're interested in.</small>
+    <div class="selection-panes">
+      <ion-card *ngFor="let occasion of occasions">
+          <ion-card-content [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
+              <ion-icon [name]="occasion.icon"></ion-icon>
+              <p>{{occasion.name | titlecase}}</p>
+              <p *ngIf="occasion.extension">({{occasion?.extension | titlecase}})</p>
+          </ion-card-content>
+      </ion-card>
+    </div>
 </ion-content>
