@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Update interest</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item class="ion-margin-top" *ngFor="let entry of titleService.interest" (click)="selectInterest(entry.val)">
+      <ion-label>{{entry.val}}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>

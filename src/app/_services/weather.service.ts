@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class WeatherService {
-
   constructor(private http: HttpClient) { }
 
   getWeather(latitude, longitude) {

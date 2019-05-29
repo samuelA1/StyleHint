@@ -1,3 +1,4 @@
+import { TitleService } from './_services/title.service';
 import { WeatherService } from './_services/weather.service';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -30,6 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     SplashScreen,
     Geolocation,
     WeatherService,
+    TitleService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

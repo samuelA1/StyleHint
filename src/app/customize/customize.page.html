@@ -4,8 +4,8 @@
         <!-- Gender slide -->
           <ion-slide class="step-one">
               <span class="slide-logo">
-                  <ion-img src="../../assets/towel.svg"></ion-img>
-                  <h1>StyleHint</h1>
+                  <ion-img class="animated fadeInLeft" src="../../assets/towel.svg"></ion-img>
+                  <h1 class="animated bounce">StyleHint</h1>
               </span>
               <ion-text color="light">
                 <h6>Please help us customize your style and fashion by answering the following questions.
@@ -37,6 +37,9 @@
                 <ion-img src="../../assets/towel.svg"></ion-img>
                 <h1>StyleHint</h1>
             </span>
+            <ion-text color="light">
+                    <h6>This will help us find more relevant content for you.</h6>
+            </ion-text>
             <h3>I am?</h3>
             <!-- size content -->
             <ion-button (click)="petiteSize()" [class.chosen]="petiteElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">

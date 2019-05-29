@@ -1,27 +1,23 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+        </ion-menu-button>
     </ion-buttons>
     <ion-title>
-      List
+      Update country
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
+    <ion-item *ngFor="let country of titleService.countries" (click)="selectCountry(country.name, country.code)">
+      <ion-label [class.isSelected]="country.selected">
+          {{country.name}}
+      </ion-label>
+      <ion-icon [class.isSelected]="country.selected" *ngIf="country.selected" slot="end" name="checkmark"></ion-icon>
     </ion-item>
   </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
 </ion-content>

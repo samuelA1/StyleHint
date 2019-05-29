@@ -11,7 +11,7 @@ export class SlidesPage implements OnInit {
   @ViewChild('slides') slides: IonSlides;
 
   toRegister() {
-    this.navCtrl.navigateForward('/signup')
+    this.navCtrl.navigateForward('signup')
   }
 
   prevSlide() {

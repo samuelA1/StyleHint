@@ -20,7 +20,9 @@ export class HomePage {
     private geolocation: Geolocation,
      private alertCtrl: AlertController,
      private weatherService: WeatherService) {
-      this.getGeolocation();
+       setTimeout(() => {
+        this.getGeolocation();
+       }, 5000);
       this.watchPosition();
       this.getSeason();
      }
@@ -38,6 +40,8 @@ export class HomePage {
     {name: 'clear', icon: 'sunny', isChosen: false},
     {name: 'rain', icon: 'rainy', isChosen: false},
     {name: 'clouds', icon: 'cloud', isChosen: false},
+    {name: 'haze', icon: 'nuclear', isChosen: false},
+    {name: 'mist', icon: 'list', isChosen: false},
   ]
 
   //occasion/event array

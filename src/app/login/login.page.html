@@ -1,0 +1,26 @@
+<ion-header no-border>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Log In</ion-title>
+      <ion-progress-bar *ngIf="loading" type="indeterminate" color="medium"></ion-progress-bar>
+    </ion-toolbar>
+</ion-header>
+  
+  <ion-content>
+      <span class="slide-logo">
+          <ion-img src="../../assets/towel.png"></ion-img>
+          <h2>StyleHint</h2>
+      </span>
+    <form #f="ngForm">
+        <ion-input (keyup)="removeErrors()" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
+        <small *ngIf="error.email">{{error.email}}</small>
+        <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
+        <small *ngIf="error.password">{{error.password}}</small>
+        <ion-button color="warning" shape="round" (click)="login()" expand="block" size="large" [disabled]="!f.valid">
+            Log In
+        </ion-button>
+    </form>
+  </ion-content>
+  

@@ -17,7 +17,8 @@ loading: boolean = false; //loader on the page after the user clicks the create 
   register() {
     this.loading = true;
     setTimeout(() => {
-      if (this.validation(this.user)) {
+      this.validation(this.user)
+      if (Object.keys(this.error).length == 0) {
         this.loading = false;
         this.navCtrl.navigateRoot('/customize')
       } else {
@@ -28,26 +29,17 @@ loading: boolean = false; //loader on the page after the user clicks the create 
 
 //Validate user inputs
   validation(user: any) {
-    var comWord = '.com';
-    var mailWord = 'mail';
     if (user['username'].length >= 3) {
     } else {
       this.error.username = 'Sorry, your username must be at least 3 characters.';
     }
+
     if (user['password'].length >= 8) {
-      return true;
     } else {
       this.error.password = 'Sorry, your password must be at least 8 characters';
     }
+
     if (user['email'].includes('@')) {
-      if (user['email'].includes(mailWord)) {
-        if (user['email'].includes(comWord)) {
-        } else {
-          this.error.email = 'Please enter a valid email.';
-        }
-      } else {
-        this.error.email = 'Please enter a valid email.';
-      }
     } else {
       this.error.email = 'Please enter a valid email.';
     }

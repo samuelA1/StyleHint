@@ -1,21 +1,29 @@
 <ion-app>
   <ion-split-pane>
-    <ion-menu swipeGesture="false">
+    <ion-menu swipeGesture="false" menuId="custom">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu</ion-title>
+          <ion-title>Account</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+          <ion-menu-toggle  auto-hide="false" *ngFor="let p of titleService.appPages">
+            <ion-item class="ion-margin-bottom" [routerDirection]="'forward'" [routerLink]="[p.url]" lines="none">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
+              <ion-text color="medium">
+                <small *ngIf="p.value">{{p.value}}</small>
+              </ion-text>
             </ion-item>
           </ion-menu-toggle>
+          <ion-item class="log-out-button" lines="none">
+              <ion-button class="log-out" color="warning" expand="block" (click)="login()" size="medium">
+                  Log out
+              </ion-button>
+          </ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>

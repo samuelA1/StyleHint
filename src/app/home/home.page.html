@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button color="dark"></ion-menu-button>
+      <ion-menu-button>
+          <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+      </ion-menu-button>
     </ion-buttons>
     <ion-title>
       StyleHint
@@ -27,6 +29,8 @@
         </div>
       </div>
 
+      <h6 *ngIf="!location.city" class="animated infinite pulse">Getting your location...</h6>
+
     <!-- Season cards -->
     <h5>Season</h5>
     <small>It's currently <b>{{season | titlecase}}</b> in your area, you can select the season which best suits you.</small>
@@ -40,7 +44,7 @@
     </div>
     <!-- Weather cards -->
     <h5>Weather</h5>
-    <small>It's currently <b>{{weather.main | titlecase}}<b *ngIf="weather.main == 'rain' || weather.main =='clouds'">y</b></b> in your area, you can select the weather condition which best suits you.</small>
+    <small>It's currently <b>{{weather.main | titlecase}}<b *ngIf="weather.main == 'Rain' || weather.main == 'Mist'">y</b></b> in your area, you can select the weather condition which best suits you.</small>
     <div class="selection-panes">
       <ion-card *ngFor="let weather of weathers">
         <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
