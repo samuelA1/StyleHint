@@ -9,11 +9,12 @@
 </ion-header>
   
   <ion-content>
-      <span class="slide-logo">
-          <ion-img src="../../assets/towel.png"></ion-img>
-          <h2>StyleHint</h2>
-      </span>
+    <span class="slide-logo">
+        <ion-img src="../../assets/towel.png"></ion-img>
+        <h2>StyleHint</h2>
+    </span>
     <form #f="ngForm">
+        <h4 class="animated rubberBand delay-1s">Welcome Back!</h4>
         <ion-input (keyup)="removeErrors()" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
         <small *ngIf="error.email">{{error.email}}</small>
         <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>

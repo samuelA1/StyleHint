@@ -44,3 +44,9 @@ ion-card .chose {
 .card-container {
   padding: 2px 16px;
 }
+
+.overlay {
+  background-color: lightslategrey;
+  pointer-events: none;
+
+}

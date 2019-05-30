@@ -13,7 +13,6 @@
 
 <ion-content>
     <!-- weather showcase -->
-      
       <div class="card" *ngIf="location.city">
         <div class="card-container">
           <div class="ion-float-left">
@@ -53,10 +52,12 @@
         </ion-card-content>
       </ion-card>
     </div>
+
+    
     <!-- Occasion cards -->
     <h5>Occasion</h5>
     <small>Choose the occasion or event you're interested in.</small>
-    <div class="selection-panes">
+    <div class="selection-panes" [class.overlay]="itemSelected">
       <ion-card *ngFor="let occasion of occasions">
           <ion-card-content [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
               <ion-icon [name]="occasion.icon"></ion-icon>

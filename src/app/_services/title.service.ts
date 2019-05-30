@@ -19,7 +19,7 @@ export class TitleService {
       //list of sizes
     sizes: any = [
         { val: 'Petite', isChecked: true },
-        { val: 'Plus-size', isChecked: false },
+        { val: 'Plus size', isChecked: false },
         { val: 'Tall', isChecked: false },
     ];
 
@@ -31,6 +31,11 @@ export class TitleService {
       icon: 'home'
     },
     {
+        title: 'Elsewhere',
+        url: '/elsewhere',
+        icon: 'pin'
+      },
+    {
       title: 'Gender',
       url: '/gender',
       icon: 'contacts',
@@ -40,7 +45,7 @@ export class TitleService {
       title: 'Size',
       url: '/size',
       icon: 'resize',
-      value: 'plus size'
+      value: 'Plus size'
     },
     {
       title: 'Interest',

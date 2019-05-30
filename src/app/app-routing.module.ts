@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'interest', loadChildren: './interest/interest.module#InterestPageModule' },
   { path: 'size', loadChildren: './size/size.module#SizePageModule' },
   { path: 'gender', loadChildren: './gender/gender.module#GenderPageModule' },
+  { path: 'elsewhere', loadChildren: './elsewhere/elsewhere.module#ElsewherePageModule' },
 ];
 
 @NgModule({

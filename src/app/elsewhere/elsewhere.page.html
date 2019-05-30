@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <span class="slide-logo">
+      <ion-img class="animated fadeInLeft" src="../../assets/towel.png"></ion-img>
+      <h1 class="animated bounce">StyleHint</h1>
+  </span>
+  <h6 class="animated swing slower delay-1s">Thinking of going somewhere else rather than your current location?</h6>
+  <b class="ion-margin-top ion-float-left" >Search and select location:</b>
+  <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
+
+  <!-- weather loader -->
+  <h6 *ngIf="!weather.main" class="animated infinite pulse">{{weather.notice}}</h6>
+  <ion-text color="warning" *ngIf="weather.main">
+    <h5>
+      It's currently <b>{{weather.season | titlecase}}</b> season,
+       <b>{{weather.main | titlecase}}<b *ngIf="weather.main == 'Rain' || weather.main == 'Mist'">y</b></b>, and <b>{{weather.temp}}&#8451;</b> in the location selected.
+    </h5>
+  </ion-text>
+
+  <ion-button class="ion-margin-top" *ngIf="weather.main" color="medium" shape="round" (click)="updateEmail()" expand="block" size="large" [disabled]="!f.valid">
+      Get fashion hints
+  </ion-button>
+</ion-content>

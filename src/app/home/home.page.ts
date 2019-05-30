@@ -15,6 +15,7 @@ export class HomePage {
   date = Date.now();
   icon: any;
   season: any;
+  itemSelected: boolean = false; //triggers overlay on occasion selected
 
   constructor(private toastCtrl: ToastController,
     private geolocation: Geolocation,
@@ -89,10 +90,10 @@ export class HomePage {
 
   //choose option
   async chooseOccasion(iconName: any) {
+    this.itemSelected = true;
     this.occasions.map(occasion => {
       occasion.isChosen =  occasion.icon === iconName ? true : false
     });
-
     await this.presentToastWithOptions();
   }
 
@@ -139,11 +140,19 @@ export class HomePage {
     .then( async (resp) => {
       // get weather
       const weather = await this.weatherService.getWeather(resp.coords.latitude, resp.coords.longitude);
-      // get city 
-      this.location.city = weather['name'];
-      this.location.country = weather['sys'].country;
-      this.weather.temp = weather['main'].temp;
+      //location
+      const locate = await this.weatherService.getLocation();
+      if (locate['status'] == 'success') {
+        this.location.city = locate['city'];
+        this.location.country = locate['country'];
+        this.location.state = locate['region'];
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to get your location');
+      }
+      this.weather.temp = Math.round(weather['main'].temp);
       this.weather.main = weather['weather'][0].main;
+      this.chooseWeather(weather['weather'][0].main.toLowerCase())
+      this.weather.icon = `http://openweathermap.org/img/w/${weather['weather'][0].icon}.png`;
       // console.log(weather);
      }).catch((error) => {
        this.presentAlert('Sorry, an error occured while trying to get your location');
@@ -179,7 +188,9 @@ export class HomePage {
           side: 'start',
           icon: 'thumbs-down',
           text: 'No',
-          role: 'cancel'
+          handler: () => {
+            this.itemSelected = false;
+          }
         }
       ]
     });

@@ -14,7 +14,7 @@
         <h2>StyleHint</h2>
     </span>
   <form #f="ngForm">
-      <ion-select (keyup)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" value="notifications" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+      <ion-select (ionChange)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
           <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
       </ion-select>
       <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Username" required></ion-input>
