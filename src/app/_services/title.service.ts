@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TitleService {
+    //final data to be used by fashion component
+    finalData: any = {};
     //list of interest
     interest: any = [
         { val: 'Expensive', isChecked: true },

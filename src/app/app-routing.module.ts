@@ -26,6 +26,8 @@ const routes: Routes = [
   { path: 'size', loadChildren: './size/size.module#SizePageModule' },
   { path: 'gender', loadChildren: './gender/gender.module#GenderPageModule' },
   { path: 'elsewhere', loadChildren: './elsewhere/elsewhere.module#ElsewherePageModule' },
+  { path: 'fashion', loadChildren: './fashion/fashion.module#FashionPageModule' },
+  { path: 'fashion-modal', loadChildren: './fashion-modal/fashion-modal.module#FashionModalPageModule' },
 ];
 
 @NgModule({

@@ -1,0 +1,21 @@
+
+img {
+    border-radius: 10px;
+}
+.pins {
+    column-count: 2 !important;
+}
+
+.pin {
+    display: inline-block;
+    margin: 0 2px 10px;
+    padding:5px;
+}
+
+ion-content {
+    scroll-behavior: smooth !important;
+}
+
+h3 {
+    margin-top: 0px !important;
+}

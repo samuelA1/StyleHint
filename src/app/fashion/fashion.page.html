@@ -1,0 +1,57 @@
+<ion-header  no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-button (click)="navigateBack()">
+            <ion-icon style="font-size:40px" name="return-left" class="ion-margin-start"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+ <!-- refesh loader -->
+ <ion-refresher pullFactor="0.5" (ionRefresh)="doRefresh($event)" >
+  <ion-refresher-content>
+  </ion-refresher-content>
+</ion-refresher>
+
+<div *ngIf="titleService.finalData" class="hints-title">
+  <div class="hints">
+      <h3>Hints</h3>
+      <b style="padding-right: 8px">{{titleService.finalData.city | titlecase}}, {{titleService.finalData.state | titlecase}}</b>
+  </div>
+  <ion-badge color="success">{{titleService.finalData.season | titlecase}}</ion-badge>
+  <ion-badge color="primary">{{titleService.finalData.weather | titlecase}}</ion-badge>
+  <ion-badge *ngIf="!occasion" color="warning">{{titleService.finalData.occasion | titlecase}}</ion-badge>
+  <ion-badge *ngIf="occasion" color="warning">{{occasion | titlecase}}</ion-badge>
+</div>
+
+<!-- All fashion style -->
+  <div class="pins">
+    <div class="pin" *ngFor="let style of stylesOne">
+        <img [src]="style.img" alt="">
+    </div>
+  </div>
+  
+  <!-- occasion actionsheet -->
+ <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="light" (click)="presentOccasionActionSheet()">
+        <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+<!-- next page -->
+  <ion-fab vertical="center" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="getMore()">
+      <ion-icon name="arrow-round-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- move back -->
+  <ion-fab *ngIf="movedForward" vertical="center" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="moveBack()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

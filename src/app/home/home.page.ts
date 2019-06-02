@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, NavController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
+import { TitleService } from '../_services/title.service';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -13,6 +15,7 @@ export class HomePage {
   location: any = {};
   weather: any = {};
   date = Date.now();
+  finalData: any = {};
   icon: any;
   season: any;
   itemSelected: boolean = false; //triggers overlay on occasion selected
@@ -20,7 +23,10 @@ export class HomePage {
   constructor(private toastCtrl: ToastController,
     private geolocation: Geolocation,
      private alertCtrl: AlertController,
-     private weatherService: WeatherService) {
+     private weatherService: WeatherService,
+     private titleService: TitleService,
+     private navCtrl: NavController,
+     private storage: Storage) {
        setTimeout(() => {
         this.getGeolocation();
        }, 5000);
@@ -92,13 +98,14 @@ export class HomePage {
   async chooseOccasion(iconName: any) {
     this.itemSelected = true;
     this.occasions.map(occasion => {
-      occasion.isChosen =  occasion.icon === iconName ? true : false
+      occasion.isChosen =  occasion.icon === iconName ? (true) : false
     });
     await this.presentToastWithOptions();
   }
 
   //choose season
   chooseSeason(name: any) {
+    this.finalData.season = name;
     this.seasons.map(season => {
       season.isChosen =  season.name === name ? true : false
     });
@@ -106,6 +113,7 @@ export class HomePage {
 
   //choosse weather
   chooseWeather(name: any) {
+    this.finalData.weather = name;
     this.weathers.map(weather => {
       weather.isChosen =  weather.name === name ? true : false
     });
@@ -122,6 +130,8 @@ export class HomePage {
         this.location.city = locate['city'];
         this.location.country = locate['country'];
         this.location.state = locate['region'];
+        this.finalData.city = locate['city'];
+        this.finalData.state = locate['region']
       } else {
         this.presentAlert('Sorry, an error occured while trying to get your location');
       }
@@ -146,6 +156,8 @@ export class HomePage {
         this.location.city = locate['city'];
         this.location.country = locate['country'];
         this.location.state = locate['region'];
+        this.finalData.city = locate['city'];
+        this.finalData.state = locate['region']
       } else {
         this.presentAlert('Sorry, an error occured while trying to get your location');
       }
@@ -182,7 +194,15 @@ export class HomePage {
           icon: 'thumbs-up',
           text: 'Yes',
           handler: () => {
-            console.log('Favorite clicked');
+            this.itemSelected = false;
+            this.occasions.forEach(o => {
+              if (o.isChosen) {
+                this.finalData.occasion = o.name;
+              }
+            })
+            this.titleService.finalData = this.finalData;
+            this.navCtrl.navigateForward('fashion');
+            this.storage.set('finalData', JSON.stringify(this.finalData));
           }
         }, {
           side: 'start',

@@ -1,5 +1,9 @@
+import { Storage } from '@ionic/storage';
+import { TitleService } from './../_services/title.service';
 import { WeatherService } from './../_services/weather.service';
 import { Component, OnInit, NgZone } from '@angular/core';
+import { NavController } from '@ionic/angular';
+declare var google;
 
 @Component({
   selector: 'app-elsewhere',
@@ -12,13 +16,36 @@ export class ElsewherePage implements OnInit {
   googleAutoComplete: any
   geocoder: any;
   weather: any = {}; 
+  location: any = {
+    season: '',
+    state: '',
+    city: '',
+    weather: '',
+    occasion: ''
+  };
 
-  constructor(private zone: NgZone, private weatherService: WeatherService) {
+  constructor(private zone: NgZone,
+     private weatherService: WeatherService,
+     private navCtrl: NavController,
+     private titleService: TitleService,
+     private storage: Storage) {
     this.googleAutoComplete = new google.maps.places.AutocompleteService();
     this.geocoder = new google.maps.Geocoder;
-    this.getSeason();
   
    }
+
+  //occasion/event array
+  occasions: any[] = [
+    {name: 'school', icon: 'school', isChosen: false},
+    {name: 'sport', icon: 'american-football', isChosen: false},
+    {name: 'birthday party', icon: 'color-wand', isChosen: false},
+    {name: 'halloween', icon: 'outlet', isChosen: false},
+    {name: 'christmas', icon: 'gift', isChosen: false},
+    {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
+    {name: 'date night', icon: 'contacts', isChosen: false},
+    {name: 'job interview', icon: 'person-add', isChosen: false},
+    {name: 'church', icon: 'home', isChosen: false},
+  ]
 
    //get season based on loaction
    getSeason() {
@@ -48,6 +75,7 @@ export class ElsewherePage implements OnInit {
         break;
     }
     this.weather.season = season;
+    this.location.season = season;
 }
 
 //get place or autocomplete on search
@@ -70,7 +98,12 @@ export class ElsewherePage implements OnInit {
 
   //get weather of selected area
   selectSearchResult(item: any){
+    this.getSeason();
     this.autocomplete = { input: `${item.description}` };
+    var cityState = `${item.description}`
+    var split = cityState.split(',');
+    this.location.city = split[0];
+    this.location.state = split[1];
     this.autocompleteItems = [];
     this.weather.notice = 'Getting weather conditions based on location selected...'
     this.geocoder.geocode({'placeId': item.place_id}, async (results: any, status: any) => {
@@ -78,12 +111,15 @@ export class ElsewherePage implements OnInit {
         const weather = await this.weatherService.getWeather(results[0].geometry.location.lat(), results[0].geometry.location.lng());
         this.weather.temp = Math.round(weather['main'].temp);
         this.weather.main = weather['weather'][0].main;
+        this.location.weather = weather['weather'][0].main
       }
     })
   }
 
-  getHint() {
-
+  getHints() {
+    this.titleService.finalData = this.location;
+    this.navCtrl.navigateForward('fashion');
+    this.storage.set('finalData', JSON.stringify(this.location));
   }
 
   ngOnInit() {
