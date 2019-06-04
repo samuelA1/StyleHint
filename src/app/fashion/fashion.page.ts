@@ -2,6 +2,7 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
+import { FashionModalPage } from '../fashion-modal/fashion-modal.page';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class FashionPage implements OnInit {
   }
 
   navigateBack() {
-    this.navCtrl.navigateRoot('home');
+    this.navCtrl.navigateBack('home');
   }
 
    //page resfresh
@@ -138,13 +139,12 @@ export class FashionPage implements OnInit {
     await actionSheet.present();
   }
 
-  // async presentFashionModal(postId: any) {
-  //   const modal = await this.modalCtrl.create({
-  //     component: FashionModalPage,
-  //     componentProps: {postId: postId}
-  //   });
-  //   return await modal.present();
-  // }
+  async fashionModal() {
+    const modal = await this.modalCtrl.create({
+      component: FashionModalPage
+    });
+    return await modal.present();
+  }
 
   ngOnInit() {
     for (let index = 0; index < 10; index++) {

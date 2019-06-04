@@ -10,6 +10,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -36,6 +37,7 @@ import { AppRoutingModule } from './app-routing.module';
     SplashScreen,
     Geolocation,
     ScreenOrientation,
+    SocialSharing,
     WeatherService,
     TitleService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

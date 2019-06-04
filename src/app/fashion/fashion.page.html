@@ -19,7 +19,7 @@
 <div *ngIf="titleService.finalData" class="hints-title">
   <div class="hints">
       <h3>Hints</h3>
-      <b style="padding-right: 8px">{{titleService.finalData.city | titlecase}}, {{titleService.finalData.state | titlecase}}</b>
+      <b style="padding-right: 8px">{{titleService.finalData.city | titlecase}}<b *ngIf="titleService.finalData.state">,</b> {{titleService.finalData.state | titlecase}}</b>
   </div>
   <ion-badge color="success">{{titleService.finalData.season | titlecase}}</ion-badge>
   <ion-badge color="primary">{{titleService.finalData.weather | titlecase}}</ion-badge>
@@ -29,8 +29,8 @@
 
 <!-- All fashion style -->
   <div class="pins">
-    <div class="pin" *ngFor="let style of stylesOne">
-        <img [src]="style.img" alt="">
+    <div class="pin" *ngFor="let style of stylesOne" (click)="fashionModal()">
+        <img class="animated fadeInRight delay-2s" [src]="style.img">
     </div>
   </div>
   

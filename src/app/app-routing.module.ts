@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'fashion',
     pathMatch: 'full'
   },
   {
@@ -27,7 +27,6 @@ const routes: Routes = [
   { path: 'gender', loadChildren: './gender/gender.module#GenderPageModule' },
   { path: 'elsewhere', loadChildren: './elsewhere/elsewhere.module#ElsewherePageModule' },
   { path: 'fashion', loadChildren: './fashion/fashion.module#FashionPageModule' },
-  { path: 'fashion-modal', loadChildren: './fashion-modal/fashion-modal.module#FashionModalPageModule' },
 ];
 
 @NgModule({
