@@ -13,6 +13,7 @@ import { FashionModalPage } from '../fashion-modal/fashion-modal.page';
 export class FashionPage implements OnInit {
   movedForward: boolean = false;
   occasion: any;
+  loading: boolean = false;
   stylesOne:any[] = [];
   stylesTwo:any[] = [];
   stylesThree:any[] = [];
@@ -144,6 +145,15 @@ export class FashionPage implements OnInit {
       component: FashionModalPage
     });
     return await modal.present();
+  }
+
+  logScrolling(event){
+    if (event.detail.scrollTop < -30) {
+      this.loading = true;
+      setTimeout(() => {
+        this.loading= false;
+      }, 2000);
+    }
   }
 
   ngOnInit() {

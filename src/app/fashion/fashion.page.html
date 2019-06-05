@@ -5,16 +5,12 @@
             <ion-icon style="font-size:40px" name="return-left" class="ion-margin-start"></ion-icon>
         </ion-button>
     </ion-buttons>
+    <ion-progress-bar *ngIf="loading" type="indeterminate" color="warning"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-
- <!-- refesh loader -->
- <ion-refresher pullFactor="0.5" (ionRefresh)="doRefresh($event)" >
-  <ion-refresher-content>
-  </ion-refresher-content>
-</ion-refresher>
+<ion-content padding [scrollEvents]="true"
+(ionScroll)="logScrolling($event)">
 
 <div *ngIf="titleService.finalData" class="hints-title">
   <div class="hints">

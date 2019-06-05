@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'fashion',
+    redirectTo: 'add-hint',
     pathMatch: 'full'
   },
   {
@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'gender', loadChildren: './gender/gender.module#GenderPageModule' },
   { path: 'elsewhere', loadChildren: './elsewhere/elsewhere.module#ElsewherePageModule' },
   { path: 'fashion', loadChildren: './fashion/fashion.module#FashionPageModule' },
+  { path: 'add-hint', loadChildren: './admin/add-hint/add-hint.module#AddHintPageModule' },
 ];
 
 @NgModule({

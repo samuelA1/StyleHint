@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add-hint</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form #f="ngForm" style="display: grid;">
+          <ion-button  color="warning" shape="round" (click)="getImage()" expand="block" size="small">
+              Get image
+          </ion-button>
+          <img *ngIf="base64Image" [src]="base64Image">
+          <ion-label margin>Overview:</ion-label>
+          <textarea name="overview" [(ngModel)]="hint.overview" cols="30" rows="10" required></textarea>
+          <ion-label margin>Recommendatons:</ion-label>
+          <textarea name="overview" [(ngModel)]="hint.recommendatons" cols="30" rows="10" required></textarea>
+          <ion-label margin>Alternatives:</ion-label>
+          <textarea name="overview" [(ngModel)]="hint.alternatives" cols="30" rows="10" required></textarea>
+          <ion-label margin>Do's:</ion-label>
+          <textarea name="overview" [(ngModel)]="hint.do" cols="30" rows="10" required></textarea>
+          <ion-label margin>Dont's:</ion-label>
+          <textarea name="overview" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
+          <ion-button color="warning" shape="round" (click)="addHint()" expand="block" size="large" [disabled]="!f.valid">
+              Add hint
+          </ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
