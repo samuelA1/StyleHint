@@ -56,12 +56,6 @@ export class TitleService {
       value: 'Expensive'
     },
     {
-      title: 'Username',
-      url: '/username',
-      icon: 'body',
-      value: 'sam'
-    },
-    {
       title: 'Email',
       url: '/email',
       icon: 'mail',

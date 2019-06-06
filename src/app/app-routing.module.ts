@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'password', loadChildren: './password/password.module#PasswordPageModule' },
   { path: 'email', loadChildren: './email/email.module#EmailPageModule' },
-  { path: 'username', loadChildren: './username/username.module#UsernamePageModule' },
   { path: 'interest', loadChildren: './interest/interest.module#InterestPageModule' },
   { path: 'size', loadChildren: './size/size.module#SizePageModule' },
   { path: 'gender', loadChildren: './gender/gender.module#GenderPageModule' },
