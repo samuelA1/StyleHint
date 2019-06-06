@@ -24,6 +24,7 @@ export class AppComponent {
     private navCtrl: NavController
   ) {
     this.initializeApp();
+    this.navCtrl.navigateRoot('slides');
     this.storage.get('finalData').then((data)=> {
      if (data) {
        this.titleService.finalData = JSON.parse(data);

@@ -23,6 +23,28 @@
           <textarea name="overview" [(ngModel)]="hint.do" cols="30" rows="10" required></textarea>
           <ion-label margin>Dont's:</ion-label>
           <textarea name="overview" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
+          <ion-label margin>Choose season:</ion-label>
+          <ion-select name="season" [(ngModel)]="hint.season" interface="popover" placeholder="select season">
+            <ion-select-option *ngFor="let season of seasons" value="{{season.name}}">{{season.name | titlecase}}</ion-select-option>
+          </ion-select>
+          <ion-label margin>Choose occasion:</ion-label>
+          <ion-select name="occasion" [(ngModel)]="hint.occasion" interface="popover" placeholder="select occasion">
+            <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
+          </ion-select>
+          <div *ngIf="hint.occasion == 'National day'">
+            <ion-label margin>Choose what country's natinal day:</ion-label>
+            <ion-select name="country" [(ngModel)]="hint.country" placeholder="select country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+                <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
+            </ion-select>
+          </div>
+          <ion-label margin>Choose weather:</ion-label>
+          <ion-select name="weather" [(ngModel)]="hint.weather" interface="popover" placeholder="select weather">
+            <ion-select-option *ngFor="let weather of weathers" value="{{weather.name}}">{{weather.name | titlecase}}</ion-select-option>
+          </ion-select>
+          <ion-label margin>Choose size:</ion-label>
+          <ion-select name="size" [(ngModel)]="hint.size" interface="popover" placeholder="select size">
+            <ion-select-option *ngFor="let size of sizes" value="{{size.name}}">{{size.name | titlecase}}</ion-select-option>
+          </ion-select>
           <ion-button color="warning" shape="round" (click)="addHint()" expand="block" size="large" [disabled]="!f.valid">
               Add hint
           </ion-button>
