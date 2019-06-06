@@ -7,7 +7,9 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-user: any = {}; // user object to be sent to the database
+user: any = {
+  country: ''
+}; // user object to be sent to the database
 error: any = {};
 loading: boolean = false; //loader on the page after the user clicks the create account button
 
@@ -29,9 +31,9 @@ loading: boolean = false; //loader on the page after the user clicks the create 
 
 //Validate user inputs
   validation(user: any) {
-    if (user['username'].length >= 3) {
+    if (user['country']) {
     } else {
-      this.error.username = 'Sorry, your username must be at least 3 characters.';
+      this.error.country = 'Please select a country.';
     }
 
     if (user['password'].length >= 8) {
