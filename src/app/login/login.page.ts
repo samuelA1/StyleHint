@@ -1,5 +1,7 @@
+import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
+import { TitleService } from '../_services/title.service';
 
 @Component({
   selector: 'app-login',
@@ -11,16 +13,47 @@ export class LoginPage implements OnInit {
   error: any = {};
   loading: boolean = false; //loader on the page after the user clicks the create account button
   
-    constructor(private navCtrl: NavController) { }
+    constructor(private navCtrl: NavController,
+      private alertCtrl: AlertController,
+      private authService: AuthService,
+      private titleService: TitleService) { }
   
     //performs login
     login() {
       this.loading = true;
-      setTimeout(() => {
+      setTimeout(async () => {
         this.validation(this.user);
         if (Object.keys(this.error).length == 0) {
           this.loading = false;
-          this.navCtrl.navigateRoot('/home')
+          try {
+            const loginInfo = await this.authService.login(this.user);
+            if (loginInfo['success']) {
+              this.navCtrl.navigateRoot('/home')
+              this.titleService.appPages.map(p => {
+                for (const key in loginInfo['user']) {
+                  if (loginInfo['user'].hasOwnProperty(key)) {
+                    p.value =  p.title === `${key}` ? `${loginInfo['user'][key]}` : p.value
+                  }
+                }
+                this.titleService.genders.map(p => {
+                  p.isChecked =  p.val == loginInfo['user'].gender ? true : false;
+                });
+                this.titleService.sizes.map(p => {
+                  p.isChecked =  p.val == loginInfo['user'].size ? true : false;
+                });
+                this.titleService.interest.map(p => {
+                  p.isChecked =  p.val == loginInfo['user'].interest ? true : false;
+                });
+                this.titleService.countries.map(p => {
+                  p.selected =  p.name.toLowerCase() == loginInfo['user'].country ? true : false;
+                });
+              });
+            } else {
+              this.presentAlert(loginInfo['message']);
+            }
+          } catch (error) {
+            this.presentAlert('Sorry, an error occured while trying to log in. Please try loging in again')
+          }
         } else {
           this.loading = false;
         }
@@ -41,6 +74,17 @@ export class LoginPage implements OnInit {
       
       return false;
     }
+
+    //alert ctrl
+  async presentAlert(message: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Login Error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
   
     //remove validation errors
     removeErrors() {

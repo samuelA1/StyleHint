@@ -12,8 +12,9 @@
 
 <ion-content>
     <form #f="ngForm">
-        <ion-input (keyup)="removeErrors()" name="email" [(ngModel)]="user.email" type="email" placeholder="Enter new email" required></ion-input>
-        <small *ngIf="error.email">{{error.email}}</small>
+            <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
+            <small *ngIf="error.email">{{error.email}}</small>
+            <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
         <ion-button color="warning" shape="round" (click)="updateEmail()" expand="block" size="large" [disabled]="!f.valid">
             Update email
         </ion-button>

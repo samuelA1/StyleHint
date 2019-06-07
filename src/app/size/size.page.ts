@@ -16,7 +16,7 @@ export class SizePage implements OnInit {
 
  selectSize(val: any) {
    this.titleService.appPages.map(p => {
-     p.value =  p.title === 'Size' ? val : p.value
+     p.value =  p.title === 'size' ? val : p.value
    });
    this.titleService.sizes.map(p => {
      p.isChecked =  p.val == val ? true : false;

@@ -12,7 +12,7 @@
 <ion-content>
   <ion-list>
     <ion-item class="ion-margin-top" *ngFor="let size of titleService.sizes" (click)="selectSize(size.val)">
-      <ion-label>{{size.val}}</ion-label>
+      <ion-label>{{size.val | titlecase}}</ion-label>
       <ion-checkbox slot="end" [(ngModel)]="size.isChecked"></ion-checkbox>
     </ion-item>
   </ion-list>

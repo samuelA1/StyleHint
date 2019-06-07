@@ -13,7 +13,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let country of titleService.countries" (click)="selectCountry(country.name, country.code)">
+    <ion-item *ngFor="let country of titleService.countries" (click)="selectCountry(country.name)">
       <ion-label [class.isSelected]="country.selected">
           {{country.name}}
       </ion-label>

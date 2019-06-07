@@ -4,73 +4,78 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TitleService {
+    person: any = {};
+    constructor() {
+     }
     //final data to be used by fashion component
     finalData: any = {};
     //list of interest
     interest: any = [
-        { val: 'Expensive', isChecked: true },
-        { val: 'Casual', isChecked: false },
+        { val: 'expensive', isChecked: true },
+        { val: 'casual', isChecked: false },
       ];
 
       //list of genders
     genders: any = [
-        { val: 'Male', isChecked: true },
-        { val: 'Female', isChecked: false },
+        { val: 'male adult', isChecked: true },
+        { val: 'male kid', isChecked: true },
+        { val: 'female adult', isChecked: false },
+        { val: 'female kid', isChecked: false },
       ];
 
       //list of sizes
     sizes: any = [
-        { val: 'Petite', isChecked: true },
-        { val: 'Plus size', isChecked: false },
-        { val: 'Tall', isChecked: false },
+        { val: 'petite', isChecked: true },
+        { val: 'plus size', isChecked: false },
+        { val: 'tall', isChecked: false },
     ];
 
   // list menu titles
   appPages = [
     {
-      title: 'Home',
+      title: 'home',
       url: '/home',
       icon: 'home'
     },
     {
-        title: 'Elsewhere',
+        title: 'elsewhere',
         url: '/elsewhere',
         icon: 'pin'
       },
     {
-      title: 'Gender',
+      title: 'gender',
       url: '/gender',
       icon: 'contacts',
-      value: 'Male'
+      value: ''
     },
     {
-      title: 'Size',
+      title: 'size',
       url: '/size',
       icon: 'resize',
-      value: 'Plus size'
+      value: ''
     },
     {
-      title: 'Interest',
+      title: 'interest',
       url: '/interest',
       icon: 'happy',
-      value: 'Expensive'
+      value: ''
     },
     {
-      title: 'Email',
+      title: 'email',
       url: '/email',
       icon: 'mail',
-      value: 'arreyessimbate@gmail.com'
+      value: ''
     },
     {
-      title: 'Passord',
+      title: 'passord',
       url: '/password',
       icon: 'lock'
     },
     {
-      title: 'Country',
+      title: 'country',
       url: '/list',
       icon: 'flag',
-      value: 'United States'
+      value: ''
     }
   ];
 
@@ -1044,5 +1049,5 @@ export class TitleService {
     selected:false,
     code: "VI"
 }]
-  constructor() { }
+  
 }

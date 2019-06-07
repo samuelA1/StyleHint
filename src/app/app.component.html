@@ -12,7 +12,7 @@
             <ion-item class="ion-margin-bottom" [routerDirection]="'forward'" [routerLink]="[p.url]" lines="none">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
-                {{p.title}}
+                {{p.title | titlecase}}
               </ion-label>
               <ion-text color="medium">
                 <small *ngIf="p.value">{{p.value}}</small>

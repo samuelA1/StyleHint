@@ -15,7 +15,7 @@ export class InterestPage implements OnInit {
 
   selectInterest(val: any) {
     this.titleService.appPages.map(p => {
-      p.value =  p.title === 'Interest' ? val : p.value
+      p.value =  p.title === 'interest' ? val : p.value
     });
     this.titleService.interest.map(p => {
       p.isChecked =  p.val == val ? true : false;

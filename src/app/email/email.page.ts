@@ -21,7 +21,7 @@ export class EmailPage implements OnInit {
     setTimeout(() => {
       if (this.validation(this.user)) {
         this.titleService.appPages.map(p => {
-          p.value =  p.title === 'Email' ? this.user.email : p.value
+          p.value =  p.title === 'email' ? this.user.email : p.value
         });
         this.loading = false;
         this.navCtrl.navigateRoot('home');

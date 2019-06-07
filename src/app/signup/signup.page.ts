@@ -1,5 +1,6 @@
+import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -13,16 +14,27 @@ user: any = {
 error: any = {};
 loading: boolean = false; //loader on the page after the user clicks the create account button
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController,
+     private authService: AuthService,
+     private alertCtrl: AlertController) { }
 
   //performs registration
-  register() {
+  async register() {
     this.loading = true;
-    setTimeout(() => {
+    setTimeout(async () => {
       this.validation(this.user)
       if (Object.keys(this.error).length == 0) {
         this.loading = false;
-        this.navCtrl.navigateRoot('/customize')
+        try {
+          const registrationInfo = await this.authService.signup(this.user);
+          if (registrationInfo['success']) {
+            this.navCtrl.navigateRoot('/customize')
+          } else {
+            this.presentAlert(registrationInfo['message']);
+          }
+        } catch (error) {
+          this.presentAlert('Sorry, an error occured while trying to create an account. Please try signing up again')
+        }
       } else {
         this.loading = false;
       }
@@ -41,6 +53,11 @@ loading: boolean = false; //loader on the page after the user clicks the create 
       this.error.password = 'Sorry, your password must be at least 8 characters';
     }
 
+    if (user['password'] === user['cfmPassword']) {
+    } else {
+      this.error.cfmPassword = 'Sorry, your passwords do not match. Please make sure your password are exactly the same.'
+    }
+
     if (user['email'].includes('@')) {
     } else {
       this.error.email = 'Please enter a valid email.';
@@ -48,6 +65,17 @@ loading: boolean = false; //loader on the page after the user clicks the create 
    
     
     return false;
+  }
+
+  //alert ctrl
+  async presentAlert(message: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Signup Error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   //remove validation errors

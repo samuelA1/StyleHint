@@ -1,5 +1,6 @@
+import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, NavController } from '@ionic/angular';
+import { IonSlides, NavController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-customize',
@@ -26,7 +27,9 @@ export class CustomizePage implements OnInit {
   };
 
   
-  constructor(private navCtrl: NavController) { 
+  constructor(private navCtrl: NavController,
+    private customizeService: CustomizeService,
+    private alertCtrl: AlertController) { 
     
   }
 
@@ -63,7 +66,7 @@ export class CustomizePage implements OnInit {
   //Size selection for slide two
   plusSize() {
     this.sizeSelected = false;
-    this.user.size = 'plus';
+    this.user.size = 'plus size';
     this.plusElement = true;
     this.petiteElement = false;
     this.tallElement = false;
@@ -100,8 +103,33 @@ export class CustomizePage implements OnInit {
     this.casualElement = true;
   }
 
-  toHome() {
-    this.navCtrl.navigateRoot('/home')
+  async toHome() {
+    let customizedUser = {
+      gender: this.user.gender.concat(' ', this.user.age),
+      size: this.user.size,
+      interest: this.user.interest
+    };
+    try {
+      const customizationInfo = await this.customizeService.customize(customizedUser);
+      if (customizationInfo['success']) {
+        this.navCtrl.navigateRoot('/home')
+      } else {
+        this.presentAlert(customizationInfo['message']);
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while customizing your account. Please try again');
+    }
+  }
+
+   //alert ctrl
+   async presentAlert(message: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Customization Error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   ngOnInit() {

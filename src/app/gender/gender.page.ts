@@ -16,7 +16,7 @@ export class GenderPage implements OnInit {
 
  selectSize(val: any) {
    this.titleService.appPages.map(p => {
-     p.value =  p.title === 'Gender' ? val : p.value
+     p.value =  p.title === 'gender' ? val : p.value
    });
    this.titleService.genders.map(p => {
      p.isChecked =  p.val == val ? true : false;

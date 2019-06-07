@@ -12,7 +12,7 @@
 <ion-content>
   <ion-list>
     <ion-item class="ion-margin-top" *ngFor="let entry of titleService.interest" (click)="selectInterest(entry.val)">
-      <ion-label>{{entry.val}}</ion-label>
+      <ion-label>{{entry.val | titlecase}}</ion-label>
       <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox>
     </ion-item>
   </ion-list>

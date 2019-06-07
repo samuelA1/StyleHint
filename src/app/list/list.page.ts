@@ -21,13 +21,13 @@ export class ListPage implements OnInit {
     this.menu.open('custom');
   }
 
-  selectCountry(name: any, code: any) {
+  selectCountry(name: any) {
     this.titleService.appPages.map(p => {
-      p.value =  p.title === 'Country' ? name : p.value;
+      p.value =  p.title === 'country' ? name : p.value;
     });
 
     this.titleService.countries.map(p => {
-      p.selected =  p.code == code ? true : false;
+      p.selected =  p.name.toLowerCase() == name.toLowerCase() ? true : false;
     });
 
     this.navCtrl.navigateRoot('home');

@@ -1,3 +1,6 @@
+import { AuthService } from './_services/auth.service';
+import { CustomizeService } from './_services/customize.service';
+import { AdminService } from './_services/admin.service';
 import { TitleService } from './_services/title.service';
 import { WeatherService } from './_services/weather.service';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +45,9 @@ import { AppRoutingModule } from './app-routing.module';
     Camera,
     WeatherService,
     TitleService,
+    AdminService,
+    CustomizeService,
+    AuthService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

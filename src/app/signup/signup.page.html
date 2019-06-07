@@ -25,6 +25,9 @@
 
       <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
       <small *ngIf="error.password">{{error.password}}</small>
+
+      <ion-input (keyup)="removeErrors()" name="cfmPassword" [(ngModel)]="user.cfmPassword" type="password" placeholder="Confirm password" required></ion-input>
+      <small *ngIf="error.cfmPassword">{{error.cfmPassword}}</small>
       <ion-button color="warning" shape="round" (click)="register()" expand="block" size="large" [disabled]="!f.valid">
           Create my account
       </ion-button>
