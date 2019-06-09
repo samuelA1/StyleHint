@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-split-pane>
+  <ion-split-pane [disabled]="titleService.showSplitPane">
     <ion-menu swipeGesture="false" menuId="custom">
       <ion-header>
         <ion-toolbar>
@@ -15,6 +15,7 @@
                 {{p.title | titlecase}}
               </ion-label>
               <ion-text color="medium">
+                <small *ngIf="p.symbol">{{p.symbol}}</small>
                 <small *ngIf="p.value">{{p.value}}</small>
               </ion-text>
             </ion-item>

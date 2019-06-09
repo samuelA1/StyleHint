@@ -9,27 +9,36 @@
 </ion-header>
 
 <ion-content>
-    <span class="slide-logo">
-        <ion-img src="../../assets/towel.png"></ion-img>
-        <h2>StyleHint</h2>
-    </span>
-  <form #f="ngForm">
-      <ion-select (ionChange)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
-          <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
-      </ion-select>
-      <small *ngIf="error.country">{{error.country}}</small>      
-
-      <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
-      <small *ngIf="error.email">{{error.email}}</small>
-      <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
-
-      <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
-      <small *ngIf="error.password">{{error.password}}</small>
-
-      <ion-input (keyup)="removeErrors()" name="cfmPassword" [(ngModel)]="user.cfmPassword" type="password" placeholder="Confirm password" required></ion-input>
-      <small *ngIf="error.cfmPassword">{{error.cfmPassword}}</small>
-      <ion-button color="warning" shape="round" (click)="register()" expand="block" size="large" [disabled]="!f.valid">
-          Create my account
-      </ion-button>
-  </form>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+            <span class="slide-logo">
+                <ion-img src="../../assets/towel.png"></ion-img>
+                <h2>StyleHint</h2>
+            </span>
+          <form #f="ngForm">
+              <ion-select (ionChange)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+                  <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
+              </ion-select>
+              <small *ngIf="error.country">{{error.country}}</small>
+              
+              <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Username" required></ion-input>
+              <small *ngIf="error.username">{{error.username}}</small>
+        
+              <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
+              <small *ngIf="error.email">{{error.email}}</small>
+              <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
+        
+              <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
+              <small *ngIf="error.password">{{error.password}}</small>
+        
+              <ion-input (keyup)="removeErrors()" name="cfmPassword" [(ngModel)]="user.cfmPassword" type="password" placeholder="Confirm password" required></ion-input>
+              <small *ngIf="error.cfmPassword">{{error.cfmPassword}}</small>
+              <ion-button color="warning" shape="round" (click)="register()" expand="block" size="large" [disabled]="!f.valid">
+                  Create my account
+              </ion-button>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-content>

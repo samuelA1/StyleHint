@@ -1,6 +1,7 @@
 import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController, AlertController } from '@ionic/angular';
+import { TitleService } from '../_services/title.service';
 
 @Component({
   selector: 'app-customize',
@@ -29,7 +30,8 @@ export class CustomizePage implements OnInit {
   
   constructor(private navCtrl: NavController,
     private customizeService: CustomizeService,
-    private alertCtrl: AlertController) { 
+    private alertCtrl: AlertController,
+    private titleService: TitleService) { 
     
   }
 
@@ -112,7 +114,27 @@ export class CustomizePage implements OnInit {
     try {
       const customizationInfo = await this.customizeService.customize(customizedUser);
       if (customizationInfo['success']) {
-        this.navCtrl.navigateRoot('/home')
+        this.titleService.showSplitPane = false;
+        this.navCtrl.navigateRoot('/home');
+        this.titleService.appPages.map(p => {
+          for (const key in customizationInfo['user']) {
+            if (customizationInfo['user'].hasOwnProperty(key)) {
+              p.value =  p.title === `${key}` ? `${customizationInfo['user'][key]}` : p.value
+            }
+          }
+          this.titleService.genders.map(p => {
+            p.isChecked =  p.val == customizationInfo['user'].gender ? true : false;
+          });
+          this.titleService.sizes.map(p => {
+            p.isChecked =  p.val == customizationInfo['user'].size ? true : false;
+          });
+          this.titleService.interest.map(p => {
+            p.isChecked =  p.val == customizationInfo['user'].interest ? true : false;
+          });
+          this.titleService.countries.map(p => {
+            p.selected =  p.name.toLowerCase() == customizationInfo['user'].country ? true : false;
+          });
+        });
       } else {
         this.presentAlert(customizationInfo['message']);
       }

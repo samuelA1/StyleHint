@@ -1,24 +1,15 @@
 ion-input, ion-select {
     background-color: #f8f8f8;
+    margin: 20px;
     margin-bottom: 0px;
     border-radius: 6px;
     border: none;
     border-bottom: 2px solid #555;
-    width: 100%;
-}
-
-ion-img {
-    max-width: 50vw;
-    width: 50px !important;
+    width: 85%;
 }
 
 ion-button {
     margin-top: 50px;
-}
-
-.slide-logo {
-    display: inline-flex;
-    margin: 50px 0;
 }
 
 small {

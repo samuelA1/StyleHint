@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
           try {
             const loginInfo = await this.authService.login(this.user);
             if (loginInfo['success']) {
+              this.titleService.showSplitPane = false;
               this.navCtrl.navigateRoot('/home')
               this.titleService.appPages.map(p => {
                 for (const key in loginInfo['user']) {

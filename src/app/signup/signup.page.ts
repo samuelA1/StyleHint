@@ -43,6 +43,11 @@ loading: boolean = false; //loader on the page after the user clicks the create 
 
 //Validate user inputs
   validation(user: any) {
+    if (user['username'].length >= 3) {
+    } else {
+      this.error.username = 'Sorry, your username must be at least 3 characters.';
+    }
+    
     if (user['country']) {
     } else {
       this.error.country = 'Please select a country.';

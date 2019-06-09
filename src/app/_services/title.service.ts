@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TitleService {
-    person: any = {};
+    showSplitPane: boolean = true;
+
     constructor() {
      }
     //final data to be used by fashion component
@@ -42,6 +43,13 @@ export class TitleService {
         url: '/elsewhere',
         icon: 'pin'
       },
+    {
+    title: 'username',
+    url: '/username',
+    icon: 'body',
+    value: '',
+    symbol: '@'
+    },
     {
       title: 'gender',
       url: '/gender',

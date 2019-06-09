@@ -27,4 +27,74 @@ export class CustomizeService {
       }
     });
   }
+
+  async updateEmail(email: any) {
+    return this.http.post(apiUrl + 'profile/email', email, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updateUsername(username: any) {
+    return this.http.post(apiUrl + 'profile/username', username, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updatePassword(password: any) {
+    return this.http.post(apiUrl + 'profile/password', password, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updateCountry(country: any) {
+    return this.http.post(apiUrl + 'profile/country', country, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updateGender(gender: any) {
+    return this.http.post(apiUrl + 'profile/gender', gender, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updateSize(size: any) {
+    return this.http.post(apiUrl + 'profile/size', size, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
+
+  async updateInterest(interest: any) {
+    return this.http.post(apiUrl + 'profile/interest', interest, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      }
+    });
+  }
 }

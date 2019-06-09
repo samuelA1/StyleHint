@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+      <ion-title>Update username</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate" color="medium"></ion-progress-bar>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+    <form #f="ngForm">
+        <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Enter new username" required></ion-input>
+        <small *ngIf="error.username">{{error.username}}</small>
+        <ion-button color="warning" shape="round" (click)="updateUsername()" expand="block" size="large" [disabled]="!f.valid">
+            Update username
+        </ion-button>
+    </form>
+</ion-content>

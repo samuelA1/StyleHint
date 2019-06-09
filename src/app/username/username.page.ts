@@ -4,59 +4,47 @@ import { NavController, MenuController, AlertController, ToastController } from 
 import { TitleService } from '../_services/title.service';
 
 @Component({
-  selector: 'app-email',
-  templateUrl: './email.page.html',
-  styleUrls: ['./email.page.scss'],
+  selector: 'app-username',
+  templateUrl: './username.page.html',
+  styleUrls: ['./username.page.scss'],
 })
-export class EmailPage implements OnInit {
+export class UsernamePage implements OnInit {
   user: any = {}; // user object to be sent to the database
   error: any = {};
   loading: boolean = false; //loader on the page after the user clicks the create account button
   constructor(private navCtrl: NavController,
      private menu: MenuController,
-      private titleService: TitleService,
-      private customizeService: CustomizeService,
-      private alertCtrl: AlertController,
-      private toastCtrl: ToastController) { }
-
-   //updates Email
-   updateEmail() {
+     private titleService: TitleService,
+     private customizeService: CustomizeService,
+     private alertCtrl: AlertController,
+     private toastCtrl: ToastController) { }
+   //updates Username
+   updateUsername() {
     this.loading = true;
     setTimeout(async () => {
       if (this.validation(this.user)) {
         try {
-          const emailInfo = await this.customizeService.updateEmail(this.user);
-          if (emailInfo['success']) {
+          const usernameInfo = await this.customizeService.updateUsername(this.user);
+          if (usernameInfo['success']) {
             this.titleService.appPages.map(p => {
-              p.value =  p.title === 'email' ? this.user.email : p.value
+              p.value =  p.title === 'username' ? this.user.username : p.value
             });
-            this.presentToast(emailInfo['message'])
+            this.presentToast(usernameInfo['message'])
             this.loading = false;
             this.navCtrl.navigateRoot('home');
             this.openCustom();
           } else {
             this.loading = false;
-            this.presentAlert(emailInfo['message']);
+            this.presentAlert(usernameInfo['message']);
           }
         } catch (error) {
-          this.presentAlert('Sorry, an error occured while trying to update your email');
+          this.presentAlert('Sorry, an error occured while trying to update your username');
         }
+
       } else {
         this.loading = false;
       }
     }, 1000);
-  }
-
-//Validate user inputs
-  validation(user: any) {
-    if (user['email'].includes('@')) {
-      return true;
-    } else {
-      this.error.email = 'Please enter a valid email.';
-    }
-     
-      
-      return false;
   }
 
   //open side menu
@@ -68,7 +56,7 @@ export class EmailPage implements OnInit {
   //alert
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
-      header: 'Email update error',
+      header: 'Username update error',
       message: message,
       buttons: ['OK']
     });
@@ -79,9 +67,9 @@ export class EmailPage implements OnInit {
   //toast for rating confirmation
   async presentToast(message: any) {
     const toast = await this.toastCtrl.create({
-      color: 'dark',
       message: message,
-      duration: 2000
+      duration: 2000,
+      color: 'dark',
     });
     toast.present();
   }
@@ -90,6 +78,17 @@ export class EmailPage implements OnInit {
   removeErrors() {
     this.error = {};
   }
+
+  //Validate user inputs
+  validation(user: any) {
+    if (user['username'].length >= 3) {
+      return true;
+    } else {
+      this.error.username = 'Sorry, your username must be at least 3 characters.';
+    }
+    return false;
+  }
+
   ngOnInit() {
   }
 

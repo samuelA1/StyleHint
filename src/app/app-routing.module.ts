@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'elsewhere', loadChildren: './elsewhere/elsewhere.module#ElsewherePageModule' },
   { path: 'fashion', loadChildren: './fashion/fashion.module#FashionPageModule' },
   { path: 'add-hint', loadChildren: './admin/add-hint/add-hint.module#AddHintPageModule' },
+  { path: 'username', loadChildren: './username/username.module#UsernamePageModule' },
 ];
 
 @NgModule({

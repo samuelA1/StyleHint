@@ -78,7 +78,7 @@ sizes: any = [
 
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
-      header: 'Error',
+      header: 'Hint Error',
       message: message,
       buttons: ['OK']
     });
