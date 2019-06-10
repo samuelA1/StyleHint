@@ -1,4 +1,5 @@
-import { AlertController } from '@ionic/angular';
+import { AdminService } from './../../_services/admin.service';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Component, OnInit } from '@angular/core';
 
@@ -12,37 +13,40 @@ hint: any = {
   season: '',
   weather: '',
   size: '',
-  country: ''
+  country: '',
+  gender: '',
+  interest: '',
+  image: ''
 };
 base64Image: string;
 //seasons array
 seasons: any[] = [
-  {name: 'winter', icon: 'snow', isChosen: false},
-  {name: 'spring', icon: 'rose', isChosen: false},
-  {name: 'summer', icon: 'flower', isChosen: false},
-  {name: 'fall', icon: 'partly-sunny', isChosen: false},
+  {name: 'winter'},
+  {name: 'spring'},
+  {name: 'summer'},
+  {name: 'fall'},
 ]
 
 // weather array
 weathers: any[] =[
-  {name: 'clear', icon: 'sunny', isChosen: false},
-  {name: 'rain', icon: 'rainy', isChosen: false},
-  {name: 'clouds', icon: 'cloud', isChosen: false},
-  {name: 'haze', icon: 'nuclear', isChosen: false},
-  {name: 'mist', icon: 'list', isChosen: false},
+  {name: 'clear'},
+  {name: 'rain'},
+  {name: 'clouds'},
+  {name: 'haze'},
+  {name: 'mist'},
 ]
 
 //occasion/event array
 occasions: any[] = [
-  {name: 'school', icon: 'school', isChosen: false},
-  {name: 'sport', icon: 'american-football', isChosen: false},
-  {name: 'birthday party', icon: 'color-wand', isChosen: false},
-  {name: 'halloween', icon: 'outlet', isChosen: false},
-  {name: 'christmas', icon: 'gift', isChosen: false},
-  {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
-  {name: 'date night', icon: 'contacts', isChosen: false},
-  {name: 'job interview', icon: 'person-add', isChosen: false},
-  {name: 'church', icon: 'home', isChosen: false},
+  {name: 'school'},
+  {name: 'sport'},
+  {name: 'birthday party'},
+  {name: 'halloween'},
+  {name: 'christmas'},
+  {name: 'National day'},
+  {name: 'date night'},
+  {name: 'job interview'},
+  {name: 'church'},
 ]
 
 //list of sizes
@@ -51,8 +55,24 @@ sizes: any = [
   { name: 'Plus size' },
   { name: 'Tall' },
 ];
+
+ //list of genders
+ genders: any = [
+    { name: 'male adult' },
+    { name: 'male kid' },
+    { name: 'female adult'},
+    { name: 'female kid'},
+  ];
+
+  //list of interest
+  interests: any = [
+    { name: 'expensive'},
+    { name: 'casual' },
+  ];
   constructor(private camera: Camera,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,
+    private adminService: AdminService,
+    private toastCtrl: ToastController) { }
 
   getImage() {
     const options: CameraOptions = {
@@ -72,10 +92,44 @@ sizes: any = [
      });
     
   }
-  addHint() {
-    console.log(this.hint);
+  async addHint() {
+    try {
+     const form = new FormData();
+     for(const key in this.hint) {
+      if (this.hint.hasOwnProperty(key)) {
+        if(key == 'image') {
+          form.append(
+            'image',
+            this.base64Image,
+          );
+          
+        } else {
+          form.append(key, this.hint[key])
+        }
+      }
+    }
+    const hintInfo = await this.adminService.addHint(form);
+    if (hintInfo['success']) {
+        this.presentToast(hintInfo['message']);
+    } else {
+        this.presentAlert(hintInfo['message']);
+    } 
+    } catch (error) {
+        this.presentAlert('Sorry, an error occured while trying to add a hint.')
+    }
   }
 
+  //toast
+  async presentToast(message: any) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      color: 'dark',
+    });
+    toast.present();
+  }
+
+  //alert ctrl
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
       header: 'Hint Error',

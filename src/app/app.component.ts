@@ -25,7 +25,7 @@ export class AppComponent {
   ) {
     this.initializeApp();
     //root navigation
-    // this.titleService.showSplitPane = false;
+    this.titleService.showSplitPane = false;
     this.navCtrl.navigateRoot('home');
 
     //weather and location data

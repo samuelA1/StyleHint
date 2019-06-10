@@ -1,6 +1,7 @@
+import { HintsService } from './../_services/hints.service';
 import { Storage } from '@ionic/storage';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController, AlertController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 import { FashionModalPage } from '../fashion-modal/fashion-modal.page';
 
@@ -14,28 +15,37 @@ export class FashionPage implements OnInit {
   movedForward: boolean = false;
   occasion: any;
   loading: boolean = false;
-  stylesOne:any[] = [];
-  stylesTwo:any[] = [];
-  stylesThree:any[] = [];
-  stylesFour:any[] = [];
-  stylesFive:any[] = [];
-  stylesSix:any[] = [];
+  page: number = 1;
+  hints: any[];
 
   constructor(public titleService: TitleService,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
-    private storage: Storage) { }
+    private storage: Storage,
+    private hintService: HintsService,
+    private alertCtrl: AlertController) { 
+      this.getInitialContent();
+    }
+
+    async getInitialContent() {
+      try {
+        const hintsInfo = await this.hintService.getHints(this.page);
+        if (hintsInfo['success']) {
+          this.hints = hintsInfo['hints'];
+        } else {
+          this.presentAlert(hintsInfo['message'])
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, the was an error trying to get your hints. Please try again.')
+      }
+    }
 
   getMore() {
     this.movedForward = true;
-    this.stylesOne = this.stylesThree;
-    this.stylesTwo = this.stylesFour;
   }
 
   moveBack() {
-    this.stylesOne = this.stylesFive;
-    this.stylesTwo = this.stylesSix;
   }
 
   navigateBack() {
@@ -140,11 +150,22 @@ export class FashionPage implements OnInit {
     await actionSheet.present();
   }
 
-  async fashionModal() {
+  async fashionModal(id: any) {
     const modal = await this.modalCtrl.create({
       component: FashionModalPage
     });
     return await modal.present();
+  }
+
+  //alert
+  async presentAlert(message: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Hints error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   logScrolling(event){
@@ -157,16 +178,6 @@ export class FashionPage implements OnInit {
   }
 
   ngOnInit() {
-    for (let index = 0; index < 10; index++) {
-      this.stylesOne.push({img:'../../assets/examples/azamat-zhanisov-1272557-unsplash.jpg'})
-      this.stylesOne.push({img:'../../assets/examples/bogdan-glisik-1165508-unsplash.jpg'})
-      this.stylesFive.push({img:'../../assets/examples/azamat-zhanisov-1272557-unsplash.jpg'})
-      this.stylesSix.push({img:'../../assets/examples/bogdan-glisik-1165508-unsplash.jpg'})
-      this.stylesThree.push({img:'../../assets/examples/bogdan-glisik-1211054-unsplash.jpg'})
-      this.stylesFour.push({img:'../../assets/examples/dmitriy-ilkevich-1169658-unsplash.jpg'})
-      
-      
-    }
   }
 
 }

@@ -139,7 +139,6 @@ export class HomePage {
       this.weather.main = weather['weather'][0].main;
       this.chooseWeather(weather['weather'][0].main.toLowerCase())
       this.weather.icon = `http://openweathermap.org/img/w/${weather['weather'][0].icon}.png`;
-      // console.log(weather);
      }).catch((error) => {
        this.presentAlert('Sorry, an error occured while trying to get your location');
      });
@@ -165,7 +164,6 @@ export class HomePage {
       this.weather.main = weather['weather'][0].main;
       this.chooseWeather(weather['weather'][0].main.toLowerCase())
       this.weather.icon = `http://openweathermap.org/img/w/${weather['weather'][0].icon}.png`;
-      // console.log(weather);
      }).catch((error) => {
        this.presentAlert('Sorry, an error occured while trying to get your location');
      });

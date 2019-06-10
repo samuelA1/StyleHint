@@ -1,3 +1,4 @@
+import { HintsService } from './_services/hints.service';
 import { AuthService } from './_services/auth.service';
 import { CustomizeService } from './_services/customize.service';
 import { AdminService } from './_services/admin.service';
@@ -48,6 +49,7 @@ import { AppRoutingModule } from './app-routing.module';
     AdminService,
     CustomizeService,
     AuthService,
+    HintsService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -15,20 +15,20 @@
           <img *ngIf="base64Image" [src]="base64Image">
           <ion-label margin>Overview:</ion-label>
           <textarea name="overview" [(ngModel)]="hint.overview" cols="30" rows="10" required></textarea>
-          <ion-label margin>Recommendatons:</ion-label>
-          <textarea name="overview" [(ngModel)]="hint.recommendatons" cols="30" rows="10" required></textarea>
+          <ion-label margin>Recommendations:</ion-label>
+          <textarea name="recommendations" [(ngModel)]="hint.recommendations" cols="30" rows="10" required></textarea>
           <ion-label margin>Alternatives:</ion-label>
-          <textarea name="overview" [(ngModel)]="hint.alternatives" cols="30" rows="10" required></textarea>
+          <textarea name="alternatives" [(ngModel)]="hint.alternatives" cols="30" rows="10" required></textarea>
           <ion-label margin>Do's:</ion-label>
-          <textarea name="overview" [(ngModel)]="hint.do" cols="30" rows="10" required></textarea>
+          <textarea name="do" [(ngModel)]="hint.do" cols="30" rows="10" required></textarea>
           <ion-label margin>Dont's:</ion-label>
-          <textarea name="overview" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
+          <textarea name="dont" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
           <ion-label margin>Choose season:</ion-label>
-          <ion-select name="season" [(ngModel)]="hint.season" interface="popover" placeholder="select season">
+          <ion-select multiple="true" name="season" [(ngModel)]="hint.season"  placeholder="select season">
             <ion-select-option *ngFor="let season of seasons" value="{{season.name}}">{{season.name | titlecase}}</ion-select-option>
           </ion-select>
           <ion-label margin>Choose occasion:</ion-label>
-          <ion-select name="occasion" [(ngModel)]="hint.occasion" interface="popover" placeholder="select occasion">
+          <ion-select multiple="true" name="occasion" [(ngModel)]="hint.occasion"  placeholder="select occasion">
             <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
           </ion-select>
           <div *ngIf="hint.occasion == 'National day'">
@@ -38,13 +38,22 @@
             </ion-select>
           </div>
           <ion-label margin>Choose weather:</ion-label>
-          <ion-select name="weather" [(ngModel)]="hint.weather" interface="popover" placeholder="select weather">
+          <ion-select multiple="true" name="weather" [(ngModel)]="hint.weather"  placeholder="select weather">
             <ion-select-option *ngFor="let weather of weathers" value="{{weather.name}}">{{weather.name | titlecase}}</ion-select-option>
           </ion-select>
           <ion-label margin>Choose size:</ion-label>
-          <ion-select name="size" [(ngModel)]="hint.size" interface="popover" placeholder="select size">
+          <ion-select multiple="true" name="size" [(ngModel)]="hint.size"  placeholder="select size">
             <ion-select-option *ngFor="let size of sizes" value="{{size.name}}">{{size.name | titlecase}}</ion-select-option>
           </ion-select>
+          <ion-label margin>Choose gender:</ion-label>
+          <ion-select name="gender" [(ngModel)]="hint.gender" interface="popover"  placeholder="select gender">
+            <ion-select-option *ngFor="let gender of genders" value="{{gender.name}}">{{gender.name | titlecase}}</ion-select-option>
+          </ion-select>
+          <ion-label margin>Choose interest:</ion-label>
+          <ion-select multiple="true" name="interest" [(ngModel)]="hint.interest"  placeholder="select interest">
+            <ion-select-option *ngFor="let interest of interests" value="{{interest.name}}">{{interest.name | titlecase}}</ion-select-option>
+          </ion-select>
+
           <ion-button color="warning" shape="round" (click)="addHint()" expand="block" size="large" [disabled]="!f.valid">
               Add hint
           </ion-button>

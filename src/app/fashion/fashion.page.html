@@ -25,8 +25,8 @@
 
 <!-- All fashion style -->
   <div class="pins">
-    <div class="pin" *ngFor="let style of stylesOne" (click)="fashionModal()">
-        <img class="animated fadeInRight delay-2s" [src]="style.img">
+    <div class="pin" *ngFor="let hint of hints" (click)="fashionModal(hint._id)">
+        <img class="animated fadeInRight delay-2s" [src]="hint.url">
     </div>
   </div>
   
