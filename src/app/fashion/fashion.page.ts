@@ -13,10 +13,12 @@ import { FashionModalPage } from '../fashion-modal/fashion-modal.page';
 })
 export class FashionPage implements OnInit {
   movedForward: boolean = false;
+  hideForward: boolean = true;
   occasion: any;
   loading: boolean = false;
   page: number = 1;
-  hints: any[];
+  totalPages: number;
+  hints: any[] = [];
 
   constructor(public titleService: TitleService,
     private navCtrl: NavController,
@@ -33,6 +35,7 @@ export class FashionPage implements OnInit {
         const hintsInfo = await this.hintService.getHints(this.page);
         if (hintsInfo['success']) {
           this.hints = hintsInfo['hints'];
+          this.totalPages = hintsInfo['totalPages'];
         } else {
           this.presentAlert(hintsInfo['message'])
         }
@@ -43,21 +46,17 @@ export class FashionPage implements OnInit {
 
   getMore() {
     this.movedForward = true;
+    this.page++
+    this.getInitialContent();
   }
 
   moveBack() {
+    this.page--
+    this.getInitialContent();
   }
 
   navigateBack() {
     this.navCtrl.navigateBack('home');
-  }
-
-   //page resfresh
-   doRefresh(event: any) {
-     //do something
-    setTimeout(() => {
-      event.target.complete();
-    }, 2000);
   }
 
   //occasion/event array
@@ -83,6 +82,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[0].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       }, {
         text: `${this.occasions[1].name}`,
@@ -90,6 +91,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[1].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       }, {
         text: `${this.occasions[2].name}`,
@@ -97,6 +100,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[2].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       }, {
         text: `${this.occasions[3].name}`,
@@ -104,6 +109,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[3].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       }, {
         text: `${this.occasions[4].name}`,
@@ -111,6 +118,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[4].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       },
       {
@@ -119,6 +128,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[5].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       },
       {
@@ -127,6 +138,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[6].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       },
       {
@@ -135,6 +148,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[7].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       },
       {
@@ -143,6 +158,8 @@ export class FashionPage implements OnInit {
           this.occasion = `${this.occasions[8].name}`;
           this.titleService.finalData['occasion'] = this.occasion;
           this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
         }
       }
     ]
@@ -151,8 +168,10 @@ export class FashionPage implements OnInit {
   }
 
   async fashionModal(id: any) {
+    this.hintService.id = id;
     const modal = await this.modalCtrl.create({
-      component: FashionModalPage
+      component: FashionModalPage,
+      componentProps: {idValue: id}
     });
     return await modal.present();
   }
@@ -172,12 +191,23 @@ export class FashionPage implements OnInit {
     if (event.detail.scrollTop < -30) {
       this.loading = true;
       setTimeout(() => {
+        this.page = 1;
+        this.getInitialContent();
         this.loading= false;
       }, 2000);
     }
   }
 
   ngOnInit() {
+    //hide backward button if on first page
+    if (this.page = 1) {
+      this.movedForward = false;
+    }
+
+    //hide forward button if on last page
+    if (this.totalPages = this.page) {
+      this.hideForward = false;
+    }
   }
 
 }

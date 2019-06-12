@@ -29,6 +29,24 @@
         <img class="animated fadeInRight delay-2s" [src]="hint.url">
     </div>
   </div>
+
+  <!-- skeleton -->
+  <div *ngIf="hints?.length == 0">
+      <ion-list>
+        <ion-item>
+            <ion-skeleton-text animated style="width: 187px; height: 170px;border-radius: 10px" slot="start"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 187px; height: 210px;border-radius: 10px" slot="start"></ion-skeleton-text>
+        </ion-item>
+        <ion-item>
+            <ion-skeleton-text animated style="width: 187px; height: 210px;border-radius: 10px" slot="start"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 187px; height: 190px;border-radius: 10px" slot="start"></ion-skeleton-text>
+        </ion-item>
+        <ion-item>
+          <ion-skeleton-text animated style="width: 127px; height: 170px;border-radius: 10px" slot="start"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 187px; height: 200px;border-radius: 10px" slot="start"></ion-skeleton-text>
+        </ion-item>
+      </ion-list>
+    </div>
   
   <!-- occasion actionsheet -->
  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
@@ -38,7 +56,7 @@
   </ion-fab>
 
 <!-- next page -->
-  <ion-fab vertical="center" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="hideForward" vertical="center" horizontal="end" slot="fixed">
     <ion-fab-button (click)="getMore()">
       <ion-icon name="arrow-round-forward"></ion-icon>
     </ion-fab-button>

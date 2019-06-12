@@ -7,7 +7,7 @@
         </ion-button>
     </ion-buttons>
     <!-- image -->
-    <img src="../../assets/examples/bogdan-glisik-1211054-unsplash.jpg" >
+    <img [src]="hint.url" >
   </div>
   <ion-grid>
     <ion-row>
@@ -19,7 +19,7 @@
           </div>
           <div class="rating ion-margin-top">
               <ion-icon [class.rate]="rate.isChecked" *ngFor="let rate of rated" name="{{rate.icon}}"></ion-icon>
-              <b padding>(1111)</b>
+              <b padding>({{numberOfRatings}})</b>
           </div>
       </ion-col>
       <ion-col size="3">
@@ -34,42 +34,27 @@
     <ion-row>
       <ion-col>
         <h6>Overview</h6>
-        <p>
-            When a former BlackRose cartel assassin deliberately betrays them by refusing to complete her mission, the cartel orders her execution. Unbeknownst to them,
-             she fakes her own death and is able to create a new life of her own. 
-        </p>
+        <p>{{hint.overview}}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <h6>Recommendation</h6>
-        <p>
-            When a former BlackRose cartel assassin deliberately betrays them by refusing to complete her mission, the cartel orders her execution. Unbeknownst to them,
-             she fakes her own death and is able to create a new life of her own. 
-        </p>
+        <p>{{hint.recommendations}}</p>
       </ion-col>
       <ion-col>
         <h6>Alternatives</h6>
-        <p>
-            When a former BlackRose cartel assassin deliberately betrays them by refusing to complete her mission, the cartel orders her execution. Unbeknownst to them,
-             she fakes her own death and is able to create a new life of her own. 
-        </p>
+        <p>{{hint.alternatives}}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <h6>Do's</h6>
-        <p>
-            When a former BlackRose cartel assassin deliberately betrays them by refusing to complete her mission, the cartel orders her execution. Unbeknownst to them,
-             she fakes her own death and is able to create a new life of her own. 
-        </p>
+        <p>{{hint.do}}</p>
       </ion-col>
       <ion-col>
         <h6>Dont's</h6>
-        <p>
-            When a former BlackRose cartel assassin deliberately betrays them by refusing to complete her mission, the cartel orders her execution. Unbeknownst to them,
-             she fakes her own death and is able to create a new life of her own. 
-        </p>
+        <p>{{hint.dont}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

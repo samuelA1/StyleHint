@@ -13,6 +13,7 @@ const apiUrl = environment.apiUrl;
 export class HintsService {
   hints: any = {};
   token: any;
+  id: any;
   constructor(private storage: Storage,
      private http: HttpClient,
      private titleService: TitleService) { }
@@ -25,6 +26,14 @@ export class HintsService {
   async getHints(page: any) {
     this.getFinalData();
     return this.http.post(apiUrl + `hints/get-hints?page=${page - 1}`, this.hints, {headers: await this.headers()}).toPromise();
+  }
+
+  async getSingleHint() {
+    return this.http.get(apiUrl + `hints/get-single-hint/${this.id}`, {headers: await this.headers()}).toPromise();
+  }
+
+  async addRating(rating: any, idValue: any) {
+    return this.http.post(apiUrl  + `hints/add-rating/${idValue}`, rating, {headers: await this.headers()}).toPromise();
   }
 
   getFinalData() {
