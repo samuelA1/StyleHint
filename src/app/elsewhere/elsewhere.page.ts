@@ -44,7 +44,7 @@ export class ElsewherePage implements OnInit {
     {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
     {name: 'date night', icon: 'contacts', isChosen: false},
     {name: 'job interview', icon: 'person-add', isChosen: false},
-    {name: 'church', icon: 'home', isChosen: false},
+    {name: 'culture', icon: 'home', isChosen: false},
   ]
 
    //get season based on loaction

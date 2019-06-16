@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { AuthService } from './../_services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { ToastController, AlertController, NavController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
 import { Storage } from '@ionic/storage';
+import * as io from 'socket.io-client';
+
 
 
 @Component({
@@ -11,20 +14,22 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   location: any = {};
   weather: any = {};
   date = Date.now();
   finalData: any = {};
   icon: any;
   season: any;
+  socket: any;
   itemSelected: boolean = false; //triggers overlay on occasion selected
 
   constructor(private toastCtrl: ToastController,
     private geolocation: Geolocation,
      private alertCtrl: AlertController,
      private weatherService: WeatherService,
-     private titleService: TitleService,
+     public titleService: TitleService,
+     private authService: AuthService,
      private navCtrl: NavController,
      private storage: Storage) {
        setTimeout(() => {
@@ -32,7 +37,16 @@ export class HomePage {
        }, 5000);
       this.watchPosition();
       this.getSeason();
+      this.socket = io('http://www.thestylehint.com')
      }
+
+     ngOnInit() {
+       this.socket.on('share', friend => {
+         if (friend === this.authService.userId) {
+           this.toastShareNotification();
+         }
+       })
+    }
 
   //seasons array
   seasons: any[] = [
@@ -61,7 +75,7 @@ export class HomePage {
     {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
     {name: 'date night', icon: 'contacts', isChosen: false},
     {name: 'job interview', icon: 'person-add', isChosen: false},
-    {name: 'church', icon: 'home', isChosen: false},
+    {name: 'culture', icon: 'home', isChosen: false},
   ]
 
   getSeason() {
@@ -178,6 +192,27 @@ export class HomePage {
     });
 
     await alert.present();
+  }
+
+  //toast notification
+  async toastShareNotification() {
+    const toast = await this.toastCtrl.create({
+      header: 'Someone just shared a hint with you',
+      position: 'bottom',
+      duration: 5000,
+      color: 'dark',
+      buttons: [
+        {
+          side: 'end',
+          icon: 'arrow-forward',
+          text: 'check it out',
+          handler: () => {
+            this.navCtrl.navigateForward('fashion');
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
   //toast

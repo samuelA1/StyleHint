@@ -9,6 +9,7 @@ const apiUrl = environment.apiUrl;
   providedIn: 'root'
 })
 export class AuthService {
+  userId: any;
   constructor(private storage: Storage,
      private http: HttpClient) { }
 
@@ -26,6 +27,7 @@ export class AuthService {
       if (res) {
         this.storage.set('token', res['token']);
         this.storage.set('user', JSON.stringify(res['user']));
+        this.userId = res['user']._id;
         return res;
       }
     });

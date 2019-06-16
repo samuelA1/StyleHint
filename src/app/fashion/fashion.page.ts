@@ -1,6 +1,6 @@
 import { HintsService } from './../_services/hints.service';
 import { Storage } from '@ionic/storage';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { NavController, ModalController, ActionSheetController, AlertController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 import { FashionModalPage } from '../fashion-modal/fashion-modal.page';
@@ -69,7 +69,7 @@ export class FashionPage implements OnInit {
     {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
     {name: 'Date night', icon: 'contacts', isChosen: false},
     {name: 'Job interview', icon: 'person-add', isChosen: false},
-    {name: 'Church', icon: 'home', isChosen: false},
+    {name: 'Culture', icon: 'home', isChosen: false},
   ]
 
   async presentOccasionActionSheet() {

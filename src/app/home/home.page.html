@@ -5,6 +5,12 @@
           <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
       </ion-menu-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button [routerLink]="['/notifications']"  routerDirection="forward">
+            <ion-icon color="dark"  name="notifications"></ion-icon>
+            <ion-badge>6</ion-badge>
+        </ion-button>
+    </ion-buttons>
     <ion-title>
       StyleHint
     </ion-title>

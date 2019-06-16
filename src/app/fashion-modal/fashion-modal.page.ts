@@ -1,8 +1,12 @@
+import { TipService } from './../_services/tip.service';
+import { FriendService } from './../_services/friend.service';
 import { HintsService } from './../_services/hints.service';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { Component, OnInit, Input } from '@angular/core';
 import { TitleService } from '../_services/title.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import * as io from 'socket.io-client';
+
 
 @Component({
   selector: 'app-fashion-modal',
@@ -14,6 +18,10 @@ export class FashionModalPage implements OnInit {
   hint: any = {};
   numberOfRatings: any;
   link: any;
+  modal: any = false;
+  friends: any[];
+  friendSelected: boolean = false;
+  socket: any;
   rating: any[] = [
     {icon: 'star', score: 1, isChecked: false},
     {icon: 'star', score: 2, isChecked: false},
@@ -32,10 +40,13 @@ export class FashionModalPage implements OnInit {
   constructor(private modalCtrl: ModalController,
     public titleService: TitleService,
     private hintService: HintsService,
+    private friendsService: FriendService,
+    private tipService: TipService,
     private socialSharing: SocialSharing,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController ) {
       this.getSingleHint();
+      this.socket = io('http://www.thestylehint.com')
      }
 
   async getSingleHint() {
@@ -57,10 +68,52 @@ export class FashionModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  share() {
-    this.socialSharing.share(null, null, null, 'http://www.x-services.nl').catch((err) => {
-      this.presentAlert('Sorry, an error occured while trying to share some information');
-    });
+  //activates send button on friend selected
+  selectFriend(val) {
+    this.friendSelected = val;
+  }
+
+  async share() {
+    this.modal = !this.modal;
+    
+    try {
+      const friendsInfo = await this.friendsService.getFriends();
+      if (friendsInfo['success']) {
+        this.friends = friendsInfo['friends']
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to get your friends.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to get your friends.')
+    }
+    // this.socialSharing.share(null, null, null, 'http://www.x-services.nl').catch((err) => {
+    //   this.presentAlert('Sorry, an error occured while trying to share some information');
+    // });
+  }
+
+  //add tip
+  async addTip() {
+    try {
+      let tips = {};
+      const selectedFriends = [];
+      this.friends.forEach(async (friend) => {
+        if (friend['selected']) {
+          selectedFriends.push(friend['_id']);
+          tips['imageUrl'] = this.hint.url;
+          tips['hintId'] = this.idValue;
+          tips['friends'] = selectedFriends;
+        }
+      });
+      const tipsInfo = await this.tipService.addTip(tips);
+      if (tipsInfo['success']) {
+        this.presentToast(tipsInfo['message']);
+        this.socket.emit('send', {friends: selectedFriends})
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to share a hint. Please try choosing a friend before sharing a hint.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to share a hint. Please try choosing a friend before sharing a hint.')
+    }
   }
 
   //rating icon functionality
@@ -69,7 +122,7 @@ export class FashionModalPage implements OnInit {
       try {
         const hintInfo = await this.hintService.addRating({rating: score}, this.idValue);
         if (hintInfo['success']) {
-          this.presentToast();
+          this.presentToast('Rating submitted');
         } else {
           this.presentAlert('Sorry, an error occured while trying to rate a look');
         }
@@ -116,9 +169,10 @@ export class FashionModalPage implements OnInit {
   }
 
   //toast for rating confirmation
-  async presentToast() {
+  async presentToast(message: any) {
     const toast = await this.toastCtrl.create({
-      message: 'Rating submitted',
+      message: message,
+      color: 'dark',
       duration: 2000
     });
     toast.present();

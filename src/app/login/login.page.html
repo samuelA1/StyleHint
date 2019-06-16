@@ -18,9 +18,7 @@
             </span>
             <form #f="ngForm">
                 <h4 class="animated rubberBand delay-1s">Welcome Back!</h4>
-                <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
-                <small *ngIf="error.email">{{error.email}}</small>
-                <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
+                <ion-input (keyup)="removeErrors()" name="login" [(ngModel)]="user.login" type="text" placeholder="Email or username" required></ion-input>
                 
                 <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
                 <small *ngIf="error.password">{{error.password}}</small>

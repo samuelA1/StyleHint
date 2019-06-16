@@ -3,11 +3,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'slides',
-    pathMatch: 'full'
-  },
-  {
     path: 'home',
     loadChildren: './home/home.module#HomePageModule'
   },
@@ -28,6 +23,8 @@ const routes: Routes = [
   { path: 'fashion', loadChildren: './fashion/fashion.module#FashionPageModule' },
   { path: 'add-hint', loadChildren: './admin/add-hint/add-hint.module#AddHintPageModule' },
   { path: 'username', loadChildren: './username/username.module#UsernamePageModule' },
+  { path: 'friends', loadChildren: './friends/friends.module#FriendsPageModule' },
+  { path: 'notifications', loadChildren: './notifications/notifications.module#NotificationsPageModule' },
 ];
 
 @NgModule({

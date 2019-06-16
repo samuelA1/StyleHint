@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TitleService {
-    showSplitPane: boolean = true;
-
+    showSplitPane: boolean  = false;
     constructor() {
      }
     //final data to be used by fashion component

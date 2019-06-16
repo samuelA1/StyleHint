@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://cryptic-dusk-79493.herokuapp.com/api/'
+  apiUrl: 'http://www.thestylehint.com/api/'
 };
 
 /*

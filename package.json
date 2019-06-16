@@ -43,6 +43,7 @@
     "core-js": "^2.5.4",
     "es6-promise-plugin": "4.2.2",
     "rxjs": "~6.5.1",
+    "socket.io-client": "^2.2.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"
   },

@@ -1,7 +1,8 @@
+import { AuthService } from './_services/auth.service';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -20,13 +21,23 @@ export class AppComponent {
     private statusBar: StatusBar,
     private screenOrientation: ScreenOrientation,
     public titleService: TitleService,
+    private authService: AuthService,
     private storage: Storage,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private menu: MenuController
   ) {
     this.initializeApp();
     //root navigation
-    this.titleService.showSplitPane = false;
-    this.navCtrl.navigateRoot('home');
+    this.storage.get('token').then((data) => {
+      if (data) {
+        this.navCtrl.navigateRoot('home');
+        this.titleService.showSplitPane = false;
+      } else {
+        this.navCtrl.navigateRoot('slides');
+        this.titleService.showSplitPane = true;
+      }
+    })
+    
 
     //weather and location data
     this.storage.get('finalData').then((data)=> {
@@ -39,8 +50,10 @@ export class AppComponent {
 
     //get user data
     this.storage.get('user').then((data)=> {
-      let user = JSON.parse(data);
-      this.titleService.appPages.map(p => {
+      if (data) {
+        let user = JSON.parse(data);
+        this.authService.userId = user['_id']
+        this.titleService.appPages.map(p => {
         for (const key in user) {
           if (user.hasOwnProperty(key)) {
             p.value =  p.title === `${key}` ? `${user[key]}` : p.value
@@ -59,6 +72,7 @@ export class AppComponent {
           p.selected =  p.name.toLowerCase() == user.country ? true : false;
         });
       });
+      }
      })
   }
 
@@ -68,5 +82,12 @@ export class AppComponent {
       this.splashScreen.hide();
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     });
+  }
+
+  logout() {
+    this.menu.close('custom');
+    this.titleService.showSplitPane = true;
+    this.storage.clear();
+    this.navCtrl.navigateRoot('slides');
   }
 }

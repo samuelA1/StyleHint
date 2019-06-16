@@ -26,7 +26,16 @@ export class LoginPage implements OnInit {
         if (Object.keys(this.error).length == 0) {
           this.loading = false;
           try {
-            const loginInfo = await this.authService.login(this.user);
+            var login = {};
+            if (this.user['login'].includes('@')) {
+              login['email'] = this.user['login'];
+              login['password'] = this.user['password'];
+            } else {
+              login['username'] = this.user['login'];
+              login['password'] = this.user['password'];
+
+            }
+            const loginInfo = await this.authService.login(login);
             if (loginInfo['success']) {
               this.titleService.showSplitPane = false;
               this.navCtrl.navigateRoot('/home')
@@ -67,12 +76,6 @@ export class LoginPage implements OnInit {
       } else {
         this.error.password = 'Sorry, your password must be at least 8 characters';
       }
-      if (user['email'].includes('@')) {
-      } else {
-        this.error.email = 'Please enter a valid email.';
-      }
-     
-      
       return false;
     }
 

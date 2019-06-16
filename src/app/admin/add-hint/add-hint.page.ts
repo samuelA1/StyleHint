@@ -46,7 +46,7 @@ occasions: any[] = [
   {name: 'National day'},
   {name: 'date night'},
   {name: 'job interview'},
-  {name: 'church'},
+  {name: 'culture'},
 ]
 
 //list of sizes

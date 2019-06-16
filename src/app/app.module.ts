@@ -1,3 +1,4 @@
+import { FriendService } from './_services/friend.service';
 import { HintsService } from './_services/hints.service';
 import { AuthService } from './_services/auth.service';
 import { CustomizeService } from './_services/customize.service';
@@ -25,6 +26,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { TipService } from './_services/tip.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -50,6 +52,8 @@ import { AppRoutingModule } from './app-routing.module';
     CustomizeService,
     AuthService,
     HintsService,
+    FriendService,
+    TipService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

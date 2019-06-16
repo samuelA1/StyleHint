@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -11,7 +12,8 @@ const apiUrl = environment.apiUrl;
 export class CustomizeService {
   token: any;
   constructor(private storage: Storage,
-     private http: HttpClient) { }
+     private http: HttpClient,
+     private authService: AuthService) { }
 
   async headers() {
     this.token = await this.storage.get('token');
@@ -23,6 +25,7 @@ export class CustomizeService {
     .then((res) => {
       if (res) {
         this.storage.set('user', JSON.stringify(res['user']));
+        this.authService.userId = res['user']._id;
         return res;
       }
     });

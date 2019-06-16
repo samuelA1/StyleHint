@@ -62,4 +62,26 @@
   <div class="rating ion-margin-bottom">
       <ion-icon [class.rate]="rate.isChecked" (click)="rateTo(rate.score)" *ngFor="let rate of rating" name="{{rate.icon}}"></ion-icon>
   </div>
+  
+  <!-- Modal content -->
+  <div *ngIf="!modal" class="modal-content" padding>
+    <div class="friends-header">
+        <p style="float: left;margin: 0;" (click)="share()">cancel</p>
+        <b >Share</b>
+    </div>
+    <ion-list>
+        <ion-searchbar animated></ion-searchbar>
+        <ion-item *ngFor="let friend of friends">
+            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                <ion-icon name="contact"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2>@{{friend.username}}</h2> 
+              <h3>{{friend.email}}</h3>
+            </ion-label>
+            <ion-checkbox (ionChange)="selectFriend(true)" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-button [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
+    </ion-list>
+  </div>
 </ion-content>
