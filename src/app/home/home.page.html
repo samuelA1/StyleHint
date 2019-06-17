@@ -6,9 +6,9 @@
       </ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-        <ion-button [routerLink]="['/notifications']"  routerDirection="forward">
+        <ion-button (click)="clearNotifications()" >
             <ion-icon color="dark"  name="notifications"></ion-icon>
-            <ion-badge>6</ion-badge>
+            <ion-badge *ngIf="notifications > 0">{{notifications}}</ion-badge>
         </ion-button>
     </ion-buttons>
     <ion-title>

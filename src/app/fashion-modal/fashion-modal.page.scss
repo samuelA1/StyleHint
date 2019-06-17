@@ -4,7 +4,7 @@ img {
     width: 100%;
     max-width: 100%;
     border-radius: 10px;
-    z-index: -1;
+    z-index: -10;
     column-count: 1;
 }
 
@@ -30,34 +30,40 @@ h6 {
   .modal-content {
     display: grid;
     text-align: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    z-index: 1000;
+    z-index: 1;
     background-color: #fff;
+    overflow: scroll;
     width: 100%;
+    height: 80%;
     -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
     animation-duration: 0.4s
   }
 
-  @-webkit-keyframes slideIn {
-    from {bottom: -300px; opacity: 0} 
-    to {bottom: 0; opacity: 1}
+  ion-content {
+    overflow: auto;
   }
-  
-  @keyframes slideIn {
-    from {bottom: -300px; opacity: 0}
-    to {bottom: 0; opacity: 1}
-  }
-  
-  @-webkit-keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
-  }
-  
-  @keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
-  }
-  
 
+  /* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}

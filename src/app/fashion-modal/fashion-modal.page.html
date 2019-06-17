@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content scrollY="{{modal}}">
   <div class="main-img">
     <!-- back button -->
     <ion-buttons slot="start">
@@ -64,13 +64,16 @@
   </div>
   
   <!-- Modal content -->
-  <div *ngIf="!modal" class="modal-content" padding>
-    <div class="friends-header">
-        <p style="float: left;margin: 0;" (click)="share()">cancel</p>
-        <b >Share</b>
-    </div>
-    <ion-list>
-        <ion-searchbar animated></ion-searchbar>
+  <div *ngIf="!modal" class="modal-content " padding>
+    <ion-list lines="none">
+        <div class="friends-header ion-margin-top"  >
+            <p style="float: left;margin: 0;" (click)="share()">cancel</p>
+            <b >Share</b>
+        </div>
+        <p *ngIf="friends?.length == 0">You have no friends yet, try adding some friends.</p>
+        <textarea style="width: 100%; margin-top: 20px" *ngIf="!friends?.length == 0" placeholder="Any message to share?" name="message" [(ngModel)]="message" cols="30" rows="5"></textarea>
+        <ion-searchbar (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
+        <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
         <ion-item *ngFor="let friend of friends">
             <ion-avatar style="font-size: xx-large;padding-top: 3px;">
                 <ion-icon name="contact"></ion-icon>
@@ -81,7 +84,7 @@
             </ion-label>
             <ion-checkbox (ionChange)="selectFriend(true)" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
         </ion-item>
-        <ion-button [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
+        <ion-button style="margin-top: 50px" *ngIf="!friends?.length == 0" [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
     </ion-list>
   </div>
 </ion-content>

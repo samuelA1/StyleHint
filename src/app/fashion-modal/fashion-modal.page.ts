@@ -19,7 +19,11 @@ export class FashionModalPage implements OnInit {
   numberOfRatings: any;
   link: any;
   modal: any = false;
+  searched:boolean = false;
+  message: any = '';
+  search: any = '';
   friends: any[];
+  unFilteredFriends: any[];
   friendSelected: boolean = false;
   socket: any;
   rating: any[] = [
@@ -79,7 +83,8 @@ export class FashionModalPage implements OnInit {
     try {
       const friendsInfo = await this.friendsService.getFriends();
       if (friendsInfo['success']) {
-        this.friends = friendsInfo['friends']
+        this.friends = friendsInfo['friends'];
+        this.unFilteredFriends = friendsInfo['friends'];
       } else {
         this.presentAlert('Sorry, an error occured while trying to get your friends.')
       }
@@ -102,10 +107,12 @@ export class FashionModalPage implements OnInit {
           tips['imageUrl'] = this.hint.url;
           tips['hintId'] = this.idValue;
           tips['friends'] = selectedFriends;
+          tips['message'] = this.message;
         }
       });
       const tipsInfo = await this.tipService.addTip(tips);
       if (tipsInfo['success']) {
+        this.modal = !this.modal;
         this.presentToast(tipsInfo['message']);
         this.socket.emit('send', {friends: selectedFriends})
       } else {
@@ -114,6 +121,13 @@ export class FashionModalPage implements OnInit {
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to share a hint. Please try choosing a friend before sharing a hint.')
     }
+  }
+
+  //search friends
+  searchFriends() {
+    this.searched = true;
+    this.friends = (this.search) ?  this.friends.filter(u => u.username.toLowerCase()
+    .includes(this.search.toLowerCase()) ) : this.unFilteredFriends;
   }
 
   //rating icon functionality

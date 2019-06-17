@@ -22,6 +22,7 @@ export class HomePage implements OnInit {
   icon: any;
   season: any;
   socket: any;
+  notifications: number = 0;
   itemSelected: boolean = false; //triggers overlay on occasion selected
 
   constructor(private toastCtrl: ToastController,
@@ -43,9 +44,12 @@ export class HomePage implements OnInit {
      ngOnInit() {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
+           this.notifications++
+           this.storage.set('notifications', this.notifications);
            this.toastShareNotification();
          }
-       })
+       });
+       this.getNotifications();
     }
 
   //seasons array
@@ -183,6 +187,19 @@ export class HomePage implements OnInit {
      });
   }
 
+  //clear notifications
+  clearNotifications() {
+    this.notifications = 0;
+    this.navCtrl.navigateForward('notifications').then(() => {
+      this.storage.set('notifications', this.notifications);
+    });
+  }
+
+  //get notifications
+  getNotifications() {
+    this.storage.get('notifications').then(notify => this.notifications = notify);
+  }
+
   //alert
    async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -199,13 +216,12 @@ export class HomePage implements OnInit {
     const toast = await this.toastCtrl.create({
       header: 'Someone just shared a hint with you',
       position: 'bottom',
-      duration: 5000,
+      duration: 7000,
       color: 'dark',
       buttons: [
         {
           side: 'end',
-          icon: 'arrow-forward',
-          text: 'check it out',
+          text: 'view hint',
           handler: () => {
             this.navCtrl.navigateForward('fashion');
           }
