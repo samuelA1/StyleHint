@@ -10,5 +10,17 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-list lines="none">
+    <ion-item *ngFor="let notify of notifications">
+      <div *ngIf="notify.typeOf == 'tip'">
+        <ion-text color="tertiary">
+            <h4>{{notify.typeOf | titlecase}}</h4>
+          </ion-text>
+          <div margin>
+            <p><b>@{{notify.fromUsername}} </b>{{notify.message}}</p>
+            <small>{{GetPostTime(notify.createdAt)}}</small>
+          </div>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>

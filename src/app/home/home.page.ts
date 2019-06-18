@@ -6,6 +6,7 @@ import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
 import { Storage } from '@ionic/storage';
 import * as io from 'socket.io-client';
+import { NotificationService } from '../_services/notification.service';
 
 
 
@@ -22,7 +23,6 @@ export class HomePage implements OnInit {
   icon: any;
   season: any;
   socket: any;
-  notifications: number = 0;
   itemSelected: boolean = false; //triggers overlay on occasion selected
 
   constructor(private toastCtrl: ToastController,
@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
      private weatherService: WeatherService,
      public titleService: TitleService,
      private authService: AuthService,
+     public notificationService: NotificationService,
      private navCtrl: NavController,
      private storage: Storage) {
        setTimeout(() => {
@@ -44,12 +45,10 @@ export class HomePage implements OnInit {
      ngOnInit() {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
-           this.notifications++
-           this.storage.set('notifications', this.notifications);
+           this.notificationService.numberOfNotifications++
            this.toastShareNotification();
          }
        });
-       this.getNotifications();
     }
 
   //seasons array
@@ -188,16 +187,11 @@ export class HomePage implements OnInit {
   }
 
   //clear notifications
-  clearNotifications() {
-    this.notifications = 0;
-    this.navCtrl.navigateForward('notifications').then(() => {
-      this.storage.set('notifications', this.notifications);
+  async clearNotifications() {
+    this.navCtrl.navigateForward('notifications').then(async () => {
+      await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
+      this.notificationService.numberOfNotifications = 0;
     });
-  }
-
-  //get notifications
-  getNotifications() {
-    this.storage.get('notifications').then(notify => this.notifications = notify);
   }
 
   //alert

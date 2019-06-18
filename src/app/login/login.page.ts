@@ -2,6 +2,7 @@ import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
+import { NotificationService } from '../_services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginPage implements OnInit {
     constructor(private navCtrl: NavController,
       private alertCtrl: AlertController,
       private authService: AuthService,
+      private notificationService: NotificationService,
       private titleService: TitleService) { }
   
     //performs login
@@ -38,6 +40,7 @@ export class LoginPage implements OnInit {
             const loginInfo = await this.authService.login(login);
             if (loginInfo['success']) {
               this.titleService.showSplitPane = false;
+              this.notificationService.notifyNumber();
               this.navCtrl.navigateRoot('/home')
               this.titleService.appPages.map(p => {
                 for (const key in loginInfo['user']) {

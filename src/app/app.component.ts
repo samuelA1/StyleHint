@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TitleService } from './_services/title.service';
+import { NotificationService } from './_services/notification.service';
 
 
 @Component({
@@ -22,16 +23,18 @@ export class AppComponent {
     private screenOrientation: ScreenOrientation,
     public titleService: TitleService,
     private authService: AuthService,
+    private notificationService: NotificationService,
     private storage: Storage,
     private navCtrl: NavController,
     private menu: MenuController
   ) {
     this.initializeApp();
     //root navigation
-    this.storage.get('token').then((data) => {
+    this.storage.get('token').then(async (data) => {
       if (data) {
         this.navCtrl.navigateRoot('home');
         this.titleService.showSplitPane = false;
+        this.notificationService.notifyNumber();
       } else {
         this.navCtrl.navigateRoot('slides');
         this.titleService.showSplitPane = true;

@@ -27,6 +27,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TipService } from './_services/tip.service';
+import { NotificationService } from './_services/notification.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,6 +55,7 @@ import { TipService } from './_services/tip.service';
     HintsService,
     FriendService,
     TipService,
+    NotificationService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
