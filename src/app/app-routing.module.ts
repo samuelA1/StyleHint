@@ -25,6 +25,10 @@ const routes: Routes = [
   { path: 'username', loadChildren: './username/username.module#UsernamePageModule' },
   { path: 'friends', loadChildren: './friends/friends.module#FriendsPageModule' },
   { path: 'notifications', loadChildren: './notifications/notifications.module#NotificationsPageModule' },
+  { path: 'tip', loadChildren: './tip/tip.module#TipPageModule' },
+  { path: 'tips', loadChildren: './tips/tips.module#TipsPageModule' },
+  { path: 'closet', loadChildren: './closet/closet.module#ClosetPageModule' },
+  { path: 'reference', loadChildren: './reference/reference.module#ReferencePageModule' },
 ];
 
 @NgModule({

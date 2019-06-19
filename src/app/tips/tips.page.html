@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-button (click)="navigateBack()">
+            <ion-icon color="dark"  name="arrow-back" class="ion-margin-start"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-title>Tips</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-badge color="warning">Tips get removed after 24 hours.</ion-badge>
+  <!-- my tips -->
+  <div>
+    <ion-text color="medium">
+        <h3>My Tips</h3>
+        <p>These are hints you shared with your friends.</p>
+    </ion-text>
+    <p *ngIf="myTips.length === 0">You haven't shared any hints recently.</p>
+    <div class="pins">
+      <div class="pin" *ngFor="let myTip of myTips" (click)="toTip(myTip._id, true)">
+          <img  [src]="myTip.imageUrl">
+          <small>{{GetPostTime(myTip.createdAt)}}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- tips -->
+ <div>
+  <ion-text color="medium">
+      <h3>Tips</h3>
+      <p>These are hints your friends shared with you.</p>
+  </ion-text>
+  <p *ngIf="tips.length === 0">Your friends haven't shared any hints with you.</p>
+  <div class="pins">
+    <div class="pin" *ngFor="let tip of tips" (click)="toTip(tip._id, false)">
+        <img  [src]="tip.imageUrl">
+        <b >@{{tip.ownerUsername}}</b>
+        <small style="display: block">{{GetPostTime(tip.createdAt)}}</small>
+    </div>
+  </div>
+ </div>
+</ion-content>

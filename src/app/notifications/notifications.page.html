@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+  <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
   <ion-list lines="none">
     <ion-item *ngFor="let notify of notifications">
       <div *ngIf="notify.typeOf == 'tip'">
@@ -17,10 +18,16 @@
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p><b>@{{notify.fromUsername}} </b>{{notify.message}}</p>
+            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>
     </ion-item>
   </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more notifications...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

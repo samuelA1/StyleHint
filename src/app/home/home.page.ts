@@ -66,6 +66,7 @@ export class HomePage implements OnInit {
     {name: 'clouds', icon: 'cloud', isChosen: false},
     {name: 'haze', icon: 'nuclear', isChosen: false},
     {name: 'mist', icon: 'list', isChosen: false},
+    {name: 'thunderstorm', icon: 'thunderstorm', isChosen: false},
   ]
 
   //occasion/event array
@@ -194,6 +195,19 @@ export class HomePage implements OnInit {
     });
   }
 
+  //navigations
+  toTips() {
+    this.navCtrl.navigateForward('tips');
+  }
+
+  toFriends() {
+    this.navCtrl.navigateForward('friends');
+  }
+
+  toCloset() {
+    this.navCtrl.navigateForward('closet');
+  }
+
   //alert
    async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -208,19 +222,10 @@ export class HomePage implements OnInit {
   //toast notification
   async toastShareNotification() {
     const toast = await this.toastCtrl.create({
-      header: 'Someone just shared a hint with you',
+      header: 'One of your friends just shared a hint with you.',
       position: 'bottom',
-      duration: 7000,
-      color: 'dark',
-      buttons: [
-        {
-          side: 'end',
-          text: 'view hint',
-          handler: () => {
-            this.navCtrl.navigateForward('fashion');
-          }
-        }
-      ]
+      duration: 5000,
+      color: 'dark'
     });
     toast.present();
   }

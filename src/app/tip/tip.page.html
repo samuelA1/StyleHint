@@ -1,0 +1,43 @@
+<ion-content scrollY="{{!modal}}">
+  <div class="main-img">
+      <!-- back button -->
+      <ion-buttons slot="start">
+          <ion-button (click)="navigateBack()">
+              <ion-icon  name="arrow-back" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <ion-buttons *ngIf="tipService.isMyTip" style="right: 0">
+          <ion-button (click)="confirmDelete()">
+              <ion-icon  color="danger" name="trash" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <ion-buttons *ngIf="tipService.isMyTip" style="right: 0; top: 75px">
+          <ion-button (click)="sharedWith()">
+              <ion-icon  color="dark" name="people" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <!-- image -->
+      <img [src]="tip.imageUrl" >
+      <ion-button (click)="viewHint(tip.hintId)" color="warning" expand="full" fill="outline">view complete hint</ion-button>
+  </div>
+  <div class="tip-container">
+    <p class="ion-float-left"><b>@{{tip.ownerUsername}}</b> {{tip.message}}</p>
+    <textarea placeholder="add a comment"  name="comment" [(ngModel)]="comment" cols="30" rows="3"></textarea>
+  </div>
+
+  <!-- Modal content -->
+  <div *ngIf="modal" class="modal-content " padding>
+    <ion-list lines="none">
+        <h1>Shared with</h1>
+        <ion-item *ngFor="let friend of tip.usersToSee">
+            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                <ion-icon name="contact"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+                <h2>@{{friend.username}}</h2> 
+                <h3>{{friend.email}}</h3> 
+            </ion-label>
+        </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

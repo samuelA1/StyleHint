@@ -34,6 +34,7 @@ weathers: any[] =[
   {name: 'clouds'},
   {name: 'haze'},
   {name: 'mist'},
+  {name: 'thunderstorm'},
 ]
 
 //occasion/event array

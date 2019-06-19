@@ -1,0 +1,46 @@
+<ion-content>
+    <div class="main-img">
+        <!-- back button -->
+      <ion-buttons slot="start">
+          <ion-button (click)="navigateBack()">
+              <ion-icon style="font-size:40px" name="arrow-round-back" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <!-- image -->
+      <img [src]="hint.url" >
+    </div>
+    <div class="rating ion-margin-top">
+        <ion-icon [class.rate]="rate.isChecked" *ngFor="let rate of rated" name="{{rate.icon}}"></ion-icon>
+        <b padding>({{numberOfRatings}})</b>
+    </div>
+  
+    <!-- image description -->
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <h6>Overview</h6>
+          <p>{{hint.overview}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <h6>Recommendation</h6>
+          <p>{{hint.recommendations}}</p>
+        </ion-col>
+        <ion-col>
+          <h6>Alternatives</h6>
+          <p>{{hint.alternatives}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <h6>Do's</h6>
+          <p>{{hint.do}}</p>
+        </ion-col>
+        <ion-col>
+          <h6>Dont's</h6>
+          <p>{{hint.dont}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>

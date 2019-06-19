@@ -1,0 +1,29 @@
+img {
+    height: 70%;
+    max-height: 70%;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 10px;
+    z-index: -10;
+    column-count: 1;
+}
+
+ion-buttons {
+    position: absolute;
+    top: 40px;
+}
+
+h6 {
+    color: yellowgreen;
+    border-bottom: 2px solid yellowgreen;
+}
+
+
+.rate {
+   color: yellow
+}
+  
+
+ion-content {
+overflow: auto;
+}
