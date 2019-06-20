@@ -46,9 +46,16 @@ export class HomePage implements OnInit {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
            this.notificationService.numberOfNotifications++
-           this.toastShareNotification();
+           this.toastShareNotification('One of your friends just shared a hint with you.');
          }
        });
+
+       this.socket.on('commented', ownerId => {
+        if (ownerId === this.authService.userId) {
+          this.notificationService.numberOfNotifications++
+          this.toastShareNotification('One of your friends just commented on one of your tips.');
+        }
+      });
     }
 
   //seasons array
@@ -220,9 +227,9 @@ export class HomePage implements OnInit {
   }
 
   //toast notification
-  async toastShareNotification() {
+  async toastShareNotification(message) {
     const toast = await this.toastCtrl.create({
-      header: 'One of your friends just shared a hint with you.',
+      header: message,
       position: 'bottom',
       duration: 5000,
       color: 'dark'

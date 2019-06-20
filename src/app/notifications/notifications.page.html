@@ -13,12 +13,24 @@
   <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
   <ion-list lines="none">
     <ion-item *ngFor="let notify of notifications">
+      <!-- for tip -->
       <div *ngIf="notify.typeOf == 'tip'">
         <ion-text color="tertiary">
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}</p>
+            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+            <small>{{GetPostTime(notify.createdAt)}}</small>
+          </div>
+      </div>
+
+      <!-- for comment -->
+      <div *ngIf="notify.typeOf == 'comment'">
+        <ion-text color="success">
+            <h4>{{notify.typeOf | titlecase}}</h4>
+          </ion-text>
+          <div margin>
+            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>

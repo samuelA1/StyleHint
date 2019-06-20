@@ -17,7 +17,7 @@
         <h3>My Tips</h3>
         <p>These are hints you shared with your friends.</p>
     </ion-text>
-    <p *ngIf="myTips.length === 0">You haven't shared any hints recently.</p>
+    <p *ngIf="myTips?.length === 0">You haven't shared any hints recently.</p>
     <div class="pins">
       <div class="pin" *ngFor="let myTip of myTips" (click)="toTip(myTip._id, true)">
           <img  [src]="myTip.imageUrl">
@@ -32,7 +32,7 @@
       <h3>Tips</h3>
       <p>These are hints your friends shared with you.</p>
   </ion-text>
-  <p *ngIf="tips.length === 0">Your friends haven't shared any hints with you.</p>
+  <p *ngIf="tips?.length === 0">Your friends haven't shared any hints with you.</p>
   <div class="pins">
     <div class="pin" *ngFor="let tip of tips" (click)="toTip(tip._id, false)">
         <img  [src]="tip.imageUrl">

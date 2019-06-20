@@ -50,7 +50,7 @@ export class FashionModalPage implements OnInit {
     private toastCtrl: ToastController,
     private alertCtrl: AlertController ) {
       this.getSingleHint();
-      this.socket = io('http://www.thestylehint.com')
+      this.socket = io('http://www.thestylehint.com');
      }
 
   async getSingleHint() {

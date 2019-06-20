@@ -21,11 +21,51 @@ ion-content {
     padding: 0px 4px;
 }
 
+.post {
+    position: absolute;
+    right: 0;
+    z-index: 5;
+	width: 70px;
+	border: solid 1px rgba(255,255,255,0.8);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	font-size: xx-small;
+	text-align: center;
+	border-radius: 0 25px 0 0;
+	cursor: pointer;
+}
+
+.cancel {
+    position: absolute;
+    left: 0;
+    top: 68px;
+    z-index: 5;
+	width: 70px;
+	border: solid 1px rgba(255,255,255,0.8);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	font-size: xx-small;
+	text-align: center;
+	border-radius: 0 25px 0 0;
+	cursor: pointer;
+}
+
 textarea {
     width: 100%;
-    height: auto;
-	border-radius: 0 0 0 25px;
+    height: 109px;
+	border-radius: 25px 0 25px 0;
     text-align: center;
+}
+
+.comment {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    overflow: scroll;
+    width: 100%;
+    height: 40%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
 }
 
  /* Modal Content */
