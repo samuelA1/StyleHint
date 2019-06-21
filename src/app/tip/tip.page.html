@@ -11,6 +11,11 @@
               <ion-icon  color="danger" name="trash" class="ion-margin-start"></ion-icon>
           </ion-button>
       </ion-buttons>
+      <ion-buttons *ngIf="!tipService.isMyTip" style="right: 0">
+          <ion-button (click)="presentActionSheet()">
+              <ion-icon  color="danger" name="trash" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
       <ion-buttons *ngIf="tipService.isMyTip" style="right: 0; top: 75px">
           <ion-button (click)="sharedWith()">
               <ion-icon  color="dark" name="people" class="ion-margin-start"></ion-icon>

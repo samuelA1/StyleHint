@@ -16,12 +16,20 @@ tips: any[];
   constructor(private navCtrl: NavController,
     private tipService: TipService,
     private alertCtrl: AlertController) { 
-      this.getAllTips();
+      this.getAllTips().then(() => {
+        this.autoDelete();
+      });
     }
 
   navigateBack() {
     this.navCtrl.navigateBack('home');
   }
+
+  // autoDelete() {
+  //   for (let i = 0; i < this.myTips.length; i++) {
+           
+  //   }
+  // }
 
   //navigations
   toTips() {

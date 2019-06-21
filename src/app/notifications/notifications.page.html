@@ -19,7 +19,7 @@
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+            <p (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>
@@ -56,7 +56,7 @@
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p (click)="toTip(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+            <p (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>

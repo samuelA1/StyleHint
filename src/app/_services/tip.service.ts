@@ -10,7 +10,7 @@ const apiUrl = environment.apiUrl;
 export class TipService {
   token: any;
   tipToView: any;
-  isMyTip: boolean;
+  isMyTip: boolean = false;
   constructor(private storage: Storage,
      private http: HttpClient) { }
 
@@ -43,4 +43,8 @@ export class TipService {
   async deleteComment(tipId: any, commentId: any) {
     return this.http.post(apiUrl + `tips/delete-comment/${tipId}?id=${commentId}`,{}, {headers: await this.headers()}).toPromise();
   }
+
+  // async autoDeleteTips(tipId: any) {
+  //   return this.http.delete(apiUrl + `tips/auto-delete/${tipId}`, {headers: await this.headers()}).toPromise();
+  // }
 }

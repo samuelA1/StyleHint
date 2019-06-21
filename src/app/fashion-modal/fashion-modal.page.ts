@@ -75,15 +75,21 @@ export class FashionModalPage implements OnInit {
 
    //navigations
    toTips() {
-    this.navCtrl.navigateForward('tips');
+    this.modalCtrl.dismiss().then(() => {
+      this.navCtrl.navigateForward('tips');
+    });
   }
 
   toFriends() {
-    this.navCtrl.navigateForward('friends');
+    this.modalCtrl.dismiss().then(() => {
+      this.navCtrl.navigateForward('friends');
+    });
   }
 
   toCloset() {
-    this.navCtrl.navigateForward('closet');
+    this.modalCtrl.dismiss().then(() => {
+      this.navCtrl.navigateForward('closet');
+    });
   }
 
   //activates send button on friend selected

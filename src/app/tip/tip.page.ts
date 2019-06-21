@@ -2,7 +2,7 @@ import { AuthService } from './../_services/auth.service';
 import { HintsService } from './../_services/hints.service';
 import { TipService } from './../_services/tip.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController, ActionSheetController } from '@ionic/angular';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import * as _ from 'lodash';
@@ -25,6 +25,7 @@ freezePane: any = false;
     public authService: AuthService,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
+    private actionCtrl: ActionSheetController,
     private toastCtrl: ToastController) { 
       this.getTip();
       this.socket = io('http://www.thestylehint.com');
@@ -47,7 +48,7 @@ freezePane: any = false;
   }
 
   navigateBack() {
-    this.navCtrl.navigateBack('tips');
+    this.navCtrl.back();
   }
 
   GetPostTime(time) {
@@ -141,7 +142,7 @@ freezePane: any = false;
   async confirmDelete() {
     const alert = await this.alertCtrl.create({
       header: 'Confirm!',
-      message: 'Are you sure you want to remove this tip?',
+      message: 'Are you sure you want to completely remove this tip? The friends you shared this hint with will no longer be able to see this tip.',
       buttons: [
         {
           text: 'Cancel',
@@ -170,6 +171,31 @@ freezePane: any = false;
       duration: 2000
     });
     toast.present();
+  }
+
+  //action sheet
+  async presentActionSheet() {
+    const actionSheet = await this.actionCtrl.create({
+      header: 'Not interested in tip?',
+      buttons: [{
+        text: 'Delete tip',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          this.deleteTip(this.tip._id).then(() => {
+            this.navCtrl.navigateRoot('home')
+          });
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
 }

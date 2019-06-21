@@ -56,14 +56,14 @@ async acceptRequest(notifyId: any, friendId: any) {
         this.socket.emit('acceptRequest', friendId);
         this.notifications.splice(this.notifications.findIndex(t => t._id === notifyId), 1)
       } else {
-        
+        this.presentAlert('Sorry, an error occured while accepting a request');
       }
 
     } else {
-      
+      this.presentAlert('Sorry, an error occured while accepting a request');
     }
   } catch (error) {
-    
+    this.presentAlert('Sorry, an error occured while accepting a request');
   }
 }
 
@@ -75,10 +75,10 @@ async denyRequest(notifyId: any) {
       this.socket.emit('acceptRequest', {});
       this.notifications.splice(this.notifications.findIndex(t => t._id === notifyId), 1)
     } else {
-      
+      this.presentAlert('Sorry, an error occured while denying a request');
     }
   } catch (error) {
-    
+    this.presentAlert('Sorry, an error occured while denying a request');
   }
 }
 
@@ -90,7 +90,8 @@ async denyRequest(notifyId: any) {
     return moment(time).fromNow();
   }
 
-  toTip(tipId: any) {
+  toTip(tipId: any, isMyTip: any) {
+    this.tipService.isMyTip = isMyTip; 
     this.tipService.tipToView = tipId;
     this.navCtrl.navigateForward('tip');
   }
