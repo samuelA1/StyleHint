@@ -1,9 +1,75 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>friends</ion-title>
+    <ion-buttons slot="start">
+        <ion-button (click)="navigateBack()">
+            <ion-icon color="dark"  name="arrow-back" class="ion-margin-start"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-title>Friends</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  <div class="friends">
+    <ion-list lines="none">
+        <ion-searchbar *ngIf="search != '' || friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
+        <p *ngIf="searched && friends?.length == 0 && search != ''">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
+        <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
+      <ion-item-sliding *ngFor="let friend of friends">
+        <ion-item>
+            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                <ion-icon name="contact"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2>@{{friend.username}}</h2> 
+            </ion-label>
+        </ion-item>
+    
+        <ion-item-options (click)="removeFriend(friend._id)" side="end">
+          <ion-item-option color="danger">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
 
+  <!-- search modal -->
+  <div *ngIf="modal" class="modal-content " padding>
+    <ion-list lines="none">
+        <div class="friends-header ion-margin-top"  >
+            <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
+            <b >Add new friend</b>
+        </div>
+        <ion-searchbar (ionChange)="searchAddFriend()" name="query" [(ngModel)]="query"  placeholder="search by username"></ion-searchbar>
+        <p *ngIf="content?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
+        <ion-item *ngFor="let friend of content">
+            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                <ion-icon name="contact"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2>@{{friend.username}}</h2>
+            </ion-label>
+            <div *ngIf="!friend.isFriend && friend.objectID !== authService.userId">
+                <ion-button (click)="friendRequest(friend.objectID)" color="tertiary">Friend request</ion-button>
+            </div>
+            <div *ngIf="friend.isFriend">
+                <ion-text color="tertiary">
+                  <p>Already your friend</p>
+                </ion-text>
+            </div>
+            <div *ngIf="friend.objectID === authService.userId">
+                <ion-text color="tertiary">
+                  <p>Me</p>
+                </ion-text>
+            </div>
+        </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="cancel()" color="warning">
+          <ion-icon name="person-add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>

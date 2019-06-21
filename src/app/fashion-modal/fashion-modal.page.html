@@ -67,7 +67,7 @@
   <div *ngIf="!modal" class="modal-content " padding>
     <ion-list lines="none">
         <div class="friends-header ion-margin-top"  >
-            <p style="float: left;margin: 0;" (click)="share()">cancel</p>
+            <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
             <b >Share</b>
         </div>
         <p *ngIf="friends?.length == 0">You have no friends yet, try adding some friends.</p>
@@ -80,11 +80,30 @@
             </ion-avatar>
             <ion-label>
               <h2>@{{friend.username}}</h2> 
-              <h3>{{friend.email}}</h3>
             </ion-label>
-            <ion-checkbox (ionChange)="selectFriend(true)" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
+            <ion-checkbox (ionChange)="selectFriend()" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
         </ion-item>
         <ion-button style="margin-top: 50px" *ngIf="!friends?.length == 0" [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
     </ion-list>
   </div>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
+      <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
+        <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start" class="ios fab-list-side-start hydrated">
+        <ion-fab-button (click)="toCloset()" style="width: 100px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="shirt" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">closet</p>
+        </ion-fab-button>
+        <ion-fab-button (click)="toTips()" style="width: 100px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="open" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">Tips</p>
+        </ion-fab-button>
+        <ion-fab-button (click)="toFriends()" style="width: 100px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="people" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">Friends</p>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
 </ion-content>

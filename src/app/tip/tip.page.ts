@@ -63,6 +63,7 @@ freezePane: any = false;
   //cancel a comment
   cancel() {
     this.toComment = false;
+    this.freezePane = !this.freezePane;
   }
 
   sharedWith () {

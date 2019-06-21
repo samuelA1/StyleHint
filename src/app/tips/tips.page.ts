@@ -23,6 +23,19 @@ tips: any[];
     this.navCtrl.navigateBack('home');
   }
 
+  //navigations
+  toTips() {
+    this.navCtrl.navigateForward('tips');
+  }
+
+  toFriends() {
+    this.navCtrl.navigateForward('friends');
+  }
+
+  toCloset() {
+    this.navCtrl.navigateForward('closet');
+  }
+
   GetPostTime(time) {
     return moment(time).fromNow();
   }

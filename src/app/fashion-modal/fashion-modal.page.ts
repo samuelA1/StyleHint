@@ -1,7 +1,7 @@
 import { TipService } from './../_services/tip.service';
 import { FriendService } from './../_services/friend.service';
 import { HintsService } from './../_services/hints.service';
-import { ModalController, AlertController, ToastController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController, NavController } from '@ionic/angular';
 import { Component, OnInit, Input } from '@angular/core';
 import { TitleService } from '../_services/title.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
@@ -48,7 +48,8 @@ export class FashionModalPage implements OnInit {
     private tipService: TipService,
     private socialSharing: SocialSharing,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController ) {
+    private alertCtrl: AlertController,
+    private navCtrl: NavController ) {
       this.getSingleHint();
       this.socket = io('http://www.thestylehint.com');
      }
@@ -72,9 +73,26 @@ export class FashionModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+   //navigations
+   toTips() {
+    this.navCtrl.navigateForward('tips');
+  }
+
+  toFriends() {
+    this.navCtrl.navigateForward('friends');
+  }
+
+  toCloset() {
+    this.navCtrl.navigateForward('closet');
+  }
+
   //activates send button on friend selected
-  selectFriend(val) {
-    this.friendSelected = val;
+  selectFriend() {
+    this.friendSelected = this.friends.some(friend => friend['selected'] == true);
+  }
+
+  cancel() {
+    this.modal = !this.modal;
   }
 
   async share() {

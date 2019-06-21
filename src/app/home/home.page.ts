@@ -50,6 +50,20 @@ export class HomePage implements OnInit {
          }
        });
 
+       this.socket.on('friendRequested', friend => {
+        if (friend === this.authService.userId) {
+          this.notificationService.numberOfNotifications++
+          this.toastShareNotification('Someone just sent you a friend request.');
+        }
+      });
+
+      this.socket.on('requestAccepted', friend => {
+        if (friend === this.authService.userId) {
+          this.notificationService.numberOfNotifications++
+          this.toastShareNotification('Someone just accepted your friend request.');
+        }
+      });
+
        this.socket.on('commented', ownerId => {
         if (ownerId === this.authService.userId) {
           this.notificationService.numberOfNotifications++

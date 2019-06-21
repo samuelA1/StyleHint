@@ -28,7 +28,9 @@ export class TipService {
   }
 
   async getTip() {
-    return this.http.get(apiUrl + `tips/get-single-tip/${this.tipToView}`, {headers: await this.headers()}).toPromise();
+    if (this.tipToView !== undefined) {
+      return this.http.get(apiUrl + `tips/get-single-tip/${this.tipToView}`, {headers: await this.headers()}).toPromise();
+    }
   }
 
   async addComment(tipId: any, comment: any) {

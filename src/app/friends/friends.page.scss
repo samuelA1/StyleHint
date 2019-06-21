@@ -1,0 +1,41 @@
+/* Modal Content */
+.modal-content {
+    display: grid;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+    overflow: scroll;
+    width: 100%;
+    height: 93%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }
+
+  ion-content {
+    overflow: auto;
+  }
+
+  /* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}

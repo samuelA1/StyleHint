@@ -1,8 +1,11 @@
+import { FriendService } from './../_services/friend.service';
 import { TipService } from './../_services/tip.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 import { NotificationService } from '../_services/notification.service';
 import * as moment from 'moment';
+import * as io from 'socket.io-client';
+
 
 
 @Component({
@@ -12,14 +15,18 @@ import * as moment from 'moment';
 })
 export class NotificationsPage implements OnInit {
   page: number = 1;
+  socket: any;
   notifications: any[];
   totalNotifications: any;
 
   constructor(private navCtrl: NavController,
     private notificationService: NotificationService,
+    private friendService: FriendService,
     private tipService: TipService,
-    private alertCtrl: AlertController) { 
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController) { 
       this.getNotifications();
+      this.socket = io('http://www.thestylehint.com');
     }
 
   ngOnInit() {
@@ -39,6 +46,42 @@ async getNotifications() {
   }
 }
 
+async acceptRequest(notifyId: any, friendId: any) {
+  try {
+    const acceptInfo = await this.friendService.acceptRequest(friendId);
+    if (acceptInfo['success']) {
+      const notifyInfo = await this.friendService.deleteFriendNotification(notifyId);
+      if (notifyInfo['success']) {
+        this.presentToast(acceptInfo['message'], 'dark');
+        this.socket.emit('acceptRequest', friendId);
+        this.notifications.splice(this.notifications.findIndex(t => t._id === notifyId), 1)
+      } else {
+        
+      }
+
+    } else {
+      
+    }
+  } catch (error) {
+    
+  }
+}
+
+async denyRequest(notifyId: any) {
+  try {
+    const notifyInfo = await this.friendService.deleteFriendNotification(notifyId);
+    if (notifyInfo['success']) {
+      this.presentToast('friend request denied', 'danger');
+      this.socket.emit('acceptRequest', {});
+      this.notifications.splice(this.notifications.findIndex(t => t._id === notifyId), 1)
+    } else {
+      
+    }
+  } catch (error) {
+    
+  }
+}
+
   navigateBack() {
     this.navCtrl.navigateBack('home');
   }
@@ -52,6 +95,19 @@ async getNotifications() {
     this.navCtrl.navigateForward('tip');
   }
 
+   //navigations
+   toTips() {
+    this.navCtrl.navigateForward('tips');
+  }
+
+  toFriends() {
+    this.navCtrl.navigateForward('friends');
+  }
+
+  toCloset() {
+    this.navCtrl.navigateForward('closet');
+  }
+
   //alertCtrl
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -61,6 +117,17 @@ async getNotifications() {
     });
 
     await alert.present();
+  }
+
+  //toast
+  async presentToast(message, color) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      color: color,
+      position: 'top',
+      duration: 2000
+    });
+    toast.present();
   }
 
   loadData(event: any) {
