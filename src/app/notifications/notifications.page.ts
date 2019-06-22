@@ -90,7 +90,7 @@ async denyRequest(notifyId: any) {
     return moment(time).fromNow();
   }
 
-  toTip(tipId: any, isMyTip: any) {
+  toTip(tipId: any, isMyTip: any, notifyId: any) {
     this.tipService.isMyTip = isMyTip; 
     this.tipService.tipToView = tipId;
     this.navCtrl.navigateForward('tip');

@@ -35,5 +35,4 @@ export class NotificationService {
  async changeNotify(notify: any) {
   return this.http.post(apiUrl + 'notifications/change-notify', notify, {headers: await this.headers()}).toPromise()
  }
-
 }

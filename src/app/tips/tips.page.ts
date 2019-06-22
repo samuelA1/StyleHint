@@ -17,7 +17,7 @@ tips: any[];
     private tipService: TipService,
     private alertCtrl: AlertController) { 
       this.getAllTips().then(() => {
-        this.autoDelete();
+        // this.autoDelete();
       });
     }
 
