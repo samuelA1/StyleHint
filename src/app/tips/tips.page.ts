@@ -13,23 +13,17 @@ import * as _ from 'lodash';
 export class TipsPage implements OnInit {
 myTips: any[];
 tips: any[];
+loading: boolean = false;
+
   constructor(private navCtrl: NavController,
     private tipService: TipService,
     private alertCtrl: AlertController) { 
-      this.getAllTips().then(() => {
-        // this.autoDelete();
-      });
+      this.getAllTips();
     }
 
   navigateBack() {
     this.navCtrl.navigateBack('home');
   }
-
-  // autoDelete() {
-  //   for (let i = 0; i < this.myTips.length; i++) {
-           
-  //   }
-  // }
 
   //navigations
   toTips() {
@@ -77,6 +71,16 @@ tips: any[];
     });
 
     await alert.present();
+  }
+
+  logScrolling(event){
+    if (event.detail.scrollTop < -30) {
+      this.loading = true;
+      setTimeout(() => {
+        this.getAllTips();
+        this.loading= false;
+      }, 2000);
+    }
   }
 
 

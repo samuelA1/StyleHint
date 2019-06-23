@@ -6,10 +6,12 @@
         </ion-button>
     </ion-buttons>
     <ion-title>Friends</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate" color="warning"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [scrollEvents]="true"
+(ionScroll)="logScrolling($event)">
   <div class="friends">
     <ion-list lines="none">
         <ion-searchbar *ngIf="search != '' || friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>

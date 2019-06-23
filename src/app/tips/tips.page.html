@@ -6,10 +6,12 @@
         </ion-button>
     </ion-buttons>
     <ion-title>Tips</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate" color="warning"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [scrollEvents]="true"
+(ionScroll)="logScrolling($event)">
     <ion-badge color="warning">Tips get removed after 24 hours.</ion-badge>
   <!-- my tips -->
   <div>

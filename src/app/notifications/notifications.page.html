@@ -6,10 +6,12 @@
         </ion-button>
     </ion-buttons>
     <ion-title>Notifications</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate" color="warning"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollEvents]="true"
+(ionScroll)="logScrolling($event)">
   <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
   <ion-list lines="none">
     <ion-item *ngFor="let notify of notifications">
@@ -19,7 +21,7 @@
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+            <p style="margin: 0" (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>
@@ -30,7 +32,7 @@
               <h4>{{notify.typeOf | titlecase}}</h4>
             </ion-text>
             <div margin>
-              <p><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+              <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
               <div>
                 <ion-button (click)="acceptRequest(notify._id, notify.from)" color="primary">Accept request</ion-button>
                 <ion-button (click)="denyRequest(notify._id)" color="danger">Deny request</ion-button>
@@ -45,7 +47,7 @@
               <h4>Friend</h4>
             </ion-text>
             <div margin>
-              <p><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+              <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
               <small>{{GetPostTime(notify.createdAt)}}</small>
             </div>
         </div>
@@ -56,7 +58,7 @@
             <h4>{{notify.typeOf | titlecase}}</h4>
           </ion-text>
           <div margin>
-            <p (click)="toTip(notify.route, true)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+            <p style="margin: 0" (click)="toTip(notify.route, true)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
             <small>{{GetPostTime(notify.createdAt)}}</small>
           </div>
       </div>
@@ -70,22 +72,22 @@
   </ion-infinite-scroll>
 
   <ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
-      <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
-        <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
+    <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
+      <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start" class="ios fab-list-side-start hydrated">
+      <ion-fab-button (click)="toCloset()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+        <ion-icon style="position: absolute; top: 0" name="shirt" role="img" class="ios hydrated"></ion-icon>
+        <p style="margin-bottom: inherit">closet</p>
       </ion-fab-button>
-      <ion-fab-list side="start" class="ios fab-list-side-start hydrated">
-        <ion-fab-button (click)="toCloset()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-          <ion-icon style="position: absolute; top: 0" name="shirt" role="img" class="ios hydrated"></ion-icon>
-          <p style="margin-bottom: inherit">closet</p>
-        </ion-fab-button>
-        <ion-fab-button (click)="toTips()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-          <ion-icon style="position: absolute; top: 0" name="open" role="img" class="ios hydrated"></ion-icon>
-          <p style="margin-bottom: inherit">Tips</p>
-        </ion-fab-button>
-        <ion-fab-button (click)="toFriends()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-          <ion-icon style="position: absolute; top: 0" name="people" role="img" class="ios hydrated"></ion-icon>
-          <p style="margin-bottom: inherit">Friends</p>
-        </ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
+      <ion-fab-button (click)="toTips()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+        <ion-icon style="position: absolute; top: 0" name="open" role="img" class="ios hydrated"></ion-icon>
+        <p style="margin-bottom: inherit">Tips</p>
+      </ion-fab-button>
+      <ion-fab-button (click)="toFriends()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+        <ion-icon style="position: absolute; top: 0" name="people" role="img" class="ios hydrated"></ion-icon>
+        <p style="margin-bottom: inherit">Friends</p>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

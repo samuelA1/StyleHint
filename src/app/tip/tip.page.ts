@@ -115,9 +115,9 @@ freezePane: any = false;
     }
   }
 
-  async deleteTip(tipId: any) {
+  async deleteTip(tipId: any, notifyId: any) {
     try {
-      const deleteInfo = await this.tipService.deleteTip(tipId);
+      const deleteInfo = await this.tipService.deleteTip(tipId, notifyId);
       if (deleteInfo['success']) {
         this.presentToast(deleteInfo['message'])
       } else {
@@ -139,7 +139,7 @@ freezePane: any = false;
     await alert.present();
   }
 
-  async confirmDelete() {
+  async confirmDelete(notifyId: any) {
     const alert = await this.alertCtrl.create({
       header: 'Confirm!',
       message: 'Are you sure you want to completely remove this tip? The friends you shared this hint with will no longer be able to see this tip.',
@@ -151,7 +151,7 @@ freezePane: any = false;
           text: 'Okay',
           cssClass: 'danger',
           handler: () => {
-            this.deleteTip(this.tip._id).then(() => {
+            this.deleteTip(this.tip._id, notifyId).then(() => {
               this.navCtrl.navigateRoot('home')
             });
           }
@@ -174,7 +174,7 @@ freezePane: any = false;
   }
 
   //action sheet
-  async presentActionSheet() {
+  async presentActionSheet(notifyId: any) {
     const actionSheet = await this.actionCtrl.create({
       header: 'Not interested in tip?',
       buttons: [{
@@ -182,7 +182,7 @@ freezePane: any = false;
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.deleteTip(this.tip._id).then(() => {
+          this.deleteTip(this.tip._id, notifyId).then(() => {
             this.navCtrl.navigateRoot('home')
           });
         }

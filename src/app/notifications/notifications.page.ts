@@ -18,6 +18,7 @@ export class NotificationsPage implements OnInit {
   socket: any;
   notifications: any[];
   totalNotifications: any;
+  loading: boolean = false;
 
   constructor(private navCtrl: NavController,
     private notificationService: NotificationService,
@@ -145,6 +146,16 @@ async denyRequest(notifyId: any) {
         event.target.disabled = true;
       }
     }, 800);
+  }
+
+  logScrolling(event){
+    if (event.detail.scrollTop < -30) {
+      this.loading = true;
+      setTimeout(() => {
+        this.getNotifications();
+        this.loading= false;
+      }, 2000);
+    }
   }
 
 }

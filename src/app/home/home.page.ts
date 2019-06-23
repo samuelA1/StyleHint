@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
            this.notificationService.numberOfNotifications++
-           this.toastShareNotification('One of your friends just shared a hint with you.');
+           this.toastShareNotification('Someone just shared a hint with you.');
          }
        });
 

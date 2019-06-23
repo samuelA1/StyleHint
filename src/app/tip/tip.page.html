@@ -7,12 +7,12 @@
           </ion-button>
       </ion-buttons>
       <ion-buttons *ngIf="tipService.isMyTip" style="right: 0">
-          <ion-button (click)="confirmDelete()">
+          <ion-button (click)="confirmDelete(tip.notifyId)">
               <ion-icon  color="danger" name="trash" class="ion-margin-start"></ion-icon>
           </ion-button>
       </ion-buttons>
       <ion-buttons *ngIf="!tipService.isMyTip" style="right: 0">
-          <ion-button (click)="presentActionSheet()">
+          <ion-button (click)="presentActionSheet(tip.notifyId)">
               <ion-icon  color="danger" name="trash" class="ion-margin-start"></ion-icon>
           </ion-button>
       </ion-buttons>
@@ -46,7 +46,7 @@
         </ion-label>
     </ion-item>
     <ion-text style="float: left" *ngIf="comments?.length !== 0" color="medium">
-      <small >{{comments?.length}} Comments</small>
+      <small >{{comments?.length}} Comment(s)</small>
     </ion-text>
   </div>
   <!-- comments -->

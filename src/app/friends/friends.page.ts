@@ -20,6 +20,7 @@ export class FriendsPage implements OnInit {
   search: any = '';
   searched:boolean = false;
   modal: any = false;
+  loading: boolean = false;
 
   constructor(private friendsService: FriendService,
     public authService: AuthService,
@@ -145,6 +146,16 @@ export class FriendsPage implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  logScrolling(event){
+    if (event.detail.scrollTop < -30) {
+      this.loading = true;
+      setTimeout(() => {
+        this.getFriends();
+        this.loading= false;
+      }, 2000);
+    }
   }
 
 
