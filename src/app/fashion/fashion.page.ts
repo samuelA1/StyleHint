@@ -188,7 +188,7 @@ export class FashionPage implements OnInit {
   }
 
   logScrolling(event){
-    if (event.detail.scrollTop < -30) {
+    if (event.detail.scrollTop < -110) {
       this.loading = true;
       setTimeout(() => {
         this.page = 1;

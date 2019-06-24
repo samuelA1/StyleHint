@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { TipService } from './../_services/tip.service';
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
@@ -17,7 +18,8 @@ loading: boolean = false;
 
   constructor(private navCtrl: NavController,
     private tipService: TipService,
-    private alertCtrl: AlertController) { 
+    private alertCtrl: AlertController,
+    private storage: Storage) { 
       this.getAllTips();
     }
 
@@ -45,20 +47,36 @@ loading: boolean = false;
   toTip(tipId: any, isMyTip: any) {
     this.tipService.isMyTip = isMyTip; 
     this.tipService.tipToView = tipId;
-    this.navCtrl.navigateForward('tip');
+    this.storage.set('tipId', tipId);
+    this.seenBy(tipId);
   }
 
   async getAllTips() {
     try {
+      this.tipService.autoDelete();
       const tipsInfo = await this.tipService.getTips();
       if (tipsInfo['success']) {
-        this.tips =_.orderBy(tipsInfo['allTips'].tips, ['createdAt'],['desc']);
-        this.myTips = _.orderBy(tipsInfo['allTips'].myTips, ['createdAt'],['desc']);;
+        this.tips = _.orderBy(tipsInfo['tipsToSee'], ['createdAt'],['desc'])
+        this.myTips = _.orderBy(tipsInfo['allTips'].myTips, ['createdAt'],['desc']);
+        console.log(this.myTips);
       } else {
         this.presentAlert('Sorry, an error occured while trying to get tips.')
       }
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to get tips.')
+    }
+  }
+
+  async seenBy(tipId: any) {
+    try {
+      const seenInfo = await this.tipService.seenBy(tipId);
+      if (seenInfo['success']) {
+        this.navCtrl.navigateRoot('tip', {animationDirection: 'forward'});
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to view a tip.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to view a tip.')
     }
   }
 
@@ -74,7 +92,7 @@ loading: boolean = false;
   }
 
   logScrolling(event){
-    if (event.detail.scrollTop < -30) {
+    if (event.detail.scrollTop < -110) {
       this.loading = true;
       setTimeout(() => {
         this.getAllTips();

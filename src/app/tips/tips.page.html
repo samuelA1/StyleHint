@@ -13,6 +13,23 @@
 <ion-content padding [scrollEvents]="true"
 (ionScroll)="logScrolling($event)">
     <ion-badge color="warning">Tips get removed after 24 hours.</ion-badge>
+
+    <!-- tips -->
+  <div>
+    <ion-text color="medium">
+        <h3>Tips</h3>
+        <p>These are hints your friends shared with you.</p>
+    </ion-text>
+    <p *ngIf="tips?.length === 0">No one has shared any hints with you.</p>
+    <div class="pins">
+      <div class="pin" *ngFor="let tip of tips" (click)="toTip(tip._id, false)">
+          <img [class.to-be-seen]="tip.toBeSeen"  [src]="tip.imageUrl">
+          <b >@{{tip.ownerUsername}}</b>
+          <small style="display: block">{{GetPostTime(tip.createdAt)}}</small>
+      </div>
+    </div>
+  </div>
+
   <!-- my tips -->
   <div>
     <ion-text color="medium">
@@ -27,22 +44,6 @@
       </div>
     </div>
   </div>
-
-  <!-- tips -->
- <div>
-  <ion-text color="medium">
-      <h3>Tips</h3>
-      <p>These are hints your friends shared with you.</p>
-  </ion-text>
-  <p *ngIf="tips?.length === 0">Your friends haven't shared any hints with you.</p>
-  <div class="pins">
-    <div class="pin" *ngFor="let tip of tips" (click)="toTip(tip._id, false)">
-        <img  [src]="tip.imageUrl">
-        <b >@{{tip.ownerUsername}}</b>
-        <small style="display: block">{{GetPostTime(tip.createdAt)}}</small>
-    </div>
-  </div>
- </div>
 
  <ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
     <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">

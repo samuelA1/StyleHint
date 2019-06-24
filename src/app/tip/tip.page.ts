@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { AuthService } from './../_services/auth.service';
 import { HintsService } from './../_services/hints.service';
 import { TipService } from './../_services/tip.service';
@@ -26,19 +27,26 @@ freezePane: any = false;
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private actionCtrl: ActionSheetController,
-    private toastCtrl: ToastController) { 
+    private toastCtrl: ToastController,
+    private storage: Storage) { 
       this.getTip();
       this.socket = io('http://www.thestylehint.com');
     }
 
   ngOnInit() {
     this.socket.on('commented', ownerId => {
-      this.getTip();
-      this.freezePane = false;
+      this.storage.get('tipId').then((tipId) => {
+        this.tipService.tipToView = tipId;
+        this.getTip();
+        this.freezePane = false;
+      })
     });
     this.socket.on('commentDeleted', ownerId => {
-      this.getTip();
-      this.freezePane = false;
+      this.storage.get('tipId').then((tipId) => {
+        this.tipService.tipToView = tipId;
+        this.getTip();
+        this.freezePane = false;
+      })
     });
   }
 
@@ -152,7 +160,7 @@ freezePane: any = false;
           cssClass: 'danger',
           handler: () => {
             this.deleteTip(this.tip._id, notifyId).then(() => {
-              this.navCtrl.navigateRoot('home')
+              this.navCtrl.navigateBack('tips');
             });
           }
         }
@@ -183,7 +191,7 @@ freezePane: any = false;
         icon: 'trash',
         handler: () => {
           this.deleteTip(this.tip._id, notifyId).then(() => {
-            this.navCtrl.navigateRoot('home')
+            this.navCtrl.navigateBack('tips');
           });
         }
       }, {

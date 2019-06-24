@@ -28,7 +28,7 @@ loading: boolean = false; //loader on the page after the user clicks the create 
         try {
           const registrationInfo = await this.authService.signup(this.user);
           if (registrationInfo['success']) {
-            this.navCtrl.navigateRoot('/customize')
+            this.navCtrl.navigateRoot('/customize', {animationDirection: 'forward'})
           } else {
             this.presentAlert(registrationInfo['message']);
           }

@@ -5,6 +5,7 @@ import { NavController, AlertController, ToastController } from '@ionic/angular'
 import { NotificationService } from '../_services/notification.service';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
+import { Storage } from '@ionic/storage';
 
 
 
@@ -25,7 +26,8 @@ export class NotificationsPage implements OnInit {
     private friendService: FriendService,
     private tipService: TipService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController) { 
+    private toastCtrl: ToastController,
+    private storage: Storage) { 
       this.getNotifications();
       this.socket = io('http://www.thestylehint.com');
     }
@@ -91,10 +93,11 @@ async denyRequest(notifyId: any) {
     return moment(time).fromNow();
   }
 
-  toTip(tipId: any, isMyTip: any, notifyId: any) {
+  toTip(tipId: any, isMyTip: any) {
     this.tipService.isMyTip = isMyTip; 
     this.tipService.tipToView = tipId;
-    this.navCtrl.navigateForward('tip');
+    this.storage.set('tipId', tipId);
+    this.seenBy(tipId);
   }
 
    //navigations
@@ -148,13 +151,27 @@ async denyRequest(notifyId: any) {
     }, 800);
   }
 
+  async seenBy(tipId: any) {
+    try {
+      const seenInfo = await this.tipService.seenBy(tipId);
+      if (seenInfo['success']) {
+        this.navCtrl.navigateForward('tip');
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to view a tip.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to view a tip.')
+    }
+  }
+
   logScrolling(event){
-    if (event.detail.scrollTop < -30) {
+    if (event.detail.scrollTop < -110) {
       this.loading = true;
       setTimeout(() => {
+        this.page = 1;
         this.getNotifications();
         this.loading= false;
-      }, 2000);
+      }, 1000);
     }
   }
 

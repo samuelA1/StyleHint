@@ -40,7 +40,15 @@ export class TipService {
   async deleteTip(tipId: any, notifyId: any) {
     return this.http.delete(apiUrl + `tips/delete-tip/${tipId}?notifyId=${notifyId}`, {headers: await this.headers()}).toPromise();
   }
+  async autoDelete() {
+    return this.http.post(apiUrl + 'tips/auto-delete',{}, {headers: await this.headers()}).toPromise();
+  }
+
   async deleteComment(tipId: any, commentId: any) {
     return this.http.post(apiUrl + `tips/delete-comment/${tipId}?id=${commentId}`,{}, {headers: await this.headers()}).toPromise();
+  }
+
+  async seenBy(tipId: any) {
+    return this.http.post(apiUrl + `tips/seenBy/${tipId}`, {}, {headers: await this.headers()}).toPromise();
   }
 }
