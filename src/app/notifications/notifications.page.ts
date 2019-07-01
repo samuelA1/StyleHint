@@ -19,7 +19,6 @@ export class NotificationsPage implements OnInit {
   socket: any;
   notifications: any[];
   totalNotifications: any;
-  loading: boolean = false;
 
   constructor(private navCtrl: NavController,
     private notificationService: NotificationService,
@@ -83,6 +82,14 @@ async denyRequest(notifyId: any) {
   } catch (error) {
     this.presentAlert('Sorry, an error occured while denying a request');
   }
+}
+
+//clear notifications
+async clearNotifications() {
+  this.navCtrl.navigateForward('notifications').then(async () => {
+    await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
+    this.notificationService.numberOfNotifications = 0;
+  });
 }
 
   navigateBack() {
@@ -164,15 +171,12 @@ async denyRequest(notifyId: any) {
     }
   }
 
-  logScrolling(event){
-    if (event.detail.scrollTop < -110) {
-      this.loading = true;
-      setTimeout(() => {
-        this.page = 1;
-        this.getNotifications();
-        this.loading= false;
-      }, 1000);
-    }
+  doRefresh(event){
+    setTimeout(() => {
+      this.clearNotifications();
+      this.page = 1;
+      this.getNotifications();
+      event.target.complete();
+    }, 1000);
   }
-
 }

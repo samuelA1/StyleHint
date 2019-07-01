@@ -52,13 +52,17 @@ loading: boolean = false;
   }
 
   async getAllTips() {
+    const autoTips = await this.tipService.getAutoTips();
+    if (autoTips['success']) {
+      autoTips['allTips'].myTips.forEach(tip => {
+        this.tipService.autoDelete(tip);
+      });
+    }
     try {
-      this.tipService.autoDelete();
       const tipsInfo = await this.tipService.getTips();
       if (tipsInfo['success']) {
         this.tips = _.orderBy(tipsInfo['tipsToSee'], ['createdAt'],['desc'])
         this.myTips = _.orderBy(tipsInfo['allTips'].myTips, ['createdAt'],['desc']);
-        console.log(this.myTips);
       } else {
         this.presentAlert('Sorry, an error occured while trying to get tips.')
       }

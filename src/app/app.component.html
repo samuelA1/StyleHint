@@ -30,4 +30,26 @@
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
   </ion-split-pane>
+
+  <!-- suggestion modal -->
+  <div padding *ngIf="modal" class="modal-content ">
+      <ion-slides  >
+        <ion-slide>
+        <img src="../../assets/drew-roberts-298300-unsplash.jpg" alt="">
+       </ion-slide>
+       <ion-slide>
+          <img src="../../assets/jonathan-borba-1562173-unsplash.jpg" alt="">
+       </ion-slide>
+    
+       <ion-slide>
+          <img src="../../assets/vanessa-serpas-562504-unsplash.jpg" alt="">
+       </ion-slide>
+       <ion-slide>
+          <img src="../../assets/examples/azamat-zhanisov-1272557-unsplash.jpg" alt="">
+       </ion-slide>
+       <ion-slide>
+          <img src="../../assets/examples/dmitriy-ilkevich-1169658-unsplash.jpg" alt="">
+       </ion-slide>
+     </ion-slides>
+  </div>
 </ion-app>

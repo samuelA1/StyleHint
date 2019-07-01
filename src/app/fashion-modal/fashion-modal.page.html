@@ -1,13 +1,13 @@
-<ion-content scrollY="{{modal}}">
+<ion-content scrollY="{{scrollOnModal}}">
   <div class="main-img">
     <!-- back button -->
-    <ion-buttons slot="start">
+    <ion-buttons style="position: absolute;top: 40px;" slot="start">
         <ion-button (click)="dismissModal()">
             <ion-icon style="font-size:40px" name="arrow-round-back" class="ion-margin-start"></ion-icon>
         </ion-button>
     </ion-buttons>
     <!-- image -->
-    <img [src]="hint.url" >
+    <ion-img [src]="hint.url"></ion-img>
   </div>
   <ion-grid>
     <ion-row>
@@ -23,47 +23,86 @@
           </div>
       </ion-col>
       <ion-col size="3">
+        <div>
           <ion-button (click)="share()"  color="tertiary" size="small">
-              <ion-icon name="share"></ion-icon>share</ion-button>
+              <ion-icon name="share"></ion-icon>share
+          </ion-button>
+        </div>
+        <div>
+            <ion-button *ngIf="!alreadyAdded" (click)="cancelCloset()"  color="dark" size="small">
+                <ion-icon name="shirt"></ion-icon>
+            </ion-button>
+
+            <ion-button *ngIf="alreadyAdded" (click)="cancelCloset()"  color="warning" size="small">
+                <ion-icon name="shirt"></ion-icon>
+            </ion-button>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 
  <!-- image description -->
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <h6>Overview</h6>
-        <p>{{hint.overview}}</p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <h6>Recommendation</h6>
-        <p>{{hint.recommendations}}</p>
-      </ion-col>
-      <ion-col>
-        <h6>Alternatives</h6>
-        <p>{{hint.alternatives}}</p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <h6>Do's</h6>
-        <p>{{hint.do}}</p>
-      </ion-col>
-      <ion-col>
-        <h6>Dont's</h6>
-        <p>{{hint.dont}}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+ <ion-slides [options]="sliderConfig">
+   <ion-slide>
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Overview</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              {{hint.overview}}
+          </ion-card-content>
+        </ion-card>
+   </ion-slide>
+
+   <ion-slide>
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Recommendations</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              {{hint.recommendations}}
+          </ion-card-content>
+        </ion-card>
+   </ion-slide>
+
+   <ion-slide>
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Alternatives</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              {{hint.alternatives}}
+          </ion-card-content>
+        </ion-card>
+   </ion-slide>
+   <ion-slide>
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Do's</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              {{hint.do}}
+          </ion-card-content>
+        </ion-card>
+   </ion-slide>
+   <ion-slide>
+      <ion-card>
+          <ion-card-header>
+            <ion-card-title>Dont's</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+              {{hint.dont}}
+          </ion-card-content>
+        </ion-card>
+   </ion-slide>
+ </ion-slides>
+
   <p>Please rate the look</p>
   <div class="rating ion-margin-bottom">
       <ion-icon [class.rate]="rate.isChecked" (click)="rateTo(rate.score)" *ngFor="let rate of rating" name="{{rate.icon}}"></ion-icon>
   </div>
   
-  <!-- Modal content -->
+  <!--share Modal content -->
   <div *ngIf="!modal" class="modal-content " padding>
     <ion-list lines="none">
         <div class="friends-header ion-margin-top"  >
@@ -84,6 +123,52 @@
             <ion-checkbox (ionChange)="selectFriend()" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
         </ion-item>
         <ion-button style="margin-top: 50px" *ngIf="!friends?.length == 0" [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
+    </ion-list>
+  </div>
+
+  <!--closet Modal content -->
+  <div *ngIf="closetModal" class="modal-content " padding>
+    <ion-list lines="none">
+        <div class="friends-header ion-margin-top ion-margin-bottom"  >
+            <p style="float: left;margin: 0;" (click)="cancelCloset()">cancel</p>
+            <b >Add to closet</b>
+        </div>
+        <ion-item *ngIf="noCollections">
+          <ion-label>All hints</ion-label>
+          <ion-checkbox [(ngModel)]="collection.selected" [disabled]="disableAll"  slot="end"></ion-checkbox>
+          <ion-icon slot="end" name="lock"></ion-icon>
+        </ion-item>
+        <ion-button *ngIf="noCollections" [disabled]="!collection.selected" color="warning" shape="round" (click)="createCollection()" expand="block" size="small">
+            Add to closet
+        </ion-button>
+
+        <ion-item *ngFor="let collection of collections">
+            <ion-label>{{collection.name}}</ion-label>
+            <ion-checkbox (ionChange)="selectCollection();removeCloset(collection.name)" [(ngModel)]="collection.selected"  slot="end"></ion-checkbox>
+            <ion-icon slot="end" name="person"></ion-icon>
+        </ion-item>
+        <ion-button *ngIf="collections?.length > 0" [disabled]="!collectionSelected" color="warning" shape="round" (click)="addSelectedCollection()" expand="block" size="small">
+            Add to closet
+        </ion-button>
+    </ion-list>
+    <ion-list>
+      <!-- new collection -->
+      <div>
+          <ion-buttons slot="start">
+              <ion-button (click)="newCollection()">
+                  <ion-icon name="add" ></ion-icon>
+                    Create new collection
+              </ion-button>
+          </ion-buttons>
+      </div>
+      <div *ngIf="showNewCollection">
+          <form #f="ngForm">
+              <ion-input name="collectionName" [(ngModel)]="collection.collectionName" type="text" placeholder="Enter collection name" required></ion-input>
+              <ion-button color="warning" shape="round" (click)="createCollection()" expand="block" size="small" [disabled]="!f.valid">
+                  Create
+              </ion-button>
+          </form>
+      </div>
     </ion-list>
   </div>
 

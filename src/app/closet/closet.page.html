@@ -1,9 +1,120 @@
-<ion-header>
+<ion-header *ngIf="!hideToolbar">
   <ion-toolbar>
-    <ion-title>closet</ion-title>
+    <ion-title>My closet</ion-title>
+    <ion-buttons slot="start">
+        <ion-button (click)="navigateBack()">
+            <ion-icon color="dark" name="arrow-round-back" class="ion-margin-start"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button (click)="callNew()">
+            <ion-icon color="dark" name="add" class="ion-margin-start"></ion-icon>
+        </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <p *ngIf="collections?.collections?.length === 0">You have no hints in your closet. Try adding some.</p>
+  <div class="collections">
+    <div class="card" (click)="cancel();getCollectionInfo(collection._id)" *ngFor="let collection of collections.collections">
+        <img *ngIf="collection?.hints?.length == 0" src=" http://placehold.it/950?text=No+Hints" >
+      <div  *ngFor="let hint of collection.hints; let i = index">
+        <img *ngIf="i/1 == 0" [src]="hint.url">
+      </div>
+      <ion-text>
+          <b>{{collection.name | titlecase}}</b>
+      </ion-text>
+    </div>
+  </div>
 
+   <!--closetInfo Modal content -->
+   <div *ngIf="closetInfo" class="modal-content " padding>
+      <div class="">
+        <ion-buttons class="ion-float-left">
+            <ion-button color="dark" (click)="cancel()">
+                cancel
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons class="ion-float-right">
+            <ion-button (click)="presentEdit()">
+                <ion-icon color="dark" name="more" class="ion-margin-start"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+      </div>
+      <h4>{{collectionInfo.name | titlecase}}</h4>
+      <p *ngIf="collectionInfo.hints.length == 0"> You do not have any hints in this collection.</p>
+      <div class="pins">
+        <div (click)="viewHint(hint._id)" class="pin" *ngFor="let hint of collectionInfo.hints" >
+            <img class="animated fadeInRight delay-1s" [src]="hint.url">
+            <ion-icon (click)="deleteHintAlert(hint._id, collectionInfo.name)" style="position: absolute"  size="medium" color="danger" name="trash"></ion-icon>
+        </div>
+      </div>
+   </div>
+
+   <!--EditInfo Modal content -->
+   <div *ngIf="editInfo" class="modal-content " padding>
+      <div class="">
+        <ion-buttons class="ion-float-left">
+            <ion-button color="dark" (click)="callEdit()">
+                cancel
+            </ion-button>
+        </ion-buttons>
+        <h6 style="padding-top: 7px" class="ion-text-center">Edit collection</h6>
+      </div>
+      <div>
+        <ion-item lines="none">
+            <ion-label >
+              <ion-text slot="start">
+                <b>Name</b>
+              </ion-text>
+            </ion-label>
+        </ion-item>
+        <form #f="ngForm">
+            <ion-input name="newName" [(ngModel)]="editCollection.newName" type="text" required></ion-input>
+            <ion-button (click)="editName()" color="warning" shape="round" expand="block" size="small" [disabled]="!f.valid">
+                Edit collection name
+            </ion-button>
+        </form>
+        <ion-item lines="none">
+            <ion-label >
+              <ion-text slot="start">
+                <b>Manage</b>
+              </ion-text>
+            </ion-label>
+        </ion-item>
+        <ion-buttons slot="start">
+            <ion-button color="danger" (click)="presentAlertConfirm()">
+              Delete collection
+            </ion-button>
+        </ion-buttons>
+      </div>
+   </div>
+
+    <!--newInfo Modal content -->
+    <div *ngIf="newInfo" class="modal-content " padding>
+      <div >
+        <ion-buttons class="ion-float-left">
+            <ion-button color="dark" (click)="callNew()">
+                cancel
+            </ion-button>
+        </ion-buttons>
+        <h6 style="padding-top: 7px" class="ion-text-center">New collection</h6>
+      </div>
+      <div>
+        <ion-item lines="none">
+            <ion-label >
+              <ion-text slot="start">
+                <b>Name</b>
+              </ion-text>
+            </ion-label>
+        </ion-item>
+        <form #f="ngForm">
+            <ion-input name="collectionName" [(ngModel)]="editCollection.collectionName" type="text" required></ion-input>
+            <ion-button (click)="createCollection()" color="warning" shape="round" expand="block" size="small" [disabled]="!f.valid">
+                Create new collection
+            </ion-button>
+        </form>
+      </div>
+   </div>
 </ion-content>

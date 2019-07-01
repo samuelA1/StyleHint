@@ -1,3 +1,4 @@
+import { ClosetService } from './../_services/closet.service';
 import { TipService } from './../_services/tip.service';
 import { FriendService } from './../_services/friend.service';
 import { HintsService } from './../_services/hints.service';
@@ -6,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TitleService } from '../_services/title.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import * as io from 'socket.io-client';
+import { AuthService } from '../_services/auth.service';
 
 
 @Component({
@@ -16,16 +18,32 @@ import * as io from 'socket.io-client';
 export class FashionModalPage implements OnInit {
   @Input() idValue: any;
   hint: any = {};
+  sliderConfig = {
+    slidesPerView: 1.2,
+  };
+  collection: any = {
+    collectionName: 'all',
+    hintId: ''
+  }
   numberOfRatings: any;
   link: any;
+  alreadyAdded: boolean = false;
+  added: any[] = [];
+  scrollOnModal: any = true
   modal: any = false;
+  closetModal: any = false;
   searched:boolean = false;
+  disableAll: boolean = false;
   message: any = '';
   search: any = '';
   friends: any[];
   unFilteredFriends: any[];
   friendSelected: boolean = false;
+  collectionSelected: boolean = false;
   socket: any;
+  showNewCollection: boolean = false;
+  collections: any[] = [];
+  noCollections: boolean = false;
   rating: any[] = [
     {icon: 'star', score: 1, isChecked: false},
     {icon: 'star', score: 2, isChecked: false},
@@ -45,7 +63,9 @@ export class FashionModalPage implements OnInit {
     public titleService: TitleService,
     private hintService: HintsService,
     private friendsService: FriendService,
+    private closetService: ClosetService,
     private tipService: TipService,
+    private authService: AuthService,
     private socialSharing: SocialSharing,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
@@ -59,6 +79,12 @@ export class FashionModalPage implements OnInit {
       const hintInfo = await this.hintService.getSingleHint();
       if (hintInfo['success']) {
         this.hint = hintInfo['hint'];
+        if (hintInfo['hint'].likedBy.some(hintId => this.authService.userId == hintId)) {
+          this.alreadyAdded = true;
+        } else {
+          this.alreadyAdded = false;
+        }
+        this.collection.hintId = hintInfo['hint']._id;
         this.numberOfRatings = hintInfo['numberOfRatings'];
         this.avgRate(hintInfo['averageRating']);
       } else {
@@ -68,6 +94,70 @@ export class FashionModalPage implements OnInit {
       this.presentAlert('Sorry, an error occured while trying to get a hint');
     }
   }
+
+//add selected collections to closet
+addSelectedCollection() {
+  try {
+    this.collections.forEach(async (collection) => {
+      if (collection['selected']) {
+        this.closetService.addCloset({hintId: this.collection.hintId, collectionName: collection['name']});
+      }
+    });
+    this.alreadyAdded = true;
+    this.closetModal = !this.closetModal;
+    this.scrollOnModal = !this.scrollOnModal
+    this.collections = [];
+    this.noCollections = false;
+    this.presentToast('Hint added to closet');
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while trying to add a hint to closet.')
+  }
+}
+
+//for new collection
+async createCollection() {
+  try {
+    const newInfo = await this.closetService.addCloset(this.collection);
+    if (newInfo['success']) {
+      this.alreadyAdded = true;
+      this.closetModal = !this.closetModal;
+      this.scrollOnModal = !this.scrollOnModal
+      this.collections = [];
+      this.noCollections = false;
+      this.presentToast('Hint added to closet');
+    } else {
+      this.presentAlert('Sorry, an error occured while trying to add a hint to closet.')
+    }
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while trying to add a hint to closet.')
+  }
+}
+
+//remove hint from closet
+async removeCloset(name: any) {
+  try {
+    if (this.added.some(checked => checked == name)) {
+      this.added.splice(this.added.findIndex(add => add == name), 1)
+      const removeInfo = await this.closetService.removeCloset({collectionName:name, hintId: this.collection.hintId});
+      if (removeInfo['success']) {
+        this.presentToast(removeInfo['message']);
+        if (this.added.length == 0) {
+          this.alreadyAdded = false;
+        }
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to remove a hint from your closet.')
+      }
+    }
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while trying to remove a hint from your closet.')
+  }
+}
+
+//toggle to show new collection
+newCollection() {
+  this.disableAll = !this.disableAll;
+  this.showNewCollection = !this.showNewCollection;
+}
 
   dismissModal() {
     this.modalCtrl.dismiss();
@@ -97,8 +187,63 @@ export class FashionModalPage implements OnInit {
     this.friendSelected = this.friends.some(friend => friend['selected'] == true);
   }
 
+  //activates send button on friend selected
+  selectCollection() {
+    this.collectionSelected = this.collections.some(collection => collection['selected'] == true);
+  }
+
   cancel() {
     this.modal = !this.modal;
+    this.scrollOnModal = !this.scrollOnModal;
+  }
+
+  cancelCloset() {
+    this.getCollectionsName();
+    this.closetModal = !this.closetModal;
+    this.scrollOnModal = !this.scrollOnModal;
+    this.collections = [];
+  }
+
+  //get all collections for closet
+  async getCollectionsName() {
+    try {
+      const collectionInfo = await this.closetService.collectionName();
+      if (collectionInfo['success']) {
+        if (collectionInfo['closet'] == null) {
+          this.noCollections = true
+        } else {
+          let found;
+          let added = []
+                    //get already added collections
+          const collectionGot = collectionInfo['closet'].collections;
+          collectionGot.forEach(collection => {
+            found = collection.hints.find(hint => hint == this.collection.hintId)
+            if (found == this.collection.hintId) {
+              added.push(collection)
+            }
+          });
+          collectionGot.forEach(got => {
+            if (added.some(add => add.name == got.name)) {
+              this.collections.push({name: got['name'], selected: true})
+            } else {
+              this.collections.push({name: got['name'], selected: false})
+            }
+          });
+
+          this.collections.forEach(checked => {
+            if (checked.selected) {
+              this.added.push(checked.name)
+            }
+          });
+
+        }
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to get the collections for your closet.')
+      }
+      this
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to get the collections for your closet.')
+    }
   }
 
   async share() {
@@ -136,6 +281,7 @@ export class FashionModalPage implements OnInit {
       });
       const tipsInfo = await this.tipService.addTip(tips);
       if (tipsInfo['success']) {
+        this.friendSelected = !this.friendSelected
         this.modal = !this.modal;
         this.presentToast(tipsInfo['message']);
         this.socket.emit('send', {friends: selectedFriends})

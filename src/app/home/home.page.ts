@@ -59,8 +59,14 @@ export class HomePage implements OnInit {
 
       this.socket.on('requestAccepted', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          this.notificationService.numberOfNotifications = 1 + 0
           this.toastShareNotification('Someone just accepted your friend request.');
+        }
+      });
+
+      this.socket.on('notificationViewed', ownerId => {
+        if (ownerId === this.authService.userId) {
+          this.notificationService.numberOfNotifications = 0;
         }
       });
 
@@ -213,6 +219,7 @@ export class HomePage implements OnInit {
     this.navCtrl.navigateForward('notifications').then(async () => {
       await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
       this.notificationService.numberOfNotifications = 0;
+      this.socket.emit('viewNotification', this.authService.userId);
     });
   }
 

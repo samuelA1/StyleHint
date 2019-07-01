@@ -1,3 +1,4 @@
+import { ClosetService } from './_services/closet.service';
 import { FriendService } from './_services/friend.service';
 import { HintsService } from './_services/hints.service';
 import { AuthService } from './_services/auth.service';
@@ -50,6 +51,7 @@ import { NotificationService } from './_services/notification.service';
     WeatherService,
     TitleService,
     AdminService,
+    ClosetService,
     CustomizeService,
     AuthService,
     HintsService,

@@ -6,12 +6,16 @@
         </ion-button>
     </ion-buttons>
     <ion-title>Notifications</ion-title>
-    <ion-progress-bar *ngIf="loading" type="indeterminate" color="warning"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollEvents]="true"
-(ionScroll)="logScrolling($event)">
+<ion-content >
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles"
+      refreshingText="Notifications...">
+    </ion-refresher-content>
+  </ion-refresher>
   <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
   <ion-list lines="none">
     <ion-item *ngFor="let notify of notifications">
@@ -47,7 +51,7 @@
               <h4>Friend</h4>
             </ion-text>
             <div margin>
-              <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+              <p style="margin: 0" (click)="toFriends()"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
               <small>{{GetPostTime(notify.createdAt)}}</small>
             </div>
         </div>

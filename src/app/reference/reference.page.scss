@@ -8,9 +8,14 @@ img {
     column-count: 1;
 }
 
-ion-buttons {
-    position: absolute;
-    top: 40px;
+ion-card {
+  width: 100%;
+  height: 300px;
+  max-width: 100%;
+  max-height: 300px;
+   ion-card-title {
+     font-size: larger;
+   }
 }
 
 h6 {
@@ -26,4 +31,42 @@ h6 {
 
 ion-content {
 overflow: auto;
+}
+
+/* Modal Content */
+.modal-content {
+  display: grid;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  background-color: #fff;
+  overflow: scroll;
+  width: 100%;
+  height: 80%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+from {bottom: -300px; opacity: 0} 
+to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+from {bottom: -300px; opacity: 0}
+to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+from {opacity: 0} 
+to {opacity: 1}
+}
+
+@keyframes fadeIn {
+from {opacity: 0} 
+to {opacity: 1}
 }

@@ -3,7 +3,7 @@
       <!-- back button -->
       <ion-buttons slot="start">
           <ion-button (click)="navigateBack()">
-              <ion-icon  name="arrow-back" class="ion-margin-start"></ion-icon>
+              <ion-icon color="primary" name="arrow-back" class="ion-margin-start"></ion-icon>
           </ion-button>
       </ion-buttons>
       <ion-buttons *ngIf="tipService.isMyTip" style="right: 0">
@@ -22,7 +22,7 @@
           </ion-button>
       </ion-buttons>
       <!-- image -->
-      <img [src]="tip?.imageUrl" >
+      <ion-img [src]="tip?.imageUrl"></ion-img>
       <ion-button (click)="viewHint(tip?.hintId)" color="warning" expand="full" fill="outline">view complete hint</ion-button>
   </div>
   <div class="tip-container" padding>

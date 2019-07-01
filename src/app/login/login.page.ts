@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
                 });
               });
             } else {
+              this.loading = false;
               this.presentAlert(loginInfo['message']);
             }
           } catch (error) {
