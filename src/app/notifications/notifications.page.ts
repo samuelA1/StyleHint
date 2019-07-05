@@ -164,10 +164,10 @@ async clearNotifications() {
       if (seenInfo['success']) {
         this.navCtrl.navigateForward('tip');
       } else {
-        this.presentAlert('Sorry, an error occured while trying to view a tip.')
+        this.presentToast(seenInfo['message'], 'danger');
       }
     } catch (error) {
-      this.presentAlert('Sorry, an error occured while trying to view a tip.')
+      this.presentToast('This tip is no longer available.', 'danger');
     }
   }
 

@@ -25,9 +25,9 @@ export class TitleService {
 
       //list of sizes
     sizes: any = [
-        { val: 'petite', isChecked: true },
-        { val: 'plus size', isChecked: false },
-        { val: 'tall', isChecked: false },
+        { val: 'small', isChecked: true },
+        { val: 'medium', isChecked: false },
+        { val: 'large', isChecked: false },
     ];
 
   // list menu titles

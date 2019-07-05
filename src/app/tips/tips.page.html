@@ -10,8 +10,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding [scrollEvents]="true"
-(ionScroll)="logScrolling($event)">
+<ion-content >
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content
+        refreshingSpinner="circles"
+        refreshingText="Tips...">
+      </ion-refresher-content>
+    </ion-refresher>
     <ion-badge color="warning">Tips get removed after 24 hours.</ion-badge>
 
     <!-- tips -->

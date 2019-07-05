@@ -15,6 +15,12 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles"
+      refreshingText="Closet...">
+    </ion-refresher-content>
+  </ion-refresher>
   <p *ngIf="collections?.collections?.length === 0">You have no hints in your closet. Try adding some.</p>
   <div class="collections">
     <div class="card" (click)="cancel();getCollectionInfo(collection._id)" *ngFor="let collection of collections.collections">
@@ -47,7 +53,7 @@
       <div class="pins">
         <div (click)="viewHint(hint._id)" class="pin" *ngFor="let hint of collectionInfo.hints" >
             <img class="animated fadeInRight delay-1s" [src]="hint.url">
-            <ion-icon (click)="deleteHintAlert(hint._id, collectionInfo.name)" style="position: absolute"  size="medium" color="danger" name="trash"></ion-icon>
+            <ion-icon (click)="deleteHintAlert(hint._id, collectionInfo.name)" style="position: sticky;"  size="medium" color="danger" name="trash"></ion-icon>
         </div>
       </div>
    </div>
@@ -117,4 +123,25 @@
         </form>
       </div>
    </div>
+
+
+   <ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
+      <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
+        <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="start" class="ios fab-list-side-start hydrated">
+        <ion-fab-button (click)="toCloset()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="shirt" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">closet</p>
+        </ion-fab-button>
+        <ion-fab-button (click)="toTips()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="open" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">Tips</p>
+        </ion-fab-button>
+        <ion-fab-button (click)="toFriends()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
+          <ion-icon style="position: absolute; top: 0" name="people" role="img" class="ios hydrated"></ion-icon>
+          <p style="margin-bottom: inherit">Friends</p>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
 </ion-content>

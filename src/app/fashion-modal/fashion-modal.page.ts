@@ -248,6 +248,7 @@ newCollection() {
 
   async share() {
     this.modal = !this.modal;
+    this.scrollOnModal = !this.scrollOnModal;
     
     try {
       const friendsInfo = await this.friendsService.getFriends();
@@ -283,6 +284,7 @@ newCollection() {
       if (tipsInfo['success']) {
         this.friendSelected = !this.friendSelected
         this.modal = !this.modal;
+        this.scrollOnModal = !this.scrollOnModal;
         this.presentToast(tipsInfo['message']);
         this.socket.emit('send', {friends: selectedFriends})
       } else {

@@ -19,8 +19,6 @@
           <textarea name="recommendations" [(ngModel)]="hint.recommendations" cols="30" rows="10" required></textarea>
           <ion-label margin>Alternatives:</ion-label>
           <textarea name="alternatives" [(ngModel)]="hint.alternatives" cols="30" rows="10" required></textarea>
-          <ion-label margin>Do's:</ion-label>
-          <textarea name="do" [(ngModel)]="hint.do" cols="30" rows="10" required></textarea>
           <ion-label margin>Dont's:</ion-label>
           <textarea name="dont" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
           <ion-label margin>Choose season:</ion-label>
@@ -31,12 +29,6 @@
           <ion-select multiple="true" name="occasion" [(ngModel)]="hint.occasion"  placeholder="select occasion">
             <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
           </ion-select>
-          <div *ngIf="hint.occasion == 'National day'">
-            <ion-label margin>Choose what country's natinal day:</ion-label>
-            <ion-select name="country" [(ngModel)]="hint.country" placeholder="select country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
-                <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
-            </ion-select>
-          </div>
           <ion-label margin>Choose weather:</ion-label>
           <ion-select multiple="true" name="weather" [(ngModel)]="hint.weather"  placeholder="select weather">
             <ion-select-option *ngFor="let weather of weathers" value="{{weather.name}}">{{weather.name | titlecase}}</ion-select-option>

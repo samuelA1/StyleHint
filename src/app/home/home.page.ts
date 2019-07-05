@@ -1,3 +1,4 @@
+import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastController, AlertController, NavController } from '@ionic/angular';
@@ -16,10 +17,22 @@ import { NotificationService } from '../_services/notification.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  location: any = {};
+  modal: boolean = true;
+  imgIndex: number = 0;
+  location: any = {
+    city: '',
+    state: '',
+    country: ''
+  };
   weather: any = {};
   date = Date.now();
-  finalData: any = {};
+  geocoder: any;
+  latlng: any;
+  finalData: any = {
+    city: '',
+    state: '',
+  };
+  suggestions: any[];
   icon: any;
   season: any;
   socket: any;
@@ -30,29 +43,36 @@ export class HomePage implements OnInit {
      private alertCtrl: AlertController,
      private weatherService: WeatherService,
      public titleService: TitleService,
+     private hintService: HintsService,
      private authService: AuthService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
      private storage: Storage) {
-       setTimeout(() => {
+      this.geocoder = new google.maps.Geocoder();
+      setTimeout(() => {
         this.getGeolocation();
        }, 5000);
+       this.getSuggestions();
       this.watchPosition();
       this.getSeason();
       this.socket = io('http://www.thestylehint.com')
      }
 
+     close() {
+       this.modal = !this.modal;
+     }
+
      ngOnInit() {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
-           this.notificationService.numberOfNotifications++
+           this.notificationService.numberOfNotifications = 1 + 0
            this.toastShareNotification('Someone just shared a hint with you.');
          }
        });
 
        this.socket.on('friendRequested', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          this.notificationService.numberOfNotifications = 1 + 0
           this.toastShareNotification('Someone just sent you a friend request.');
         }
       });
@@ -72,7 +92,7 @@ export class HomePage implements OnInit {
 
        this.socket.on('commented', ownerId => {
         if (ownerId === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          this.notificationService.numberOfNotifications = 1 + 0
           this.toastShareNotification('One of your friends just commented on one of your tips.');
         }
       });
@@ -103,7 +123,7 @@ export class HomePage implements OnInit {
     {name: 'birthday party', icon: 'color-wand', isChosen: false},
     {name: 'halloween', icon: 'outlet', isChosen: false},
     {name: 'christmas', icon: 'gift', isChosen: false},
-    {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
+    {name: 'church', icon: 'add-circle-outline', isChosen: false},
     {name: 'date night', icon: 'contacts', isChosen: false},
     {name: 'job interview', icon: 'person-add', isChosen: false},
     {name: 'culture', icon: 'home', isChosen: false},
@@ -164,22 +184,52 @@ export class HomePage implements OnInit {
     });
   }
 
+  //getSuggestions
+  async getSuggestions() {
+    try {
+      const suggestInfo = await this.hintService.getSuggestions();
+      if (suggestInfo['success']) {
+        this.suggestions = suggestInfo['suggestions'];
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to get suggestions');
+      }
+    } catch (error) {
+      console.log(error)
+      this.presentAlert('Sorry, an error occured while trying to get suggestions');
+    }
+  }
+
   //get latitude and longitude
   getGeolocation(){
     this.geolocation.getCurrentPosition().then( async (resp) => {
-      // get weather
+      // location
+      this.latlng 	 = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+      this.geocoder.geocode({'latLng': this.latlng}, (results, status) => {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            for (var i = 0; i < results.length; i++) {
+              if (results[i].types[0] === "locality") {
+                var city = results[i].address_components[0].long_name;
+                var state = results[i].address_components[2].long_name;
+                var country = results[i].address_components[3].long_name;
+                this.location.city = city;
+                this.location.country = country;
+                this.location.state = state;
+                this.finalData.city = city;
+                this.finalData.state = state
+              }
+            }
+          } else {
+            this.presentAlert('Sorry, an error occured while trying to get your location');
+          }
+        } else {
+          this.presentAlert('Sorry, an error occured while trying to get your location');
+        }
+      });
+  
+
+      //weather
       const weather = await this.weatherService.getWeather(resp.coords.latitude, resp.coords.longitude);
-      //location
-      const locate = await this.weatherService.getLocation();
-      if (locate['status'] == 'success') {
-        this.location.city = locate['city'];
-        this.location.country = locate['country'];
-        this.location.state = locate['region'];
-        this.finalData.city = locate['city'];
-        this.finalData.state = locate['region']
-      } else {
-        this.presentAlert('Sorry, an error occured while trying to get your location');
-      }
       this.weather.temp = Math.round(weather['main'].temp);
       this.weather.main = weather['weather'][0].main;
       this.chooseWeather(weather['weather'][0].main.toLowerCase())
@@ -192,19 +242,31 @@ export class HomePage implements OnInit {
   watchPosition() {
     this.geolocation.watchPosition().toPromise()
     .then( async (resp) => {
-      // get weather
-      const weather = await this.weatherService.getWeather(resp.coords.latitude, resp.coords.longitude);
-      //location
-      const locate = await this.weatherService.getLocation();
-      if (locate['status'] == 'success') {
-        this.location.city = locate['city'];
-        this.location.country = locate['country'];
-        this.location.state = locate['region'];
-        this.finalData.city = locate['city'];
-        this.finalData.state = locate['region']
-      } else {
+      this.latlng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+      this.geocoder.geocode({'latLng': this.latlng}, (results, status) => {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            for (var i = 0; i < results.length; i++) {
+              if (results[i].types[0] === "locality") {
+                var city = results[i].address_components[0].long_name;
+                var state = results[i].address_components[2].long_name;
+                var country = results[i].address_components[3].long_name;
+                this.location.city = city;
+                this.location.country = country;
+                this.location.state = state;
+                this.finalData.city = city;
+                this.finalData.state = state
+              }
+            }
+          }
+          this.presentAlert('Sorry, an error occured while trying to get your location');
+        }
         this.presentAlert('Sorry, an error occured while trying to get your location');
-      }
+      });
+  
+
+      //weather
+      const weather = await this.weatherService.getWeather(resp.coords.latitude, resp.coords.longitude);
       this.weather.temp = Math.round(weather['main'].temp);
       this.weather.main = weather['weather'][0].main;
       this.chooseWeather(weather['weather'][0].main.toLowerCase())
@@ -236,6 +298,15 @@ export class HomePage implements OnInit {
     this.navCtrl.navigateForward('closet');
   }
 
+  //suggestions navigations
+  prev() {
+    this.imgIndex--
+  }
+
+  next() {
+    this.imgIndex++
+  }
+
   //alert
    async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -252,7 +323,7 @@ export class HomePage implements OnInit {
     const toast = await this.toastCtrl.create({
       header: message,
       position: 'bottom',
-      duration: 5000,
+      duration: 3000,
       color: 'dark'
     });
     toast.present();

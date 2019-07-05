@@ -1,8 +1,12 @@
+import { TipService } from './../_services/tip.service';
+import { FriendService } from './../_services/friend.service';
 import { AuthService } from './../_services/auth.service';
 import { ClosetService } from './../_services/closet.service';
 import { Component, OnInit } from '@angular/core';
 import { HintsService } from '../_services/hints.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
+import * as io from 'socket.io-client';
+
 
 @Component({
   selector: 'app-reference',
@@ -11,6 +15,8 @@ import { AlertController, NavController, ToastController } from '@ionic/angular'
 })
 export class ReferencePage implements OnInit {
   hint: any = {};
+  idValue: any;
+  socket: any;
   alreadyAdded: boolean = false;
   added: any[] = [];
   scrollOnModal: any = true
@@ -19,6 +25,15 @@ export class ReferencePage implements OnInit {
   showNewCollection: boolean = false;
   collections: any[] = [];
   noCollections: boolean = false;
+
+  modal: any = false;
+  searched:boolean = false;
+  message: any = '';
+  search: any = '';
+  friends: any[];
+  unFilteredFriends: any[];
+  friendSelected: boolean = false;
+
   numberOfRatings: any;
   closetModal: any = false;
   sliderConfig = {
@@ -41,9 +56,12 @@ export class ReferencePage implements OnInit {
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private closetService: ClosetService,
+    private friendsService: FriendService,
+    private tipService: TipService,
     private authService: AuthService,
     private toastCtrl: ToastController ) {
       this.getSingleHint();
+      this.socket = io('http://www.thestylehint.com');
      }
 
  
@@ -56,6 +74,7 @@ export class ReferencePage implements OnInit {
       const hintInfo = await this.hintService.getSingleHint();
       if (hintInfo['success']) {
         this.hint = hintInfo['hint'];
+        this.idValue = hintInfo['hint']._id;
         if (hintInfo['hint'].likedBy.some(hintId => this.authService.userId == hintId)) {
           this.alreadyAdded = true;
         } else {
@@ -205,6 +224,73 @@ newCollection() {
       this.presentAlert('Sorry, an error occured while getting ratings for this hint');
     }
   }
+
+  async share() {
+    this.modal = !this.modal;
+    this.scrollOnModal = !this.scrollOnModal;
+    
+    try {
+      const friendsInfo = await this.friendsService.getFriends();
+      if (friendsInfo['success']) {
+        this.friends = friendsInfo['friends'];
+        this.unFilteredFriends = friendsInfo['friends'];
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to get your friends.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to get your friends.')
+    }
+    // this.socialSharing.share(null, null, null, 'http://www.x-services.nl').catch((err) => {
+    //   this.presentAlert('Sorry, an error occured while trying to share some information');
+    // });
+  }
+
+  cancel() {
+    this.modal = !this.modal;
+    this.scrollOnModal = !this.scrollOnModal;
+  }
+
+  //activates send button on friend selected
+  selectFriend() {
+    this.friendSelected = this.friends.some(friend => friend['selected'] == true);
+  }
+
+  //add tip
+  async addTip() {
+    try {
+      let tips = {};
+      const selectedFriends = [];
+      this.friends.forEach(async (friend) => {
+        if (friend['selected']) {
+          selectedFriends.push(friend['_id']);
+          tips['imageUrl'] = this.hint.url;
+          tips['hintId'] = this.idValue;
+          tips['friends'] = selectedFriends;
+          tips['message'] = this.message;
+        }
+      });
+      const tipsInfo = await this.tipService.addTip(tips);
+      if (tipsInfo['success']) {
+        this.friendSelected = !this.friendSelected
+        this.modal = !this.modal;
+        this.scrollOnModal = !this.scrollOnModal;
+        this.presentToast(tipsInfo['message']);
+        this.socket.emit('send', {friends: selectedFriends})
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to share a hint. Please try choosing a friend before sharing a hint.')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to share a hint. Please try choosing a friend before sharing a hint.')
+    }
+  }
+
+  //search friends
+  searchFriends() {
+    this.searched = true;
+    this.friends = (this.search) ?  this.friends.filter(u => u.username.toLowerCase()
+    .includes(this.search.toLowerCase()) ) : this.unFilteredFriends;
+  }
+
   //alertCtrl
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({

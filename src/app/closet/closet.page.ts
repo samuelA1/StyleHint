@@ -147,6 +147,19 @@ async removeCloset(hintId: any, name: any) {
     ngOnInit() {
     }
 
+    //navigations
+  toTips() {
+    this.navCtrl.navigateForward('tips');
+  }
+
+  toFriends() {
+    this.navCtrl.navigateForward('friends');
+  }
+
+  toCloset() {
+    this.navCtrl.navigateForward('closet');
+  }
+
     //alertCtrl
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -225,5 +238,13 @@ async removeCloset(hintId: any, name: any) {
       duration: 2000
     });
     toast.present();
+  }
+
+  //refresh closet
+  doRefresh(event){
+    setTimeout(() => {
+      this.myCloset();
+      event.target.complete();
+    }, 1000);
   }
 }

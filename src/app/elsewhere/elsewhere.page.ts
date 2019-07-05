@@ -41,7 +41,7 @@ export class ElsewherePage implements OnInit {
     {name: 'birthday party', icon: 'color-wand', isChosen: false},
     {name: 'halloween', icon: 'outlet', isChosen: false},
     {name: 'christmas', icon: 'gift', isChosen: false},
-    {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
+    {name: 'church', icon: 'add-cirle-outline', isChosen: false},
     {name: 'date night', icon: 'contacts', isChosen: false},
     {name: 'job interview', icon: 'person-add', isChosen: false},
     {name: 'culture', icon: 'home', isChosen: false},

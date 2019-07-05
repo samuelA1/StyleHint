@@ -49,7 +49,7 @@
             <ion-card-title>Overview</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-              {{hint.overview}}
+              {{hint.overview | titlecase}}
           </ion-card-content>
         </ion-card>
    </ion-slide>
@@ -60,7 +60,7 @@
             <ion-card-title>Recommendations</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-              {{hint.recommendations}}
+              {{hint.recommendations | titlecase}}
           </ion-card-content>
         </ion-card>
    </ion-slide>
@@ -71,17 +71,7 @@
             <ion-card-title>Alternatives</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-              {{hint.alternatives}}
-          </ion-card-content>
-        </ion-card>
-   </ion-slide>
-   <ion-slide>
-      <ion-card>
-          <ion-card-header>
-            <ion-card-title>Do's</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-              {{hint.do}}
+              {{hint.alternatives | titlecase}}
           </ion-card-content>
         </ion-card>
    </ion-slide>
@@ -91,7 +81,7 @@
             <ion-card-title>Dont's</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-              {{hint.dont}}
+              {{hint.dont | titlecase}}
           </ion-card-content>
         </ion-card>
    </ion-slide>
@@ -109,7 +99,7 @@
             <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
             <b >Share</b>
         </div>
-        <p *ngIf="friends?.length == 0">You have no friends yet, try adding some friends.</p>
+        <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
         <textarea style="width: 100%; margin-top: 20px" *ngIf="!friends?.length == 0" placeholder="Any message to share?" name="message" [(ngModel)]="message" cols="30" rows="5"></textarea>
         <ion-searchbar (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>

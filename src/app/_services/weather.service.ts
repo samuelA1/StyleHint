@@ -12,8 +12,4 @@ export class WeatherService {
     return this.http.get('http://api.openweathermap.org/data/2.5/weather?lat='
     + latitude + '&lon=' + longitude + '&appid=' + OpenWeatherAppKey + '&units=imperial').toPromise();
   }
-
-  getLocation() {
-    return this.http.get('https://extreme-ip-lookup.com/json/').toPromise();
-  }
 }

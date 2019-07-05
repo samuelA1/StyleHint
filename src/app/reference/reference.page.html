@@ -10,8 +10,11 @@
       <ion-img [src]="hint.url"></ion-img>
     </div>
     <div class="rating ion-margin-top">
-        <ion-icon [class.rate]="rate.isChecked" *ngFor="let rate of rated" name="{{rate.icon}}"></ion-icon>
-        <b padding>({{numberOfRatings}})</b>
+        <div>
+            <ion-button (click)="share()"  color="tertiary" size="small">
+                <ion-icon name="share"></ion-icon>share
+            </ion-button>
+        </div>
         <ion-button *ngIf="!alreadyAdded" (click)="cancelCloset()"  color="dark" size="small">
             <ion-icon name="shirt"></ion-icon>
         </ion-button>
@@ -19,7 +22,10 @@
         <ion-button *ngIf="alreadyAdded" (click)="cancelCloset()"  color="warning" size="small">
             <ion-icon name="shirt"></ion-icon>
         </ion-button>
-        
+    </div>
+    <div>
+        <ion-icon [class.rate]="rate.isChecked" *ngFor="let rate of rated" name="{{rate.icon}}"></ion-icon>
+        <b padding>({{numberOfRatings}})</b>
     </div>
 
   
@@ -31,7 +37,7 @@
              <ion-card-title>Overview</ion-card-title>
            </ion-card-header>
            <ion-card-content>
-               {{hint.overview}}
+               {{hint.overview | titlecase}}
            </ion-card-content>
          </ion-card>
     </ion-slide>
@@ -42,7 +48,7 @@
              <ion-card-title>Recommendations</ion-card-title>
            </ion-card-header>
            <ion-card-content>
-               {{hint.recommendations}}
+               {{hint.recommendations | titlecase}}
            </ion-card-content>
          </ion-card>
     </ion-slide>
@@ -53,17 +59,7 @@
              <ion-card-title>Alternatives</ion-card-title>
            </ion-card-header>
            <ion-card-content>
-               {{hint.alternatives}}
-           </ion-card-content>
-         </ion-card>
-    </ion-slide>
-    <ion-slide>
-       <ion-card>
-           <ion-card-header>
-             <ion-card-title>Do's</ion-card-title>
-           </ion-card-header>
-           <ion-card-content>
-               {{hint.do}}
+               {{hint.alternatives | titlecase}}
            </ion-card-content>
          </ion-card>
     </ion-slide>
@@ -73,11 +69,47 @@
              <ion-card-title>Dont's</ion-card-title>
            </ion-card-header>
            <ion-card-content>
-               {{hint.dont}}
+               {{hint.dont | titlecase}}
            </ion-card-content>
          </ion-card>
     </ion-slide>
+    <ion-slide>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Occasions</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                This hint can be used for<ion-text color="success">
+                        <p *ngFor="let event of hint.occasion">{{event | titlecase}}</p>
+                </ion-text>
+            </ion-card-content>
+            </ion-card>
+    </ion-slide>
   </ion-slides>
+
+  <!--share Modal content -->
+  <div *ngIf="modal" class="modal-content " padding>
+    <ion-list lines="none">
+        <div class="friends-header ion-margin-top"  >
+            <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
+            <b >Share</b>
+        </div>
+        <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
+        <textarea style="width: 100%; margin-top: 20px" *ngIf="!friends?.length == 0" placeholder="Any message to share?" name="message" [(ngModel)]="message" cols="30" rows="5"></textarea>
+        <ion-searchbar (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
+        <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
+        <ion-item *ngFor="let friend of friends">
+            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                <ion-icon name="contact"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+                <h2>@{{friend.username}}</h2> 
+            </ion-label>
+            <ion-checkbox (ionChange)="selectFriend()" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
+        </ion-item>
+        <ion-button style="margin-top: 50px" *ngIf="!friends?.length == 0" [disabled]="!friendSelected" (click)="addTip()" color="warning" expand="full" shape="round">Send</ion-button>
+    </ion-list>
+ </div>
 
   <!--closet Modal content -->
   <div *ngIf="closetModal" class="modal-content " padding>

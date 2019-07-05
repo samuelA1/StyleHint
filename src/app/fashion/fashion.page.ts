@@ -66,7 +66,7 @@ export class FashionPage implements OnInit {
     {name: 'Birthday party', icon: 'color-wand', isChosen: false},
     {name: 'Halloween', icon: 'outlet', isChosen: false},
     {name: 'Christmas', icon: 'gift', isChosen: false},
-    {name: 'National day', extension: 'independence', icon: 'flag', isChosen: false},
+    {name: 'church', icon: 'add-circle-outline', isChosen: false},
     {name: 'Date night', icon: 'contacts', isChosen: false},
     {name: 'Job interview', icon: 'person-add', isChosen: false},
     {name: 'Culture', icon: 'home', isChosen: false},

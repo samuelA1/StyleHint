@@ -14,9 +14,9 @@ export class CustomizePage implements OnInit {
 
   maleElement: any = false;
   femaleElement: any = false;
-  petiteElement: any = false;
-  plusElement: any = false;
-  tallElement: any = false;
+  smallElement: any = false;
+  mediumElement: any = false;
+  largeElement: any = false;
   expensiveElement: any = false;
   casualElement: any = false;
   genderSelected = false;
@@ -66,28 +66,28 @@ export class CustomizePage implements OnInit {
   }
 
   //Size selection for slide two
-  plusSize() {
+  mediumSize() {
     this.sizeSelected = false;
-    this.user.size = 'plus size';
-    this.plusElement = true;
-    this.petiteElement = false;
-    this.tallElement = false;
+    this.user.size = 'medium size';
+    this.mediumElement = true;
+    this.smallElement = false;
+    this.largeElement = false;
   }
 
-  petiteSize() {
+  smallSize() {
     this.sizeSelected = false;
-    this.user.size = 'petite';
-    this.plusElement = false;
-    this.petiteElement = true;
-    this.tallElement = false;
+    this.user.size = 'small';
+    this.mediumElement = false;
+    this.smallElement = true;
+    this.largeElement = false;
   }
 
-  tallSize() {
+  largeSize() {
     this.sizeSelected = false;
-    this.user.size = 'tall';
-    this.tallElement = true;
-    this.plusElement = false;
-    this.petiteElement = false;
+    this.user.size = 'large';
+    this.largeElement = true;
+    this.mediumElement = false;
+    this.smallElement = false;
   }
 
   //interest for slide three

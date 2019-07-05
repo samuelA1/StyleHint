@@ -40,20 +40,17 @@
             <ion-text color="light">
                     <h6>This will help us find more relevant content for you.</h6>
             </ion-text>
-            <h3>I am?</h3>
+            <h3>I wear?</h3>
             <!-- size content -->
-            <ion-button (click)="petiteSize()" [class.chosen]="petiteElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
-                Petite
+            <ion-button (click)="smallSize()" [class.chosen]="smallElement" class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Small
             </ion-button>
-            <small>5'3" or shorter</small>
-            <ion-button (click)="plusSize()" [class.chosen]="plusElement"  class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
-                Plus size
+            <ion-button (click)="mediumSize()" [class.chosen]="mediumElement"  class="ion-text-uppercase ion-margin-top" shape="round" expand="full" size="default">
+                Medium
             </ion-button>
-            <small>size 10 and above</small>
-            <ion-button (click)="tallSize()" [class.chosen]="tallElement"  class="ion-text-uppercase ion-margin-top " shape="round" expand="full" size="default">
-                Tall
+            <ion-button (click)="largeSize()" [class.chosen]="largeElement"  class="ion-text-uppercase ion-margin-top " shape="round" expand="full" size="default">
+                Large
             </ion-button>
-            <small>5'4" to 5'8"</small>
             <!-- next and previous buttons -->
             <div class="next size">
               <ion-buttons>

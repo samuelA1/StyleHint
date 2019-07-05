@@ -95,14 +95,12 @@ loading: boolean = false;
     await alert.present();
   }
 
-  logScrolling(event){
-    if (event.detail.scrollTop < -110) {
-      this.loading = true;
-      setTimeout(() => {
-        this.getAllTips();
-        this.loading= false;
-      }, 2000);
-    }
+  //refresh closet
+  doRefresh(event){
+    setTimeout(() => {
+      this.getAllTips();
+      event.target.complete();
+    }, 1000);
   }
 
 

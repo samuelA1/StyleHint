@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!modal">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
@@ -17,7 +17,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollY="!modal">
+  <!-- suggestion modal -->
+  <div padding *ngIf="modal" class="modal-content ">
+      <div class="modal-c">
+        <ion-buttons style="float: right" slot="end">
+            <ion-button (click)="close()" >
+                <ion-icon color="dark"  name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <h1>Welcome Back!</h1>
+        <h6>We selected some hints we think you might be interested in.</h6>
+        <div  *ngFor="let suggest of suggestions; let i = index">
+          <img *ngIf="i == imgIndex" class="fade" src="{{suggest.url}}" >
+        </div>
+        <!-- Next and previous buttons -->
+        <ion-buttons class="next" *ngIf="imgIndex < 4">
+            <ion-button (click)="next()">
+                <ion-icon color="warning"  name="arrow-forward"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons class="prev" *ngIf="imgIndex > 0">
+            <ion-button (click)="prev()">
+                <ion-icon color="warning"  name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+      </div>
+    </div>
   <!-- weather showcase -->
     <div class="card" *ngIf="location.city">
       <div class="card-container">
@@ -73,7 +99,7 @@
     </ion-card>
   </div>
 
-  <ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
+  <ion-fab *ngIf="!modal" horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
     <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
       <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
     </ion-fab-button>

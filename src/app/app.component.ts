@@ -15,11 +15,6 @@ import { NotificationService } from './_services/notification.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  // modal: boolean = true;
-  sliderConfig = {
-    slidesPerView: 1.2,
-  };
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
