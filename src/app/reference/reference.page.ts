@@ -66,7 +66,7 @@ export class ReferencePage implements OnInit {
 
  
   navigateBack() {
-    this.navCtrl.pop();
+    this.navCtrl.navigateBack(this.hintService.backRoute);
   }
 
   async getSingleHint() {

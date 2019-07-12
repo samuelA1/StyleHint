@@ -29,7 +29,7 @@
         <h1>Welcome Back!</h1>
         <h6>We selected some hints we think you might be interested in.</h6>
         <div  *ngFor="let suggest of suggestions; let i = index">
-          <img *ngIf="i == imgIndex" class="fade" src="{{suggest.url}}" >
+          <img (click)="viewHint(suggest._id)" *ngIf="i == imgIndex" class="fade" src="{{suggest.url}}" >
         </div>
         <!-- Next and previous buttons -->
         <ion-buttons class="next" *ngIf="imgIndex < 4">
@@ -90,11 +90,13 @@
   <h5>Occasion</h5>
   <small>Choose the occasion or event you're interested in.</small>
   <div class="selection-panes" [class.overlay]="itemSelected">
-    <ion-card *ngFor="let occasion of occasions">
-        <ion-card-content [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
+    <ion-card [class.hide-card]="titleService.appPages[3].value == 'female kid' && occasion.name == 'date night'
+     || titleService.appPages[3].value == 'male kid' && occasion.name == 'date night'
+      || titleService.appPages[3].value == 'female kid' && occasion.name == 'job interview'
+       || titleService.appPages[3].value == 'male kid' && occasion.name == 'job interview'" *ngFor="let occasion of occasions">
+        <ion-card-content  [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
             <ion-icon [name]="occasion.icon"></ion-icon>
             <p>{{occasion.name | titlecase}}</p>
-            <p *ngIf="occasion.extension">({{occasion?.extension | titlecase}})</p>
         </ion-card-content>
     </ion-card>
   </div>

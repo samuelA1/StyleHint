@@ -13,6 +13,7 @@ const apiUrl = environment.apiUrl;
 export class HintsService {
   hints: any = {};
   token: any;
+  backRoute: any = ''; //backward nav for tip and closet pages
   id: any;
   //occasion/event array
   occasions: any[] = [

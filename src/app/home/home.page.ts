@@ -8,6 +8,7 @@ import { TitleService } from '../_services/title.service';
 import { Storage } from '@ionic/storage';
 import * as io from 'socket.io-client';
 import { NotificationService } from '../_services/notification.service';
+declare var google;
 
 
 
@@ -51,7 +52,7 @@ export class HomePage implements OnInit {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
         this.getGeolocation();
-       }, 5000);
+       }, 3000);
        this.getSuggestions();
       this.watchPosition();
       this.getSeason();
@@ -61,6 +62,11 @@ export class HomePage implements OnInit {
      close() {
        this.modal = !this.modal;
      }
+
+     viewHint(id: any) {
+      this.hintService.id = id;
+      this.navCtrl.navigateForward('reference');
+    }
 
      ngOnInit() {
        this.socket.on('share', friend => {
@@ -194,7 +200,6 @@ export class HomePage implements OnInit {
         this.presentAlert('Sorry, an error occured while trying to get suggestions');
       }
     } catch (error) {
-      console.log(error)
       this.presentAlert('Sorry, an error occured while trying to get suggestions');
     }
   }

@@ -52,6 +52,7 @@ freezePane: any = false;
 
   viewHint(id: any) {
     this.hintService.id = id;
+    this.hintService.backRoute = 'tip'
     this.navCtrl.navigateForward('reference');
   }
 

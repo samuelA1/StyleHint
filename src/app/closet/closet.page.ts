@@ -9,66 +9,66 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./closet.page.scss'],
 })
 export class ClosetPage implements OnInit {
-collections: any = {
-  collections: []
-};
-collectionInfo: any[]
-closetInfo: boolean = false;
-editCollection: any = {
-  newName: '',
-  collectionName: ''
-}
-editInfo: boolean = false;
-newInfo: boolean = false;
-hideToolbar: boolean = false;
+  collections: any = {
+    collections: []
+  };
+  collectionInfo: any[]
+  closetInfo: boolean = false;
+  editCollection: any = {
+    newName: '',
+    collectionName: ''
+  }
+  editInfo: boolean = false;
+  newInfo: boolean = false;
+  hideToolbar: boolean = false;
   constructor(private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private actionCtrl: ActionSheetController,
     private closetService: ClosetService,
     private hintService: HintsService,
-    private navCtrl: NavController) { 
-      this.myCloset();
-    }
+    private navCtrl: NavController) {
+    this.myCloset();
+  }
 
-    async myCloset() {
-      try {
-        const myInfo = await this.closetService.myCloset();
-        if (myInfo['success']) {
-          if (myInfo['closet']) {
-            this.collections = myInfo['closet'];
-          }
-        } else {
-          this.presentAlert('Sorry, an error occured while getting your closet');
+  async myCloset() {
+    try {
+      const myInfo = await this.closetService.myCloset();
+      if (myInfo['success']) {
+        if (myInfo['closet']) {
+          this.collections = myInfo['closet'];
         }
-      } catch (error) {
+      } else {
         this.presentAlert('Sorry, an error occured while getting your closet');
       }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting your closet');
     }
+  }
 
-    navigateBack() {
-      this.navCtrl.pop();
-    }
-  
-    cancel() {
-      this.closetInfo = !this.closetInfo;
-      this.hideToolbar = !this.hideToolbar
-    }
+  navigateBack() {
+    this.navCtrl.pop();
+  }
 
-    callEdit() {
-      this.editInfo = !this.editInfo;
-    }
+  cancel() {
+    this.closetInfo = !this.closetInfo;
+    this.hideToolbar = !this.hideToolbar
+  }
 
-    callNew() {
-      this.newInfo = !this.newInfo;
-      this.hideToolbar = !this.hideToolbar
-    }
+  callEdit() {
+    this.editInfo = !this.editInfo;
+  }
 
-      //for new collection
-    async createCollection() {
+  callNew() {
+    this.newInfo = !this.newInfo;
+    this.hideToolbar = !this.hideToolbar
+  }
+
+  //for new collection
+  async createCollection() {
     try {
       const newInfo = await this.closetService.newCollection(this.editCollection);
       if (newInfo['success']) {
-        this.collections.collections.push({name: this.editCollection.collectionName, hints: []})
+        this.collections.collections.push({ name: this.editCollection.collectionName, hints: [] })
         this.callNew();
         this.presentToast('New collection created');
       } else {
@@ -77,77 +77,79 @@ hideToolbar: boolean = false;
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to add a hint to closet.')
     }
-    }
+  }
 
-    //edit collection name
-   async editName() {
-      try {
-        const nameInfo = await this.closetService.editCollection(this.editCollection);
-        if (nameInfo['success']) {
-          this.presentToast(nameInfo['message']);
-          this.collectionInfo['name'] = this.editCollection.newName;
-          this.editCollection.collectionName = this.editCollection.newName;
-        } else {
-          this.presentAlert('Sorry, an error occured while trying to change collection name.')
-        }
-      } catch (error) {
+  //edit collection name
+  async editName() {
+    try {
+      const nameInfo = await this.closetService.editCollection(this.editCollection);
+      if (nameInfo['success']) {
+        this.presentToast(nameInfo['message']);
+        this.collectionInfo['name'] = this.editCollection.newName;
+        this.editCollection.collectionName = this.editCollection.newName;
+      } else {
         this.presentAlert('Sorry, an error occured while trying to change collection name.')
       }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to change collection name.')
     }
-  
-    getCollectionInfo(collectionId: any) {
-      this.collectionInfo = this.collections.collections.find(collection => collection._id == collectionId);
-      this.editCollection.collectionName = this.collectionInfo['name'];
-      this.editCollection.newName = this.collectionInfo['name'];
+  }
 
-    }
+  getCollectionInfo(collectionId: any) {
+    this.collectionInfo = this.collections.collections.find(collection => collection._id == collectionId);
+    this.editCollection.collectionName = this.collectionInfo['name'];
+    this.editCollection.newName = this.collectionInfo['name'];
 
-    //delete collection
-    async removeCollection() {
-      try {
-        const removeInfo = await this.closetService.removeCollection(this.editCollection);
-        if (removeInfo['success']) {
-          this.presentToast(removeInfo['message']);
-          this.collections.collections.splice(this.collections.collections.findIndex(collect => collect.name == this.editCollection.collectionName))
-          this.editInfo = !this.editInfo;
-          this.closetInfo = !this.closetInfo;
-          this.hideToolbar = !this.hideToolbar;
-        } else {
-          this.presentAlert('Sorry, an error occured while trying to delete collection.')
-        }
-      } catch (error) {
+  }
+
+  //delete collection
+  async removeCollection() {
+    try {
+      const removeInfo = await this.closetService.removeCollection(this.editCollection);
+      if (removeInfo['success']) {
+        this.presentToast(removeInfo['message']);
+        this.collections.collections.splice(this.collections.collections.findIndex(collect => collect.name == this.editCollection.collectionName));
+        this.myCloset();
+        this.editInfo = !this.editInfo;
+        this.closetInfo = !this.closetInfo;
+        this.hideToolbar = !this.hideToolbar;
+      } else {
         this.presentAlert('Sorry, an error occured while trying to delete collection.')
       }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to delete collection.')
     }
+  }
 
-    viewHint(id: any) {
-      this.hintService.id = id;
-      this.navCtrl.navigateForward('reference');
-    }
+  viewHint(id: any) {
+    this.hintService.id = id;
+    this.hintService.backRoute = 'closet'
+    this.navCtrl.navigateRoot('reference', { animationDirection: 'forward' });
+  }
 
-    //remove hint from collection
-async removeCloset(hintId: any, name: any) {
-  try {
-    const removeInfo = await this.closetService.removeCloset({collectionName:name, hintId: hintId});
-    if (removeInfo['success']) {
-      this.presentToast(removeInfo['message']);
-      this.navCtrl.pop();
-      this.collectionInfo['hints'].splice(this.collectionInfo['hints'].findIndex(hint => hint._id == hintId), 1)
+  //remove hint from collection
+  async removeCloset(hintId: any, name: any) {
+    try {
+      const removeInfo = await this.closetService.removeCloset({ collectionName: name, hintId: hintId });
+      if (removeInfo['success']) {
+        this.presentToast(removeInfo['message']);
+        this.navCtrl.pop();
+        this.collectionInfo['hints'].splice(this.collectionInfo['hints'].findIndex(hint => hint._id == hintId), 1)
 
-    } else {
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to remove a hint from your collection.')
+      }
+    } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to remove a hint from your collection.')
     }
-  } catch (error) {
-    this.presentAlert('Sorry, an error occured while trying to remove a hint from your collection.')
   }
-}
 
-  
-  
-    ngOnInit() {
-    }
 
-    //navigations
+
+  ngOnInit() {
+  }
+
+  //navigations
   toTips() {
     this.navCtrl.navigateForward('tips');
   }
@@ -160,7 +162,7 @@ async removeCloset(hintId: any, name: any) {
     this.navCtrl.navigateForward('closet');
   }
 
-    //alertCtrl
+  //alertCtrl
   async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
       header: 'Closet Error',
@@ -231,7 +233,7 @@ async removeCloset(hintId: any, name: any) {
   }
 
   //toast ctrl
-   async presentToast(message: any) {
+  async presentToast(message: any) {
     const toast = await this.toastCtrl.create({
       message: message,
       color: 'dark',
@@ -241,7 +243,7 @@ async removeCloset(hintId: any, name: any) {
   }
 
   //refresh closet
-  doRefresh(event){
+  doRefresh(event) {
     setTimeout(() => {
       this.myCloset();
       event.target.complete();
