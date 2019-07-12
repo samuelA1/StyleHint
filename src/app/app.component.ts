@@ -31,9 +31,18 @@ export class AppComponent {
     //root navigation
     this.storage.get('token').then(async (data) => {
       if (data) {
-        this.navCtrl.navigateRoot('home');
-        this.titleService.showSplitPane = false;
-        this.notificationService.notifyNumber();
+        let userInfo = await this.storage.get('user');
+        let user = JSON.parse(userInfo);
+        const loginInfo = await this.authService.autoLogin({email: user['email']});
+        if (loginInfo['success']) {
+          this.navCtrl.navigateRoot('home');
+          this.titleService.showSplitPane = false;
+          this.notificationService.notifyNumber();
+        } else {
+            this.navCtrl.navigateRoot('slides');
+            this.titleService.showSplitPane = true;
+        }
+       
       } else {
         this.navCtrl.navigateRoot('slides');
         this.titleService.showSplitPane = true;
