@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class TitleService {
     showSplitPane: boolean  = false;
+    modal: boolean = true;
     constructor() {
      }
     //final data to be used by fashion component

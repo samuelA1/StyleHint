@@ -24,12 +24,12 @@
   <p *ngIf="collections?.collections?.length === 0">You have no hints in your closet. Try adding some.</p>
   <div class="collections">
     <div class="card" (click)="cancel();getCollectionInfo(collection._id)" *ngFor="let collection of collections.collections">
-        <img *ngIf="collection?.hints?.length == 0" src=" http://placehold.it/950?text=No+Hints" >
+        <img class="animated fadeInRight delay-1s" *ngIf="collection?.hints?.length == 0" src=" http://placehold.it/950?text=No+Hints" >
       <div  *ngFor="let hint of collection.hints; let i = index">
-        <img *ngIf="i/1 == 0" [src]="hint.url">
+        <img class="animated fadeInRight delay-1s" *ngIf="i/1 == 0" [src]="hint.url">
       </div>
       <ion-text>
-          <b>{{collection.name | titlecase}}</b>
+          <b class="animated fadeInRight delay-1s">{{collection.name | titlecase}}</b>
       </ion-text>
     </div>
   </div>
@@ -52,7 +52,7 @@
       <p *ngIf="collectionInfo.hints.length == 0"> You do not have any hints in this collection.</p>
       <div class="pins">
         <div (click)="viewHint(hint._id)" class="pin" *ngFor="let hint of collectionInfo.hints" >
-            <img class="animated fadeInRight delay-1s" [src]="hint.url">
+            <img  [src]="hint.url">
             <ion-icon (click)="deleteHintAlert(hint._id, collectionInfo.name)" style="position: sticky;"  size="medium" color="danger" name="trash"></ion-icon>
         </div>
       </div>

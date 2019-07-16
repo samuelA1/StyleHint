@@ -1,4 +1,4 @@
-<ion-header *ngIf="!modal">
+<ion-header *ngIf="titleService.modal">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
@@ -17,9 +17,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollY="!modal">
+<ion-content scrollY="{{titleService.modal}}">
   <!-- suggestion modal -->
-  <div padding *ngIf="modal" class="modal-content ">
+  <div padding *ngIf="!titleService.modal" class="modal-content ">
       <div class="modal-c">
         <ion-buttons style="float: right" slot="end">
             <ion-button (click)="close()" >
@@ -43,7 +43,7 @@
             </ion-button>
         </ion-buttons>
       </div>
-    </div>
+  </div>
   <!-- weather showcase -->
     <div class="card" *ngIf="location.city">
       <div class="card-container">
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <h6 *ngIf="!location.city" class="animated infinite pulse">Getting your location...</h6>
+    <h6 *ngIf="!location.city" class="animated pulse infinite">Getting your location...</h6>
 
   <!-- Season cards -->
   <h5>Season</h5>
@@ -75,7 +75,10 @@
   </div>
   <!-- Weather cards -->
   <h5>Weather</h5>
-  <small padding><small *ngIf="weather.main == 'Clear'"> It's currently </small> Your area is currently covered with <b>{{weather.main | titlecase}}</b>, you can choose the weather condition which best suits you.</small>
+    <small *ngIf="weather.main == 'Clear'"> It's currently </small>
+    <small *ngIf="weather.main !== 'Clear'">Your area is currently covered with </small>
+    <small><b>{{weather.main | titlecase}}</b></small>
+    <small>, you can choose the weather condition which best suits you.</small>
   <div class="selection-panes">
     <ion-card *ngFor="let weather of weathers">
       <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
@@ -101,7 +104,7 @@
     </ion-card>
   </div>
 
-  <ion-fab *ngIf="!modal" horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
+  <ion-fab *ngIf="titleService.modal" horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
     <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
       <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
     </ion-fab-button>

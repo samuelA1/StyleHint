@@ -23,6 +23,11 @@ export class NotificationService {
    return this.http.get(apiUrl + `notifications/notifications?page=${page-1}`, {headers: await this.headers()}).toPromise();
  }
 
+ //delete all notifications
+ async clearAll() {
+  return this.http.get(apiUrl + 'notifications/clear-all', {headers: await this.headers()}).toPromise();
+}
+
  //get number of notifications
  async notifyNumber() {
    return this.http.get(apiUrl + 'notifications/notifyNumber', {headers: await this.headers()}).toPromise()

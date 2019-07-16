@@ -11,6 +11,7 @@ export class TipService {
   token: any;
   tipToView: any;
   isMyTip: boolean = false;
+  backRoute: any = '';
   constructor(private storage: Storage,
      private http: HttpClient) { }
 

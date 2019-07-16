@@ -57,7 +57,7 @@ freezePane: any = false;
   }
 
   navigateBack() {
-    this.navCtrl.navigateBack('tips');
+    this.navCtrl.navigateBack(this.tipService.backRoute);
   }
 
   GetPostTime(time) {

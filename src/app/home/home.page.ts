@@ -18,7 +18,6 @@ declare var google;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  modal: boolean = true;
   imgIndex: number = 0;
   location: any = {
     city: '',
@@ -60,11 +59,12 @@ export class HomePage implements OnInit {
      }
 
      close() {
-       this.modal = !this.modal;
+       this.titleService.modal = true;
      }
 
      viewHint(id: any) {
       this.hintService.id = id;
+      this.hintService.backRoute = 'home'
       this.navCtrl.navigateForward('reference');
     }
 
@@ -119,6 +119,7 @@ export class HomePage implements OnInit {
     {name: 'clouds', icon: 'cloud', isChosen: false},
     {name: 'haze', icon: 'nuclear', isChosen: false},
     {name: 'mist', icon: 'list', isChosen: false},
+    {name: 'smoke', icon: 'bonfire', isChosen: false},
     {name: 'thunderstorm', icon: 'thunderstorm', isChosen: false},
   ]
 

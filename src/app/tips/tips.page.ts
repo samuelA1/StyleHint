@@ -76,6 +76,7 @@ loading: boolean = false;
       const seenInfo = await this.tipService.seenBy(tipId);
       if (seenInfo['success']) {
         this.navCtrl.navigateRoot('tip', {animationDirection: 'forward'});
+        this.tipService.backRoute = 'tips'
       } else {
         this.presentAlert('Sorry, an error occured while trying to view a tip.')
       }

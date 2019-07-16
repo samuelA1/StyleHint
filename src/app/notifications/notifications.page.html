@@ -18,55 +18,64 @@
   </ion-refresher>
   <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
   <ion-list lines="none">
-    <ion-item *ngFor="let notify of notifications">
-      <!-- for tip -->
-      <div *ngIf="notify.typeOf == 'tip'">
-        <ion-text color="tertiary">
-            <h4>{{notify.typeOf | titlecase}}</h4>
-          </ion-text>
-          <div margin>
-            <p style="margin: 0" (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
-            <small>{{GetPostTime(notify.createdAt)}}</small>
-          </div>
-      </div>
-
-      <!-- friend request -->
-      <div *ngIf="notify.typeOf == 'friend'">
-          <ion-text color="warning">
-              <h4>{{notify.typeOf | titlecase}}</h4>
-            </ion-text>
-            <div margin>
-              <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
-              <div>
-                <ion-button (click)="acceptRequest(notify._id, notify.from)" color="primary">Accept request</ion-button>
-                <ion-button (click)="denyRequest(notify._id)" color="danger">Deny request</ion-button>
+    <small *ngIf="notifications?.length !== 0" (click)="deleteNotificationsAlert()" class="ion-float-right" style="color: red; padding: 10px"><b>clear all</b></small>
+    <ion-item-sliding *ngFor="let notify of notifications">
+        <ion-item >
+            <!-- for tip -->
+            <div *ngIf="notify.typeOf == 'tip'">
+              <ion-text color="tertiary">
+                  <h4>{{notify.typeOf | titlecase}}</h4>
+                </ion-text>
+                <div margin>
+                  <p style="margin: 0" (click)="toTip(notify.route, false)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                  <small>{{GetPostTime(notify.createdAt)}}</small>
+                </div>
+            </div>
+      
+            <!-- friend request -->
+            <div *ngIf="notify.typeOf == 'friend'">
+                <ion-text color="warning">
+                    <h4>{{notify.typeOf | titlecase}}</h4>
+                  </ion-text>
+                  <div margin>
+                    <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                    <div>
+                      <ion-button (click)="acceptRequest(notify._id, notify.from)" color="primary">Accept request</ion-button>
+                      <ion-button (click)="denyRequest(notify._id)" color="danger">Deny request</ion-button>
+                    </div>
+                    <small>{{GetPostTime(notify.createdAt)}}</small>
+                  </div>
               </div>
-              <small>{{GetPostTime(notify.createdAt)}}</small>
+      
+              <!-- accept request -->
+            <div *ngIf="notify.typeOf == 'accept'">
+                <ion-text color="warning">
+                    <h4>Friend</h4>
+                  </ion-text>
+                  <div margin>
+                    <p style="margin: 0" (click)="toFriends()"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                    <small>{{GetPostTime(notify.createdAt)}}</small>
+                  </div>
+              </div>
+      
+            <!-- for comment -->
+            <div *ngIf="notify.typeOf == 'comment'">
+              <ion-text color="success">
+                  <h4>{{notify.typeOf | titlecase}}</h4>
+                </ion-text>
+                <div margin>
+                  <p style="margin: 0" (click)="toTip(notify.comment, true)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                  <small>{{GetPostTime(notify.createdAt)}}</small>
+                </div>
             </div>
-        </div>
-
-        <!-- accept request -->
-      <div *ngIf="notify.typeOf == 'accept'">
-          <ion-text color="warning">
-              <h4>Friend</h4>
-            </ion-text>
-            <div margin>
-              <p style="margin: 0" (click)="toFriends()"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
-              <small>{{GetPostTime(notify.createdAt)}}</small>
-            </div>
-        </div>
-
-      <!-- for comment -->
-      <div *ngIf="notify.typeOf == 'comment'">
-        <ion-text color="success">
-            <h4>{{notify.typeOf | titlecase}}</h4>
-          </ion-text>
-          <div margin>
-            <p style="margin: 0" (click)="toTip(notify.route, true)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
-            <small>{{GetPostTime(notify.createdAt)}}</small>
-          </div>
-      </div>
-    </ion-item>
+          </ion-item>
+    
+        <ion-item-options (click)="deleteNotification(notify._id)" side="end">
+          <ion-item-option color="danger">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding> 
   </ion-list>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content

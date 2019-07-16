@@ -69,6 +69,19 @@ async acceptRequest(notifyId: any, friendId: any) {
   }
 }
 
+async deleteNotification(notifyId: any) {
+  try {
+    const notifyInfo = await this.friendService.deleteFriendNotification(notifyId);
+    if (notifyInfo['success']) {
+      this.notifications.splice(this.notifications.findIndex(t => t._id === notifyId), 1)
+    } else {
+      this.presentAlert('Sorry, an error occured while denying a request');
+    }
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while denying a request');
+  }
+}
+
 async denyRequest(notifyId: any) {
   try {
     const notifyInfo = await this.friendService.deleteFriendNotification(notifyId);
@@ -92,6 +105,19 @@ async clearNotifications() {
   });
 }
 
+async clearAll() {
+  try {
+    const clearInfo = await this.notificationService.clearAll();
+    if (clearInfo['success']) {
+      this.notifications = [];
+    } else {
+      this.presentAlert('Sorry, an error occured while removing all notifications');
+    }
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while removing all notifications');
+  }
+}
+
   navigateBack() {
     this.navCtrl.navigateBack('home');
   }
@@ -103,6 +129,7 @@ async clearNotifications() {
   toTip(tipId: any, isMyTip: any) {
     this.tipService.isMyTip = isMyTip; 
     this.tipService.tipToView = tipId;
+    this.tipService.backRoute = 'notifications'
     this.storage.set('tipId', tipId);
     this.seenBy(tipId);
   }
@@ -126,6 +153,27 @@ async clearNotifications() {
       header: 'Notification Error',
       message: message,
       buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async deleteNotificationsAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm hint delete',
+      message: 'Are you sure you want to clear out all notifications?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        }, {
+          text: 'Clear',
+          cssClass: 'delete',
+          handler: () => {
+            this.clearAll();
+          }
+        }
+      ]
     });
 
     await alert.present();

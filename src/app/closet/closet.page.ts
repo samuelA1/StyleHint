@@ -16,7 +16,7 @@ export class ClosetPage implements OnInit {
   closetInfo: boolean = false;
   editCollection: any = {
     newName: '',
-    collectionName: ''
+    collectionName: 'new'
   }
   editInfo: boolean = false;
   newInfo: boolean = false;
@@ -46,7 +46,7 @@ export class ClosetPage implements OnInit {
   }
 
   navigateBack() {
-    this.navCtrl.pop();
+    this.navCtrl.navigateBack('home');
   }
 
   cancel() {
