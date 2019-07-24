@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: 'tips', loadChildren: './tips/tips.module#TipsPageModule' },
   { path: 'closet', loadChildren: './closet/closet.module#ClosetPageModule' },
   { path: 'reference', loadChildren: './reference/reference.module#ReferencePageModule' },
+  { path: 'comments', loadChildren: './comments/comments.module#CommentsPageModule' },
 ];
 
 @NgModule({

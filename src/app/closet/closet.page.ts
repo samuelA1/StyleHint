@@ -133,7 +133,7 @@ export class ClosetPage implements OnInit {
       const removeInfo = await this.closetService.removeCloset({ collectionName: name, hintId: hintId });
       if (removeInfo['success']) {
         this.presentToast(removeInfo['message']);
-        this.navCtrl.pop();
+        this.navCtrl.navigateBack('closet');
         this.collectionInfo['hints'].splice(this.collectionInfo['hints'].findIndex(hint => hint._id == hintId), 1)
 
       } else {

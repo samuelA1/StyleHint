@@ -57,7 +57,9 @@ weathers: any[] =[
 
   async getHints(page: any) {
     this.getFinalData();
-    return this.http.post(apiUrl + `hints/get-hints?page=${page - 1}`, this.hints, {headers: await this.headers()}).toPromise();
+    if (this.hints.occasion !== undefined || this.hints.occasion !== null) {
+      return this.http.post(apiUrl + `hints/get-hints?page=${page - 1}`, this.hints, {headers: await this.headers()}).toPromise();
+    }
   }
 
   async getSingleHint() {

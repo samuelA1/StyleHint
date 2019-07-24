@@ -50,4 +50,24 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- suggestion modal -->
+  <div class="suggestion" padding  *ngIf="!weather.main">
+    <div class="row">
+      <div class="column" *ngFor="let suggest of suggestions; let i = index">
+        <img (click)="viewHint(suggest._id)" *ngIf="i == imgIndex"  class="fade" src="{{suggest.url}}" >
+      </div>
+      <!-- Next and previous buttons -->
+      <ion-buttons class="next" *ngIf="imgIndex < 4">
+        <ion-button (click)="next()">
+            <ion-icon color="warning"  name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons class="prev" *ngIf="imgIndex > 0">
+          <ion-button (click)="prev()">
+              <ion-icon color="warning"  name="arrow-back"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
 </ion-content>

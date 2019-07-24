@@ -29,7 +29,9 @@ freezePane: any = false;
     private actionCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private storage: Storage) { 
-      this.getTip();
+      if (this.tipService.tipToView !== '') {
+        this.getTip();
+      }
       this.socket = io('http://www.thestylehint.com');
     }
 
@@ -99,9 +101,15 @@ freezePane: any = false;
     try {
       const commentInfo = await this.tipService.addComment(tipId, {comment: this.comment});
       if (commentInfo['success']) {
-        this.socket.emit('comment', this.tip.owner);
-        this.comment = '';
-        this.toComment = false;
+        if (this.tip.owner == this.authService.userId) {
+          this.comment = '';
+          this.socket.emit('comment', 'owner');
+          this.toComment = false;
+        }else {
+          this.socket.emit('comment', this.tip.owner);
+          this.comment = '';
+          this.toComment = false;
+        }
       } else {
         this.presentAlert('Sorry, an error occured while trying to comment on a tip.');
       }

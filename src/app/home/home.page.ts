@@ -19,6 +19,7 @@ declare var google;
 })
 export class HomePage implements OnInit {
   imgIndex: number = 0;
+  changeSeason: boolean = false;
   location: any = {
     city: '',
     state: '',
@@ -58,8 +59,14 @@ export class HomePage implements OnInit {
       this.socket = io('http://www.thestylehint.com')
      }
 
+     //close suggestions modal
      close() {
        this.titleService.modal = true;
+     }
+
+     //bring up different seasons
+     change() {
+       this.changeSeason = !this.changeSeason;
      }
 
      viewHint(id: any) {
@@ -71,21 +78,21 @@ export class HomePage implements OnInit {
      ngOnInit() {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
-           this.notificationService.numberOfNotifications = 1 + 0
+           this.notificationService.numberOfNotifications++
            this.toastShareNotification('Someone just shared a hint with you.');
          }
        });
 
        this.socket.on('friendRequested', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications = 1 + 0
+          this.notificationService.numberOfNotifications++
           this.toastShareNotification('Someone just sent you a friend request.');
         }
       });
 
       this.socket.on('requestAccepted', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications = 1 + 0
+          this.notificationService.numberOfNotifications++
           this.toastShareNotification('Someone just accepted your friend request.');
         }
       });
@@ -98,7 +105,7 @@ export class HomePage implements OnInit {
 
        this.socket.on('commented', ownerId => {
         if (ownerId === this.authService.userId) {
-          this.notificationService.numberOfNotifications = 1 + 0
+          this.notificationService.numberOfNotifications++
           this.toastShareNotification('One of your friends just commented on one of your tips.');
         }
       });
@@ -169,6 +176,7 @@ export class HomePage implements OnInit {
   //choose option
   async chooseOccasion(iconName: any) {
     this.itemSelected = true;
+    this.titleService.hideLogOut = true;
     this.occasions.map(occasion => {
       occasion.isChosen =  occasion.icon === iconName ? (true) : false
     });
@@ -199,9 +207,13 @@ export class HomePage implements OnInit {
         this.suggestions = suggestInfo['suggestions'];
       } else {
         this.presentAlert('Sorry, an error occured while trying to get suggestions');
+        this.presentToast('No internet connection. Please connect to the internet', 'danger');
+
       }
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to get suggestions');
+      this.presentToast('No internet connection. Please connect to the internet', 'danger');
+
     }
   }
 
@@ -227,9 +239,11 @@ export class HomePage implements OnInit {
             }
           } else {
             this.presentAlert('Sorry, an error occured while trying to get your location');
+            this.presentToast('No internet connection. Please connect to the internet', 'danger');
           }
         } else {
           this.presentAlert('Sorry, an error occured while trying to get your location');
+          this.presentToast('No internet connection. Please connect to the internet', 'danger');
         }
       });
   
@@ -242,6 +256,8 @@ export class HomePage implements OnInit {
       this.weather.icon = `http://openweathermap.org/img/w/${weather['weather'][0].icon}.png`;
      }).catch((error) => {
        this.presentAlert('Sorry, an error occured while trying to get your location');
+       this.presentToast('No internet connection. Please connect to the internet', 'danger');
+
      });
   }
 
@@ -266,8 +282,12 @@ export class HomePage implements OnInit {
             }
           }
           this.presentAlert('Sorry, an error occured while trying to get your location');
+          this.presentToast('No internet connection. Please connect to the internet', 'danger');
+
         }
         this.presentAlert('Sorry, an error occured while trying to get your location');
+        this.presentToast('No internet connection. Please connect to the internet', 'danger');
+
       });
   
 
@@ -279,6 +299,7 @@ export class HomePage implements OnInit {
       this.weather.icon = `http://openweathermap.org/img/w/${weather['weather'][0].icon}.png`;
      }).catch((error) => {
        this.presentAlert('Sorry, an error occured while trying to get your location');
+       this.presentToast('No internet connection. Please connect to the internet', 'danger');
      });
   }
 
@@ -316,7 +337,7 @@ export class HomePage implements OnInit {
   //alert
    async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
-      header: 'Location error',
+      header: 'Error',
       message: message,
       buttons: ['OK']
     });
@@ -331,6 +352,17 @@ export class HomePage implements OnInit {
       position: 'bottom',
       duration: 3000,
       color: 'dark'
+    });
+    toast.present();
+  }
+
+  //toast
+  async presentToast(message, color) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      color: color,
+      position: 'top',
+      duration: 2000
     });
     toast.present();
   }
@@ -363,10 +395,22 @@ export class HomePage implements OnInit {
           text: 'No',
           handler: () => {
             this.itemSelected = false;
+            this.titleService.hideLogOut = false;
+
           }
         }
       ]
     });
     toast.present();
+  }
+
+  //refresh location
+  doRefresh(event){
+    setTimeout(() => {
+      this.getGeolocation();
+      this.getSeason();
+      this.watchPosition();
+      event.target.complete();
+    }, 1000);
   }
 }

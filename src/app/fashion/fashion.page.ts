@@ -56,7 +56,7 @@ export class FashionPage implements OnInit {
   }
 
   navigateBack() {
-    this.navCtrl.navigateBack('home');
+    this.navCtrl.pop();
   }
 
   //occasion/event array

@@ -9,7 +9,7 @@ const apiUrl = environment.apiUrl;
 })
 export class TipService {
   token: any;
-  tipToView: any;
+  tipToView: any = '';
   isMyTip: boolean = false;
   backRoute: any = '';
   constructor(private storage: Storage,
@@ -33,9 +33,7 @@ export class TipService {
   }
 
   async getTip() {
-    if (this.tipToView !== undefined) {
-      return this.http.get(apiUrl + `tips/get-single-tip/${this.tipToView}`, {headers: await this.headers()}).toPromise();
-    }
+    return this.http.get(apiUrl + `tips/get-single-tip/${this.tipToView}`, {headers: await this.headers()}).toPromise();
   }
 
   async addComment(tipId: any, comment: any) {

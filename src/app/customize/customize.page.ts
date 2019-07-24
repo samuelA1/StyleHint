@@ -68,7 +68,7 @@ export class CustomizePage implements OnInit {
   //Size selection for slide two
   mediumSize() {
     this.sizeSelected = false;
-    this.user.size = 'medium size';
+    this.user.size = 'medium';
     this.mediumElement = true;
     this.smallElement = false;
     this.largeElement = false;

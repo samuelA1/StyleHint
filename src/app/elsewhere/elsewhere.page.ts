@@ -1,8 +1,9 @@
+import { HintsService } from './../_services/hints.service';
 import { Storage } from '@ionic/storage';
 import { TitleService } from './../_services/title.service';
 import { WeatherService } from './../_services/weather.service';
 import { Component, OnInit, NgZone } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 declare var google;
 
 @Component({
@@ -11,8 +12,10 @@ declare var google;
   styleUrls: ['./elsewhere.page.scss'],
 })
 export class ElsewherePage implements OnInit {
+  imgIndex: number = 0;
   autocomplete: any;
   autocompleteItems: any;
+  suggestions: any[];
   googleAutoComplete: any
   geocoder: any;
   weather: any = {}; 
@@ -28,7 +31,10 @@ export class ElsewherePage implements OnInit {
      private weatherService: WeatherService,
      private navCtrl: NavController,
      private titleService: TitleService,
+     private hintService: HintsService,
+     private alertCtrl: AlertController,
      private storage: Storage) {
+      this.getSuggestions();
     this.googleAutoComplete = new google.maps.places.AutocompleteService();
     this.geocoder = new google.maps.Geocoder;
   
@@ -76,6 +82,44 @@ export class ElsewherePage implements OnInit {
     }
     this.weather.season = season;
     this.location.season = season;
+}
+
+//getSuggestions
+async getSuggestions() {
+  try {
+    const suggestInfo = await this.hintService.getSuggestions();
+    if (suggestInfo['success']) {
+      this.suggestions = suggestInfo['suggestions'];
+      setTimeout(() => {
+        this.next();
+      }, 3000);
+    } else {
+      this.presentAlert('Sorry, an error occured while trying to get suggestions');
+    }
+  } catch (error) {
+    this.presentAlert('Sorry, an error occured while trying to get suggestions');
+  }
+}
+
+//suggestions navigations
+prev() {
+  this.imgIndex--
+}
+
+next() {
+  if (this.imgIndex == 4) {
+    this.imgIndex = 0;
+  }
+  this.imgIndex++
+  setTimeout(() => {
+    this.next();
+  }, 3000);
+}
+
+viewHint(id: any) {
+  this.hintService.id = id;
+  this.hintService.backRoute = 'elsewhere'
+  this.navCtrl.navigateForward('reference');
 }
 
 //get place or autocomplete on search
@@ -126,6 +170,17 @@ export class ElsewherePage implements OnInit {
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
     this.weather.notice = '';
+  }
+
+  //alert
+  async presentAlert(message: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Location error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

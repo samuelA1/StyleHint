@@ -20,7 +20,7 @@
               </ion-text>
             </ion-item>
           </ion-menu-toggle>
-          <ion-item class="log-out-button" lines="none">
+          <ion-item *ngIf="!titleService.hideLogOut" class="log-out-button" lines="none">
               <ion-button class="log-out" color="warning" expand="block" (click)="logout()" size="medium">
                   Log out
               </ion-button>

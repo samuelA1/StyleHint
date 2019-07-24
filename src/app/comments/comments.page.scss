@@ -1,0 +1,55 @@
+.post {
+    position: absolute;
+    right: 0;
+    top: 52px;
+    z-index: 5;
+	width: 70px;
+	border: solid 1px rgba(255,255,255,0.8);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	font-size: x-small;
+	text-align: center;
+	border-radius: 0 25px 0 0;
+	cursor: pointer;
+}
+
+textarea {
+    min-height: 100px;
+    max-height: 100px;
+    overflow-y: scroll;
+}
+/* Modal Content */
+.modal-content {
+    display: grid;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+    width: 100%;
+    height: 25%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }
+
+  /* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}

@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class TitleService {
     showSplitPane: boolean  = false;
     modal: boolean = true;
+    hideLogOut: boolean = false;
     constructor() {
      }
     //final data to be used by fashion component

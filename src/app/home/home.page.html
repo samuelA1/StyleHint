@@ -18,6 +18,11 @@
 </ion-header>
 
 <ion-content scrollY="{{titleService.modal}}">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
   <!-- suggestion modal -->
   <div padding *ngIf="!titleService.modal" class="modal-content ">
       <div class="modal-c">
@@ -62,33 +67,6 @@
 
     <h6 *ngIf="!location.city" class="animated pulse infinite">Getting your location...</h6>
 
-  <!-- Season cards -->
-  <h5>Season</h5>
-  <small padding>It's currently <b>{{season | titlecase}}</b> in your area, you can choose the season which best suits you.</small>
-  <div class="selection-panes">
-    <ion-card *ngFor="let season of seasons">
-        <ion-card-content [class.chose]="season.isChosen" (click)="chooseSeason(season.name)">
-            <ion-icon [name]="season.icon"></ion-icon>
-            <p>{{season.name | titlecase}}</p>
-        </ion-card-content>
-    </ion-card>
-  </div>
-  <!-- Weather cards -->
-  <h5>Weather</h5>
-    <small *ngIf="weather.main == 'Clear'"> It's currently </small>
-    <small *ngIf="weather.main !== 'Clear'">Your area is currently covered with </small>
-    <small><b>{{weather.main | titlecase}}</b></small>
-    <small>, you can choose the weather condition which best suits you.</small>
-  <div class="selection-panes">
-    <ion-card *ngFor="let weather of weathers">
-      <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
-          <ion-icon [name]="weather.icon"></ion-icon>
-          <p>{{weather.name | titlecase}}</p>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-  
   <!-- Occasion cards -->
   <h5>Occasion</h5>
   <small>Choose the occasion or event you're interested in.</small>
@@ -103,6 +81,38 @@
         </ion-card-content>
     </ion-card>
   </div>
+
+  <div *ngIf="changeSeason">
+      <!-- Season cards -->
+    <h5>Season</h5>
+    <small padding>It's currently <b>{{season | titlecase}}</b> in your area, you can choose the season which best suits you.</small>
+    <div class="selection-panes">
+      <ion-card *ngFor="let season of seasons">
+          <ion-card-content [class.chose]="season.isChosen" (click)="chooseSeason(season.name)">
+              <ion-icon [name]="season.icon"></ion-icon>
+              <p>{{season.name | titlecase}}</p>
+          </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- Weather cards -->
+    <h5>Weather</h5>
+      <small *ngIf="weather.main == 'Clear'"> It's currently </small>
+      <small *ngIf="weather.main !== 'Clear'">Your area is currently covered with </small>
+      <small><b>{{weather.main | titlecase}}</b></small>
+      <small>, you can choose the weather condition which best suits you.</small>
+    <div class="selection-panes">
+      <ion-card *ngFor="let weather of weathers">
+        <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
+            <ion-icon [name]="weather.icon"></ion-icon>
+            <p>{{weather.name | titlecase}}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <ion-text color="secondary" (click)="change()" padding>
+    <p>Customize season and weather <b *ngIf="!changeSeason">&#62;</b><b *ngIf="changeSeason">&#8593;</b></p>
+  </ion-text>
 
   <ion-fab *ngIf="titleService.modal" horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
     <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
