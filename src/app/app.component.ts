@@ -35,6 +35,7 @@ export class AppComponent {
         let user = JSON.parse(userInfo);
         const loginInfo = await this.authService.autoLogin({email: user['email']});
         if (loginInfo['success']) {
+          this.titleService.isAdmin = user['isAdmin'];
           this.navCtrl.navigateRoot('home');
           this.titleService.showSplitPane = false;
           this.notificationService.notifyNumber();
@@ -63,7 +64,8 @@ export class AppComponent {
     this.storage.get('user').then((data)=> {
       if (data) {
         let user = JSON.parse(data);
-        this.authService.userId = user['_id']
+        this.authService.userId = user['_id'];
+        this.authService.userName = user['username'];
         this.titleService.appPages.map(p => {
         for (const key in user) {
           if (user.hasOwnProperty(key)) {
@@ -98,8 +100,23 @@ export class AppComponent {
 
   logout() {
     this.menu.close('custom');
+    this.menu.close('first');
     this.titleService.showSplitPane = true;
     this.storage.clear();
     this.navCtrl.navigateRoot('slides');
+  }
+
+  //navigation to admin
+  toAdmin() {
+    this.titleService.goToAdmin = true;
+    this.navCtrl.navigateRoot('menu');
+    this.menu.enable(false, 'custom');
+  }
+
+  //navigation back to user view
+  toUser() {
+    this.menu.enable(false, 'first');
+    this.titleService.goToAdmin = false;
+    this.navCtrl.navigateRoot('home')
   }
 }

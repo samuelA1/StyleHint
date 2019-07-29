@@ -1,6 +1,6 @@
 <ion-app >
   <ion-split-pane [disabled]="titleService.showSplitPane">
-    <ion-menu swipeGesture="false" menuId="custom">
+    <ion-menu *ngIf="!titleService.goToAdmin" swipeGesture="false" menuId="custom">
       <ion-header>
         <ion-toolbar>
           <ion-title>Account</ion-title>
@@ -20,12 +20,47 @@
               </ion-text>
             </ion-item>
           </ion-menu-toggle>
+          <ion-item *ngIf="titleService.isAdmin" class="log-out-button" lines="none">
+              <ion-button class="log-out" color="secondary" expand="block" (click)="toAdmin()" size="medium">
+                  Admin
+              </ion-button>
+          </ion-item>
           <ion-item *ngIf="!titleService.hideLogOut" class="log-out-button" lines="none">
               <ion-button class="log-out" color="warning" expand="block" (click)="logout()" size="medium">
                   Log out
               </ion-button>
           </ion-item>
         </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <!-- admin menu -->
+    <ion-menu *ngIf="titleService.goToAdmin" swipeGesture="false" menuId="first">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Tools</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-menu-toggle auto-hide="false">
+          <ion-list>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/menu']">Admin</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/add-hint']">Add hint</ion-item>
+            <ion-item>Menu Item</ion-item>
+            <ion-item>Menu Item</ion-item>
+            <ion-item>Menu Item</ion-item>
+          </ion-list>
+        </ion-menu-toggle>
+        <ion-item class="log-out-button" lines="none">
+            <ion-button class="log-out" color="secondary" expand="block" (click)="toUser()" lines="none" size="medium">
+                Switch view
+            </ion-button>
+        </ion-item>
+        <ion-item class="log-out-button" lines="none">
+            <ion-button class="log-out" color="warning" expand="block" (click)="logout()" size="medium">
+                Log out
+            </ion-button>
+        </ion-item>
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>

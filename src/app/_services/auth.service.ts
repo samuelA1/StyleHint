@@ -10,6 +10,7 @@ const apiUrl = environment.apiUrl;
 })
 export class AuthService {
   userId: any;
+  userName: any;
   constructor(private storage: Storage,
      private http: HttpClient) { }
 

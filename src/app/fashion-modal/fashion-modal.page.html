@@ -101,7 +101,7 @@
         </div>
         <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
         <textarea style="width: 100%; margin-top: 20px" *ngIf="!friends?.length == 0" placeholder="Any message to share?" name="message" [(ngModel)]="message" cols="30" rows="5"></textarea>
-        <ion-searchbar (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
+        <ion-searchbar *ngIf="friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
         <ion-item *ngFor="let friend of friends">
             <ion-avatar style="font-size: xx-large;padding-top: 3px;">

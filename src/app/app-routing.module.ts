@@ -30,6 +30,7 @@ const routes: Routes = [
   { path: 'closet', loadChildren: './closet/closet.module#ClosetPageModule' },
   { path: 'reference', loadChildren: './reference/reference.module#ReferencePageModule' },
   { path: 'comments', loadChildren: './comments/comments.module#CommentsPageModule' },
+  { path: 'menu', loadChildren: './admin/menu/menu.module#MenuPageModule' },
 ];
 
 @NgModule({

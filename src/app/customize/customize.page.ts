@@ -1,3 +1,4 @@
+import { AuthService } from './../_services/auth.service';
 import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController, AlertController } from '@ionic/angular';
@@ -31,7 +32,8 @@ export class CustomizePage implements OnInit {
   constructor(private navCtrl: NavController,
     private customizeService: CustomizeService,
     private alertCtrl: AlertController,
-    private titleService: TitleService) { 
+    private titleService: TitleService,
+    private authService: AuthService) { 
     
   }
 
@@ -115,7 +117,9 @@ export class CustomizePage implements OnInit {
       const customizationInfo = await this.customizeService.customize(customizedUser);
       if (customizationInfo['success']) {
         this.titleService.showSplitPane = false;
+        this.titleService.isAdmin = customizationInfo['user']['isAdmin'];
         this.navCtrl.navigateRoot('/home');
+        this.authService.userId = customizationInfo['user']['_id'];
         this.titleService.appPages.map(p => {
           for (const key in customizationInfo['user']) {
             if (customizationInfo['user'].hasOwnProperty(key)) {

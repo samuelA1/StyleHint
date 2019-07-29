@@ -31,7 +31,7 @@
                 <ion-icon color="dark"  name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <h1>Welcome Back!</h1>
+        <h1>Welcome!</h1>
         <h6>We selected some hints we think you might be interested in.</h6>
         <div  *ngFor="let suggest of suggestions; let i = index">
           <img (click)="viewHint(suggest._id)" *ngIf="i == imgIndex" class="fade" src="{{suggest.url}}" >

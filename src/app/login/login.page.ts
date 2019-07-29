@@ -40,8 +40,12 @@ export class LoginPage implements OnInit {
             const loginInfo = await this.authService.login(login);
             if (loginInfo['success']) {
               this.titleService.showSplitPane = false;
+              this.titleService.isAdmin = loginInfo['user']['isAdmin'];
+              this.titleService.goToAdmin = false;
               this.notificationService.notifyNumber();
-              this.navCtrl.navigateRoot('/home')
+              this.navCtrl.navigateRoot('/home');
+              this.authService.userId = loginInfo['user']['_id'];
+              this.authService.userName = loginInfo['user']['username'];
               this.titleService.appPages.map(p => {
                 for (const key in loginInfo['user']) {
                   if (loginInfo['user'].hasOwnProperty(key)) {

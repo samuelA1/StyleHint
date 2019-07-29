@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button >
+            @{{authService.userName}}
+        </ion-button>
+    </ion-buttons>
+    <ion-title>Admin</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- weather showcase -->
+  <div class="card" *ngIf="location.city">
+    <div class="card-container">
+      <div class="ion-float-left">
+          <h6>{{location.city}}, {{location.state}}</h6>
+          <small>{{location.country}}</small>
+          <p>{{date | date:'EEEE, MMMM d'}}</p> 
+      </div>
+      <p>{{weather.temp}}&#8451;</p>
+      <div class="weather-icon">
+          <img src="{{weather.icon}}" alt="weather-image">
+          <p>{{weather.main}}</p>
+      </div>
+    </div>
+  </div>
+
+  <h6 *ngIf="!location.city" class="animated pulse infinite">Getting your location...</h6>
+  <small>It's currently <b>{{season}}</b> in your loacation</small>
+
+
+  <ion-grid>
+    <h5>Number of:</h5>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: red;  border-radius: 100%">
+        <p>Currently active users</p>
+        <b>{{loggedIn}}</b>
+      </ion-col>
+      <ion-col style="background-color: lightcoral;  border-radius: 100%">
+        <p>Users for the day</p>
+        <b>{{dailyTotal}}</b>
+      </ion-col>
+      <ion-col style="background-color: yellow;  border-radius: 100%">
+        <p>Users for the week</p>
+        <b>40</b>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: lightblue;  border-radius: 100%">
+        <p>Users for <b>{{date | date:'MMMM'}}</b></p>
+        <b>90</b>
+      </ion-col>
+      <ion-col style="background-color:Green;  border-radius: 100%" size="6">
+        <p>Total users</p>
+        <b>1000</b>
+      </ion-col>
+      <ion-col style="background-color: brown;  border-radius: 100%">
+        <p>Users for year</p>
+        <b>90</b>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: violet;  border-radius: 100%"> 
+        <p>Total hints</p>
+        <b>1000</b>
+      </ion-col>
+      <ion-col style="background-color: purple;  border-radius: 100%">
+        <p>Total occasions</p>
+        <b>90</b>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

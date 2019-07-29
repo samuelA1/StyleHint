@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 export class TitleService {
     showSplitPane: boolean  = false;
     modal: boolean = true;
+    isAdmin: boolean = false;
+    goToAdmin: boolean = false;
     hideLogOut: boolean = false;
     constructor() {
      }

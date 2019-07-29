@@ -1,7 +1,7 @@
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { ToastController, AlertController, NavController } from '@ionic/angular';
+import { ToastController, AlertController, NavController, MenuController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
@@ -48,6 +48,7 @@ export class HomePage implements OnInit {
      private authService: AuthService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
+     private menu: MenuController,
      private storage: Storage) {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
@@ -226,10 +227,11 @@ export class HomePage implements OnInit {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[1]) {
             for (var i = 0; i < results.length; i++) {
-              if (results[i].types[0] === "locality") {
-                var city = results[i].address_components[0].long_name;
-                var state = results[i].address_components[2].long_name;
-                var country = results[i].address_components[3].long_name;
+              if (results[i].types[0] === "postal_code") {
+                var length = results[i].address_components.length;
+                var city = results[i].address_components[1].long_name;
+                var state = results[i].address_components[length - 2].long_name;
+                var country = results[i].address_components[length - 1].long_name;
                 this.location.city = city;
                 this.location.country = country;
                 this.location.state = state;
@@ -269,10 +271,11 @@ export class HomePage implements OnInit {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[1]) {
             for (var i = 0; i < results.length; i++) {
-              if (results[i].types[0] === "locality") {
-                var city = results[i].address_components[0].long_name;
-                var state = results[i].address_components[2].long_name;
-                var country = results[i].address_components[3].long_name;
+              if (results[i].types[0] === "postal_code") {
+                var length = results[i].address_components.length;
+                var city = results[i].address_components[1].long_name;
+                var state = results[i].address_components[length - 2].long_name;
+                var country = results[i].address_components[length - 1].long_name;
                 this.location.city = city;
                 this.location.country = country;
                 this.location.state = state;

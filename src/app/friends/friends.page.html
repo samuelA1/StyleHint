@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!modal">
   <ion-toolbar>
     <ion-buttons slot="start">
         <ion-button (click)="navigateBack()">
@@ -31,7 +31,7 @@
             </ion-label>
         </ion-item>
     
-        <ion-item-options (click)="removeFriend(friend._id)" side="end">
+        <ion-item-options (click)="deleteFriend(friend._id, friend.username)" side="end">
           <ion-item-option color="danger">
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
@@ -44,32 +44,65 @@
   <div *ngIf="modal" class="modal-content " padding>
     <ion-list lines="none">
         <div class="friends-header ion-margin-top"  >
-            <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
-            <b >Add new friend</b>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                  <ion-button (click)="cancel()">
+                      <ion-icon color="dark"  name="arrow-back" ></ion-icon>
+                  </ion-button>
+              </ion-buttons>
+              <ion-title>Add new friend</ion-title>
+            </ion-toolbar>
         </div>
-        <ion-searchbar (ionChange)="searchAddFriend()" name="query" [(ngModel)]="query"  placeholder="search by username"></ion-searchbar>
-        <p *ngIf="content?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
-        <ion-item *ngFor="let friend of content">
-            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
-                <ion-icon name="contact"></ion-icon>
-            </ion-avatar>
-            <ion-label>
-              <h2>@{{friend.username}}</h2>
-            </ion-label>
-            <div *ngIf="!friend.isFriend && friend.objectID !== authService.userId">
-                <ion-button (click)="friendRequest(friend.objectID)" color="tertiary">Friend request</ion-button>
-            </div>
-            <div *ngIf="friend.isFriend">
-                <ion-text color="tertiary">
-                  <p>Already your friend</p>
-                </ion-text>
-            </div>
-            <div *ngIf="friend.objectID === authService.userId">
-                <ion-text color="tertiary">
-                  <p>Me</p>
-                </ion-text>
-            </div>
-        </ion-item>
+        <ion-button *ngIf="!viewFriendRequests" color="secondary" expand="block" (click)="viewRequests()" lines="none" size="medium">
+            <ion-icon slot="start" name="person-add"></ion-icon>
+            View friend requests
+        </ion-button>
+        <ion-text *ngIf="viewFriendRequests" color="secondary">
+            <p (click)="viewRequests()" >Hide friend requests<b >&#8595;</b></p>
+        </ion-text>
+        <div *ngIf="!viewFriendRequests">
+            <ion-searchbar  (ionChange)="searchAddFriend()" name="query" [(ngModel)]="query"  placeholder="search by username"></ion-searchbar>
+            <p *ngIf="content?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
+            <ion-item *ngFor="let friend of content">
+                <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                    <ion-icon name="contact"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                  <h2>@{{friend.username}}</h2>
+                </ion-label>
+                <div *ngIf="!friend.isFriend && friend.objectID !== authService.userId">
+                    <ion-button *ngIf="!friend.sent" (click)="friendRequest(friend.objectID)" color="tertiary">Friend request</ion-button>
+                    <ion-text color="tertiary" *ngIf="friend.sent">
+                      <p >Friend request sent</p>
+                    </ion-text>
+                </div>
+                <div *ngIf="friend.isFriend">
+                    <ion-text color="tertiary">
+                      <p>Already your friend</p>
+                    </ion-text>
+                </div>
+                <div *ngIf="friend.objectID === authService.userId">
+                    <ion-text color="tertiary">
+                      <p>Me</p>
+                    </ion-text>
+                </div>
+            </ion-item>
+        </div>
+
+<!-- friend requests -->
+        <div *ngIf="viewFriendRequests">
+          <p *ngIf="notifications.length == 0">You do not have any friend requests.</p>
+            <ion-item *ngFor="let notify of notifications">
+                <div margin>
+                  <p style="margin: 0"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                  <div>
+                    <ion-button (click)="acceptRequest(notify._id, notify.from)" color="primary">Accept request</ion-button>
+                    <ion-button (click)="denyRequest(notify._id)" color="danger">Deny request</ion-button>
+                  </div>
+                  <small>{{GetPostTime(notify.createdAt)}}</small>
+                </div>
+          </ion-item>
+        </div>
     </ion-list>
   </div>
 
