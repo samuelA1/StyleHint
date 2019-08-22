@@ -1,0 +1,71 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+      <ion-title>Update Account</ion-title>
+      <ion-progress-bar *ngIf="loading" type="indeterminate" color="medium"></ion-progress-bar>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <form #f="ngForm">
+              <div>
+                  <b>Joined on: {{user.createdAt | date: fullDate}}</b>
+              </div>
+                <ion-label margin><b>Country</b>:</ion-label>
+                <ion-select (ionChange)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+                    <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
+                </ion-select>
+                <small *ngIf="error.country">{{error.country}}</small>
+                
+                <ion-label margin><b>Username</b>:</ion-label>
+                <ion-input (keyup)="removeErrors()" name="username" [(ngModel)]="user.username" type="text" placeholder="Username" required></ion-input>
+                <small *ngIf="error.username">{{error.username}}</small>
+
+                <ion-label margin><b>Email</b>:</ion-label>
+                <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Email" required></ion-input>
+                <small *ngIf="error.email">{{error.email}}</small>
+                <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
+
+                <div>
+                    <ion-label margin><b>Choose size</b>:</ion-label>
+                    <ion-select name="size" [(ngModel)]="user.size"  placeholder="select size">
+                      <ion-select-option *ngFor="let size of sizes" value="{{size.name}}">{{size.name | titlecase}}</ion-select-option>
+                    </ion-select>
+                </div>
+                <ion-label margin><b>Choose gender</b>:</ion-label>
+                <ion-select name="gender" [(ngModel)]="user.gender" interface="popover"  placeholder="select gender">
+                  <ion-select-option *ngFor="let gender of genders" value="{{gender.name}}">{{gender.name | titlecase}}</ion-select-option>
+                </ion-select>
+
+                <ion-label margin><b>Choose interest</b>:</ion-label>
+                <ion-select name="interest" [(ngModel)]="user.interest"  placeholder="select interest">
+                  <ion-select-option *ngFor="let interest of interests" value="{{interest.name}}">{{interest.name | titlecase}}</ion-select-option>
+                </ion-select>
+
+                <ion-label margin><b>Choose admin</b> role:</ion-label>
+                <ion-select name="isAdmin" [(ngModel)]="user.isAdmin"  placeholder="select admin role">
+                  <ion-select-option *ngFor="let admin of isAdmin" value="{{admin.name}}">{{admin.name}}</ion-select-option>
+                </ion-select>
+          
+                <div>
+                    <ion-label margin><b>New password</b>:</ion-label>
+                    <div>
+                        <small>Password should have atleast 8 characters</small>
+                    </div>
+                    <ion-input (keyup)="removeErrors()" name="password" [(ngModel)]="user.password" type="password" placeholder="Password" required></ion-input>
+                    <small *ngIf="error.password">{{error.password}}</small>
+                </div>
+                <ion-button color="warning" shape="round" (click)="updateUser()" expand="block" size="large" [disabled]="!f.dirty">
+                    Update account
+                </ion-button>
+            </form>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-content>
+  

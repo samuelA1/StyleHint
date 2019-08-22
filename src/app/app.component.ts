@@ -1,13 +1,15 @@
+import { AdminService } from './_services/admin.service';
 import { AuthService } from './_services/auth.service';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 
-import { Platform, NavController, MenuController } from '@ionic/angular';
+import { Platform, NavController, MenuController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TitleService } from './_services/title.service';
 import { NotificationService } from './_services/notification.service';
+import * as io from 'socket.io-client';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { NotificationService } from './_services/notification.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+  socket: any;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -22,14 +25,31 @@ export class AppComponent {
     private screenOrientation: ScreenOrientation,
     public titleService: TitleService,
     private authService: AuthService,
+    private adminService: AdminService,
     private notificationService: NotificationService,
     private storage: Storage,
     private navCtrl: NavController,
+    private alertCtrl: AlertController,
     private menu: MenuController
   ) {
     this.initializeApp();
-    //root navigation
-    this.storage.get('token').then(async (data) => {
+    this.processing();
+    this.socket = io('http://www.thestylehint.com');
+   
+  }
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      this.titleService.modal = false;
+    });
+  }
+
+  //routes the user and sets up the app
+  processing() {
+     //root navigation
+     this.storage.get('token').then(async (data) => {
       if (data) {
         let userInfo = await this.storage.get('user');
         let user = JSON.parse(userInfo);
@@ -37,6 +57,7 @@ export class AppComponent {
         if (loginInfo['success']) {
           this.titleService.isAdmin = user['isAdmin'];
           this.navCtrl.navigateRoot('home');
+          this.updateStatistics('add');
           this.titleService.showSplitPane = false;
           this.notificationService.notifyNumber();
         } else {
@@ -89,21 +110,14 @@ export class AppComponent {
      })
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-      this.titleService.modal = false;
-    });
-  }
-
   logout() {
-    this.menu.close('custom');
-    this.menu.close('first');
-    this.titleService.showSplitPane = true;
-    this.storage.clear();
-    this.navCtrl.navigateRoot('slides');
+    this.updateStatistics('subtract').then(() => {
+      this.storage.clear();
+      this.menu.close('custom');
+      this.menu.close('first');
+      this.titleService.showSplitPane = true;
+      this.navCtrl.navigateRoot('slides');
+    });
   }
 
   //navigation to admin
@@ -119,4 +133,34 @@ export class AppComponent {
     this.titleService.goToAdmin = false;
     this.navCtrl.navigateRoot('home')
   }
+
+  //update stats
+  async updateStatistics(action: any) {
+    try {
+      const statisticsInfo = await this.adminService.updateStatistics({action: action});
+      if (statisticsInfo['success']) {
+        if (`${action}` === 'add') {
+          this.socket.emit('logIn', {});
+        } else {
+          this.socket.emit('logOut', {});
+        }
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to login');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to login');
+    }
+  }
+
+    //alert ctrl
+    async presentAlert(message: any) {
+      const alert = await this.alertCtrl.create({
+        header: 'Error',
+        message: message,
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+    }
+
 }

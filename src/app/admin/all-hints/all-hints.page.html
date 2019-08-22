@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Hints</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-badge *ngIf="allHints?.length !== 0" color="warning">Total {{allHints?.length}}</ion-badge> <ion-badge *ngIf="genderSort" color="primary">{{genderSort | titlecase}}</ion-badge> <ion-badge *ngIf="occasionSort" color="primary">{{occasionSort | titlecase}}</ion-badge> <ion-badge *ngIf="interestSort" color="primary">{{interestSort | titlecase}}</ion-badge>  
+  <ion-list >
+    <ion-item *ngFor="let hint of allHints">
+        <ion-label (click)="toUpdate(hint._id)">
+            <img [src]="hint.url" alt="hint">
+        </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- genders actionsheet -->
+ <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="warning" (click)="presentGenderActionSheet()">
+        <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="light" (click)="presentOccasionActionSheet()">
+          <ion-icon name="options"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <!-- interest actionsheet -->
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button color="tertiary" (click)="presentInterestActionSheet()">
+          <ion-icon name="options"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>

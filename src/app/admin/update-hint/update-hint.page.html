@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+    <ion-title>Update hint</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+            <form #f="ngForm" style="display: grid;">
+              <ion-label margin>Overview:</ion-label>
+              <textarea name="overview" [(ngModel)]="hint.overview" cols="30" rows="10" required></textarea>
+              <ion-label margin>Recommendations:</ion-label>
+              <textarea name="recommendations" [(ngModel)]="hint.recommendations" cols="30" rows="10" required></textarea>
+              <ion-label margin>Alternatives:</ion-label>
+              <textarea name="alternatives" [(ngModel)]="hint.alternatives" cols="30" rows="10" required></textarea>
+              <ion-label margin>Dont's:</ion-label>
+              <textarea name="dont" [(ngModel)]="hint.dont" cols="30" rows="10" required></textarea>
+              <ion-label margin>Choose season:</ion-label>
+              <ion-select multiple="true" name="season" [(ngModel)]="hint.season"  placeholder="select season">
+                <ion-select-option *ngFor="let season of seasons" value="{{season.name}}">{{season.name | titlecase}}</ion-select-option>
+              </ion-select>
+              <ion-label margin>Choose occasion:</ion-label>
+              <ion-select multiple="true" name="occasion" [(ngModel)]="hint.occasion"  placeholder="select occasion">
+                <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
+              </ion-select>
+              <ion-label margin>Choose weather:</ion-label>
+              <ion-select multiple="true" name="weather" [(ngModel)]="hint.weather"  placeholder="select weather">
+                <ion-select-option *ngFor="let weather of weathers" value="{{weather.name}}">{{weather.name | titlecase}}</ion-select-option>
+              </ion-select>
+              <ion-label margin>Choose size:</ion-label>
+              <ion-select multiple="true" name="size" [(ngModel)]="hint.size"  placeholder="select size">
+                <ion-select-option *ngFor="let size of sizes" value="{{size.name}}">{{size.name | titlecase}}</ion-select-option>
+              </ion-select>
+              <ion-label margin>Choose gender:</ion-label>
+              <ion-select name="gender" [(ngModel)]="hint.gender" interface="popover"  placeholder="select gender">
+                <ion-select-option *ngFor="let gender of genders" value="{{gender.name}}">{{gender.name | titlecase}}</ion-select-option>
+              </ion-select>
+              <ion-label margin>Choose interest:</ion-label>
+              <ion-select multiple="true" name="interest" [(ngModel)]="hint.interest"  placeholder="select interest">
+                <ion-select-option *ngFor="let interest of interests" value="{{interest.name}}">{{interest.name | titlecase}}</ion-select-option>
+              </ion-select>
+    
+              <ion-button color="warning" shape="round" (click)="updateHint()" expand="block" size="large" [disabled]="!f.dirty">
+                  Update hint
+              </ion-button>
+            </form>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+</ion-content>

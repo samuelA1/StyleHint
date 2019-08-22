@@ -1,3 +1,4 @@
+import { AdminService } from './../../_services/admin.service';
 import { AuthService } from './../../_services/auth.service';
 import { WeatherService } from './../../_services/weather.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -25,14 +26,20 @@ export class MenuPage implements OnInit {
   latlng: any;
   season: any;
   socket: any;
+  totalUsersCount: number = 0; //total number of registered users
+  totalHintsCount: number = 0; //total number of hints
   loggedIn: number = 0; //number of curently logged in users
   dailyTotal: number = 0; // number of users who logged in for the day
+  weeklyTotal: number = 0; // number of users who logged in for the week
+  monthlyTotal: number = 0; // number of users who logged in for the month
+  yearlyTotal: number = 0; // number of users who logged in for the year
 
   constructor(public titleService: TitleService,
     private menuCtrl: MenuController,
     private geolocation: Geolocation,
     private weatherService: WeatherService,
     public authService: AuthService,
+    private adminService: AdminService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController
     ) { 
@@ -42,6 +49,12 @@ export class MenuPage implements OnInit {
        }, 3000);
       this.watchPosition();
       this.getSeason();
+      this.getStatistics();
+      this.totalUsers();
+      this.totalHints();
+      this.weekStatistics();
+      this.monthStatistics();
+      this.yearStatistics();
       this.socket = io('http://www.thestylehint.com')
     }
 
@@ -50,15 +63,107 @@ export class MenuPage implements OnInit {
     this.menuCtrl.open('first');
 
     //logged in
+    this.socket.emit('logIn', {});
     this.socket.on('loggedIn', total => {
-      this.loggedIn = total.currentTotal;
-      this.dailyTotal = total.dayTotal;
+      this.loggedIn = total['activeUsers'];
+      if (this.titleService.isAdmin) {
+        this.weekStatistics();
+        this.monthStatistics();
+        this.yearStatistics();
+        this.getStatistics();
+        this.totalUsers();
+        this.totalHints();
+      }
     });
 
     //logged out
     this.socket.on('loggedOut', total => {
-      this.loggedIn = total.currentTotal;
+      this.loggedIn = total['activeUsers'];
     });
+  }
+
+  //get total users
+  async totalUsers() {
+    try {
+      const statisticsInfo = await this.adminService.totalUsers();
+      if (statisticsInfo['success']) {
+        this.totalUsersCount = statisticsInfo['totalUsers'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting stats info');
+    }
+  }
+
+    //get total Hints
+    async totalHints() {
+      try {
+        const statisticsInfo = await this.adminService.totalHints();
+        if (statisticsInfo['success']) {
+          this.totalHintsCount = statisticsInfo['totalHints'];
+        } else {
+          this.presentAlert('Sorry, an error occured while getting stats info');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    }
+
+  //get statistics
+  async getStatistics() {
+    try {
+      const statisticsInfo = await this.adminService.getStatistics();
+      if (statisticsInfo['success']) {
+        this.dailyTotal = statisticsInfo['dailyUsers'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting stats info');
+    }
+  }
+
+  //week stats
+  async weekStatistics() {
+    try {
+      const statisticsInfo = await this.adminService.weekStatistics();
+      if (statisticsInfo['success']) {
+        this.weeklyTotal = statisticsInfo['weeklyUsers'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting stats info');
+    }
+  }
+
+  //month stats
+  async monthStatistics() {
+    try {
+      const statisticsInfo = await this.adminService.monthStatistics({year: new Date().getFullYear(), month: new Date().getMonth()});
+      if (statisticsInfo['success']) {
+        this.monthlyTotal = statisticsInfo['monthlyUsers'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting stats info');
+    }
+  }
+
+  //year stats
+  async yearStatistics() {
+    try {
+      const statisticsInfo = await this.adminService.yearStatistics({year: new Date().getFullYear()});
+      if (statisticsInfo['success']) {
+        this.yearlyTotal = statisticsInfo['yearlyUsers'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting stats info');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting stats info');
+    }
   }
 
   getSeason() {

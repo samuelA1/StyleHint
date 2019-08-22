@@ -79,21 +79,24 @@ export class HomePage implements OnInit {
      ngOnInit() {
        this.socket.on('share', friend => {
          if (friend === this.authService.userId) {
-           this.notificationService.numberOfNotifications++
+          //  this.notificationService.numberOfNotifications++
+          this.notificationService.notifyNumber();
            this.toastShareNotification('Someone just shared a hint with you.');
          }
        });
 
        this.socket.on('friendRequested', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          // this.notificationService.numberOfNotifications++
+          this.notificationService.notifyNumber();
           this.toastShareNotification('Someone just sent you a friend request.');
         }
       });
 
       this.socket.on('requestAccepted', friend => {
         if (friend === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          // this.notificationService.numberOfNotifications++
+          this.notificationService.notifyNumber();
           this.toastShareNotification('Someone just accepted your friend request.');
         }
       });
@@ -106,7 +109,8 @@ export class HomePage implements OnInit {
 
        this.socket.on('commented', ownerId => {
         if (ownerId === this.authService.userId) {
-          this.notificationService.numberOfNotifications++
+          // this.notificationService.numberOfNotifications++
+          this.notificationService.notifyNumber();
           this.toastShareNotification('One of your friends just commented on one of your tips.');
         }
       });
@@ -391,6 +395,7 @@ export class HomePage implements OnInit {
             this.titleService.finalData = this.finalData;
             this.navCtrl.navigateForward('fashion');
             this.storage.set('finalData', JSON.stringify(this.finalData));
+            this.titleService.hideLogOut = false;
           }
         }, {
           side: 'start',

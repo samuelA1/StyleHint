@@ -38,41 +38,41 @@
   <ion-grid>
     <h5>Number of:</h5>
     <ion-row class="ion-margin-bottom">
-      <ion-col style="background-color: red;  border-radius: 100%">
+      <ion-col style="background-color: red;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
         <p>Currently active users</p>
         <b>{{loggedIn}}</b>
       </ion-col>
-      <ion-col style="background-color: lightcoral;  border-radius: 100%">
+      <ion-col style="background-color: lightcoral;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
         <p>Users for the day</p>
         <b>{{dailyTotal}}</b>
       </ion-col>
-      <ion-col style="background-color: yellow;  border-radius: 100%">
+      <ion-col style="background-color: yellow;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
         <p>Users for the week</p>
-        <b>40</b>
+        <b>{{weeklyTotal}}</b>
       </ion-col>
     </ion-row>
     <ion-row class="ion-margin-bottom">
-      <ion-col style="background-color: lightblue;  border-radius: 100%">
+      <ion-col style="background-color: lightblue;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
         <p>Users for <b>{{date | date:'MMMM'}}</b></p>
-        <b>90</b>
+        <b>{{monthlyTotal}}</b>
       </ion-col>
-      <ion-col style="background-color:Green;  border-radius: 100%" size="6">
+      <ion-col style="background-color:Green;  border-radius: 100%" size="6"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
         <p>Total users</p>
-        <b>1000</b>
+        <b>{{totalUsersCount}}</b>
       </ion-col>
-      <ion-col style="background-color: brown;  border-radius: 100%">
-        <p>Users for year</p>
-        <b>90</b>
+      <ion-col style="background-color: brown;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-users']">
+        <p>Users for <b>{{date | date:'y'}}</b></p>
+        <b>{{yearlyTotal}}</b>
       </ion-col>
     </ion-row>
     <ion-row class="ion-margin-bottom">
-      <ion-col style="background-color: violet;  border-radius: 100%"> 
+      <ion-col style="background-color: violet;  border-radius: 100%" [routerDirection]="'forward'" [routerLink]="['/all-hints']"> 
         <p>Total hints</p>
-        <b>1000</b>
+        <b>{{totalHintsCount}}</b>
       </ion-col>
       <ion-col style="background-color: purple;  border-radius: 100%">
         <p>Total occasions</p>
-        <b>90</b>
+        <b>9</b>
       </ion-col>
     </ion-row>
   </ion-grid>

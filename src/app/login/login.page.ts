@@ -1,8 +1,11 @@
+import { AdminService } from './../_services/admin.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 import { NotificationService } from '../_services/notification.service';
+import * as io from 'socket.io-client';
+
 
 @Component({
   selector: 'app-login',
@@ -12,13 +15,17 @@ import { NotificationService } from '../_services/notification.service';
 export class LoginPage implements OnInit {
   user: any = {}; // user object to be sent to the database
   error: any = {};
+  socket: any;
   loading: boolean = false; //loader on the page after the user clicks the create account button
   
     constructor(private navCtrl: NavController,
       private alertCtrl: AlertController,
       private authService: AuthService,
+      private adminService: AdminService,
       private notificationService: NotificationService,
-      private titleService: TitleService) { }
+      private titleService: TitleService) { 
+        this.socket = io('http://www.thestylehint.com');
+      }
   
     //performs login
     login() {
@@ -44,6 +51,7 @@ export class LoginPage implements OnInit {
               this.titleService.goToAdmin = false;
               this.notificationService.notifyNumber();
               this.navCtrl.navigateRoot('/home');
+              this.updateStatistics('add');
               this.authService.userId = loginInfo['user']['_id'];
               this.authService.userName = loginInfo['user']['username'];
               this.titleService.appPages.map(p => {
@@ -85,6 +93,20 @@ export class LoginPage implements OnInit {
         this.error.password = 'Sorry, your password must be at least 8 characters';
       }
       return false;
+    }
+
+    //update stats
+    async updateStatistics(action: any) {
+      try {
+        const statisticsInfo = await this.adminService.updateStatistics({action: action});
+        if (statisticsInfo['success']) {
+          this.socket.emit('logIn', {});
+        } else {
+          this.presentAlert('Sorry, an error occured while trying to login')
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while trying to login')
+      }
     }
 
     //alert ctrl

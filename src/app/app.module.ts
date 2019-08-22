@@ -25,6 +25,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 
 
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TipService } from './_services/tip.service';

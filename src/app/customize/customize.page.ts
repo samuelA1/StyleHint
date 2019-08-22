@@ -1,8 +1,10 @@
+import { AdminService } from './../_services/admin.service';
 import { AuthService } from './../_services/auth.service';
 import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController, AlertController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-customize',
@@ -12,6 +14,7 @@ import { TitleService } from '../_services/title.service';
 export class CustomizePage implements OnInit {
   @ViewChild('slides') slides: IonSlides;
   user: any = {};
+  socket: any;
 
   maleElement: any = false;
   femaleElement: any = false;
@@ -31,10 +34,11 @@ export class CustomizePage implements OnInit {
   
   constructor(private navCtrl: NavController,
     private customizeService: CustomizeService,
+    private adminService: AdminService,
     private alertCtrl: AlertController,
     private titleService: TitleService,
     private authService: AuthService) { 
-    
+      this.socket = io('http://www.thestylehint.com');
   }
 
   genderSelection(event: any) {
@@ -119,6 +123,7 @@ export class CustomizePage implements OnInit {
         this.titleService.showSplitPane = false;
         this.titleService.isAdmin = customizationInfo['user']['isAdmin'];
         this.navCtrl.navigateRoot('/home');
+        this.updateStatistics('add')
         this.authService.userId = customizationInfo['user']['_id'];
         this.titleService.appPages.map(p => {
           for (const key in customizationInfo['user']) {
@@ -156,6 +161,20 @@ export class CustomizePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+   //update stats
+   async updateStatistics(action: any) {
+    try {
+      const statisticsInfo = await this.adminService.updateStatistics({action: action});
+      if (statisticsInfo['success']) {
+        this.socket.emit('logIn', {});
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to update stats info')
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to update stats info')
+    }
   }
 
   ngOnInit() {

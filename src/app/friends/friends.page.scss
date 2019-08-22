@@ -15,6 +15,13 @@
     animation-duration: 0.4s
   }
 
+  .request {
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }
+
   ion-content {
     overflow: auto;
   }

@@ -31,6 +31,7 @@
     "@ionic/pro": "2.0.4",
     "@ionic/storage": "^2.2.0",
     "animate.css": "^3.7.0",
+    "chart.js": "^2.8.0",
     "cordova-android": "8.0.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "^5.0.1",

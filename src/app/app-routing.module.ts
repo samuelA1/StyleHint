@@ -31,6 +31,10 @@ const routes: Routes = [
   { path: 'reference', loadChildren: './reference/reference.module#ReferencePageModule' },
   { path: 'comments', loadChildren: './comments/comments.module#CommentsPageModule' },
   { path: 'menu', loadChildren: './admin/menu/menu.module#MenuPageModule' },
+  { path: 'all-users', loadChildren: './admin/all-users/all-users.module#AllUsersPageModule' },
+  { path: 'update-user', loadChildren: './admin/update-user/update-user.module#UpdateUserPageModule' },
+  { path: 'all-hints', loadChildren: './admin/all-hints/all-hints.module#AllHintsPageModule' },
+  { path: 'update-hint', loadChildren: './admin/update-hint/update-hint.module#UpdateHintPageModule' },
 ];
 
 @NgModule({

@@ -20,7 +20,7 @@
     <ion-list lines="none">
         <ion-searchbar *ngIf="search != '' || friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0 && search != ''">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
-        <p *ngIf="friends?.length == 0">You have no friends yet, try adding some friends.</p>
+        <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
       <ion-item-sliding *ngFor="let friend of friends">
         <ion-item>
             <ion-avatar style="font-size: xx-large;padding-top: 3px;">
@@ -90,7 +90,7 @@
         </div>
 
 <!-- friend requests -->
-        <div *ngIf="viewFriendRequests">
+        <div class="request" *ngIf="viewFriendRequests">
           <p *ngIf="notifications.length == 0">You do not have any friend requests.</p>
             <ion-item *ngFor="let notify of notifications">
                 <div margin>

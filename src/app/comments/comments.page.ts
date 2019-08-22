@@ -35,7 +35,7 @@ export class CommentsPage implements OnInit {
         const tipInfo = await this.tipService.getTip();
         if (tipInfo['success']) {
           this.tip = tipInfo['tip'];
-          this.comments = _.orderBy(tipInfo['tip'].comments, ['commentedAt'],['desc']);;
+          this.comments = _.orderBy(tipInfo['tip'].comments, ['commentedAt'],['desc']);
         } else {
           this.presentAlert('Sorry, an error occured while getting tip.');
         }

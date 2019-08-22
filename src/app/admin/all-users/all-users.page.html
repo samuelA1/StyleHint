@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Users</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- //chart -->
+  <h6>Showing user chart for the year <b>{{date | date:'y'}}</b></h6>
+    <canvas #barCanvas></canvas>
+
+    <ion-badge *ngIf="sortings" color="primary">{{sortings | titlecase}}</ion-badge>  <ion-badge *ngIf="sortings" color="warning">{{allUsers?.length}}</ion-badge>
+    <ion-searchbar  (ionChange)="searchUser()" name="query" [(ngModel)]="query"  placeholder="search by username"></ion-searchbar>
+    <p *ngIf="allUsers?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
+  <ion-list >
+    <ion-item *ngFor="let user of allUsers">
+        <ion-label (click)="toUpdate(user._id || user.objectID)">
+            <h2>@{{user.username}}</h2>
+          </ion-label>
+          <div >
+              <ion-badge *ngIf="user.isAdmin" color="success">Admin</ion-badge>
+          </div>
+    </ion-item>
+  </ion-list>
+
+  <!-- genders actionsheet -->
+ <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="light" (click)="presentGenderActionSheet()">
+        <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

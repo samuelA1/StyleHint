@@ -1,6 +1,7 @@
 import { AdminService } from './../../_services/admin.service';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import * as io from 'socket.io-client';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-hint.page.scss'],
 })
 export class AddHintPage implements OnInit {
+socket: any;
 hint: any = {
   occasion: '',
   season: '',
@@ -75,7 +77,9 @@ sizes: any = [
   constructor(private camera: Camera,
     private alertCtrl: AlertController,
     private adminService: AdminService,
-    private toastCtrl: ToastController) { }
+    private toastCtrl: ToastController) {
+      this.socket = io('http://www.thestylehint.com')
+     }
 
   getImage() {
     const options: CameraOptions = {
@@ -114,6 +118,7 @@ sizes: any = [
     const hintInfo = await this.adminService.addHint(form);
     if (hintInfo['success']) {
         this.presentToast(hintInfo['message']);
+        this.socket.emit('logIn', {});
     } else {
         this.presentAlert(hintInfo['message']);
     } 
