@@ -9,6 +9,7 @@ export class TitleService {
     isAdmin: boolean = false;
     goToAdmin: boolean = false;
     hideLogOut: boolean = false;
+    activateHome: boolean = true; // unfreeze home screen
     constructor() {
      }
     //final data to be used by fashion component

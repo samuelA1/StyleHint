@@ -116,6 +116,16 @@
     </ion-list>
   </div>
 
+   <!-- notify modal -->
+   <div margin *ngIf="titleService.finalData.weather === 'rain' && rainModal" class="notify-modal " (click)="close()">
+      <ion-buttons style="float: left" slot="start">
+          <ion-button (click)="close()" >
+              <ion-icon color="dark"  name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <p>It's currently raining or it might soon rain in your area. Please make sure you have your <b>jacket</b> and <b>umbrella</b> handy</p>
+  </div>
+
   <!--closet Modal content -->
   <div *ngIf="closetModal" class="modal-content " padding>
     <ion-list lines="none">

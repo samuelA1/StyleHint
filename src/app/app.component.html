@@ -1,6 +1,6 @@
 <ion-app >
   <ion-split-pane [disabled]="titleService.showSplitPane">
-    <ion-menu *ngIf="!titleService.goToAdmin" swipeGesture="false" menuId="custom">
+    <ion-menu (ionDidClose)="actHome()" (ionDidOpen)="actHome()" *ngIf="!titleService.goToAdmin" swipeGesture="false" menuId="custom">
       <ion-header>
         <ion-toolbar>
           <ion-title>Account</ion-title>

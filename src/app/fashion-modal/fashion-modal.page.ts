@@ -17,6 +17,7 @@ import { AuthService } from '../_services/auth.service';
 })
 export class FashionModalPage implements OnInit {
   @Input() idValue: any;
+  rainModal: boolean = false;
   hint: any = {};
   sliderConfig = {
     slidesPerView: 1.2,
@@ -73,6 +74,11 @@ export class FashionModalPage implements OnInit {
       this.getSingleHint();
       this.socket = io('http://www.thestylehint.com');
      }
+
+     //close suggestions modal
+     close() {
+      this.rainModal = false;
+    }
 
   async getSingleHint() {
     try {
@@ -364,6 +370,9 @@ newCollection() {
     toast.present();
   }
   ngOnInit() {
+    setTimeout(() => {
+      this.rainModal = true;
+    }, 3000);
   }
 
 }

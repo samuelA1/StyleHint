@@ -21,6 +21,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 
@@ -49,6 +50,7 @@ import { NotificationService } from './_services/notification.service';
     ScreenOrientation,
     SocialSharing,
     Camera,
+    OneSignal,
     WeatherService,
     TitleService,
     AdminService,

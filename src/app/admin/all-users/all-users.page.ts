@@ -1,3 +1,4 @@
+import { TitleService } from './../../_services/title.service';
 import { Chart } from 'chart.js';
 import { FriendService } from './../../_services/friend.service';
 import { AlertController, ToastController, ActionSheetController, NavController } from '@ionic/angular';
@@ -17,6 +18,13 @@ export class AllUsersPage implements OnInit {
   barChart: Chart;
   labels: any[] = [];
   data: any[] = [];
+  years: any[] = [2019, 2020, 2021]
+  year: any ={
+    year: 2019
+  };
+  date = this.year['year'];
+
+
 
   allUsers: any[];
   socket: any;
@@ -36,6 +44,7 @@ export class AllUsersPage implements OnInit {
 
   constructor(private adminService: AdminService,
     private friendsService: FriendService,
+    private titleService: TitleService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private actionSheetCtrl: ActionSheetController,
@@ -48,45 +57,8 @@ export class AllUsersPage implements OnInit {
   ngOnInit() {
     this.socket.emit('logIn', {});
     this.socket.on('loggedIn', total => {
-      this.getAllUsers();
-    });
-
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: "bar",
-      data: {
-        labels: this.labels,
-        datasets: [
-          {
-            label: "# of users",
-            data: this.data,
-            backgroundColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-              "rgba(54, 191, 255, 1)",
-              "rgba(274, 153, 135, 1)",
-              "rgba(55, 192, 255, 1)",
-              "rgba(75, 132, 64, 1)",
-              "rgba(53, 99, 255, 1)",
-              "rgba(255, 202, 64, 1)"
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
+      if (this.titleService.isAdmin) {
+        this.getAllUsers();
       }
     });
   }
@@ -99,8 +71,11 @@ export class AllUsersPage implements OnInit {
 
   //chart stats
   async chartStatistics() {
+    this.data = [];
+    this.labels = [];
+    this.date = this.year['year'];
     try {
-      const statisticsInfo = await this.adminService.chartStatistics({year: new Date().getFullYear()});
+      const statisticsInfo = await this.adminService.chartStatistics({year: this.year['year']});
       if (statisticsInfo['success']) {
         const userData = _.orderBy(statisticsInfo['userData'], ['rep'],['asc']);
         userData.forEach(rec => {
@@ -108,6 +83,45 @@ export class AllUsersPage implements OnInit {
         });
         userData.forEach(rec => {
           this.data.push(rec.total);
+        });
+
+        this.barChart = new Chart(this.barCanvas.nativeElement, {
+          type: "bar",
+          data: {
+            labels: this.labels,
+            datasets: [
+              {
+                label: "# of users",
+                data: this.data,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)",
+                  "rgba(54, 191, 255, 1)",
+                  "rgba(274, 153, 135, 1)",
+                  "rgba(55, 192, 255, 1)",
+                  "rgba(75, 132, 64, 1)",
+                  "rgba(53, 99, 255, 1)",
+                  "rgba(255, 202, 64, 1)"
+                ],
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }
+              ]
+            }
+          }
         });
       } else {
         this.presentAlert('Sorry, an error occured while getting stats info');
@@ -237,6 +251,14 @@ export class AllUsersPage implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  doRefresh(event){
+    setTimeout(() => {
+     this.chartStatistics();
+     this.getAllUsers();
+      event.target.complete();
+    }, 1000);
   }
 
 }

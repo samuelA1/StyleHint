@@ -10,8 +10,17 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles"
+      refreshingText="Getting users...">
+    </ion-refresher-content>
+  </ion-refresher>
   <!-- //chart -->
-  <h6>Showing user chart for the year <b>{{date | date:'y'}}</b></h6>
+  <h6>Showing user chart for the year <b>{{date}}</b></h6>
+  <ion-select (ionChange)="chartStatistics()" name="year" [(ngModel)]="year.year" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+      <ion-select-option *ngFor="let year of years" [value]="year" role="option" id="ion-selopt-45">{{year}}</ion-select-option>
+  </ion-select>
     <canvas #barCanvas></canvas>
 
     <ion-badge *ngIf="sortings" color="primary">{{sortings | titlecase}}</ion-badge>  <ion-badge *ngIf="sortings" color="warning">{{allUsers?.length}}</ion-badge>

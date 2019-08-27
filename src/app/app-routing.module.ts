@@ -35,6 +35,9 @@ const routes: Routes = [
   { path: 'update-user', loadChildren: './admin/update-user/update-user.module#UpdateUserPageModule' },
   { path: 'all-hints', loadChildren: './admin/all-hints/all-hints.module#AllHintsPageModule' },
   { path: 'update-hint', loadChildren: './admin/update-hint/update-hint.module#UpdateHintPageModule' },
+  { path: 'legal-info', loadChildren: './legal-info/legal-info.module#LegalInfoPageModule' },
+  { path: 'privacy-policy', loadChildren: './legal-info/privacy-policy/privacy-policy.module#PrivacyPolicyPageModule' },
+  { path: 'terms-use', loadChildren: './legal-info/terms-use/terms-use.module#TermsUsePageModule' },
 ];
 
 @NgModule({

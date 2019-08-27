@@ -116,6 +116,7 @@ export class AppComponent {
       this.menu.close('custom');
       this.menu.close('first');
       this.titleService.showSplitPane = true;
+      this.notificationService.numberOfNotifications = 0;
       this.navCtrl.navigateRoot('slides');
     });
   }
@@ -149,6 +150,14 @@ export class AppComponent {
       }
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to login');
+    }
+  }
+
+  actHome() {
+    if (this.titleService.activateHome) {
+      this.titleService.activateHome = false;
+    } else {
+      this.titleService.activateHome = true;
     }
   }
 

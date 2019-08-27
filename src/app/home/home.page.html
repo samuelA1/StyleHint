@@ -114,21 +114,21 @@
     <p>Customize season and weather <b *ngIf="!changeSeason">&#62;</b><b *ngIf="changeSeason">&#8593;</b></p>
   </ion-text>
 
-  <ion-fab *ngIf="titleService.modal" horizontal="end" vertical="bottom" slot="fixed" class="ios fab-horizontal-end fab-vertical-bottom hydrated">
-    <ion-fab-button color="warning" class=" ios ion-activatable ion-focusable hydrated">
-      <ion-icon name="arrow-dropleft" role="img" class="ios hydrated" aria-label="arrow dropleft"></ion-icon>
+  <ion-fab *ngIf="titleService.modal" horizontal="end" activated={{titleService.activateHome}} vertical="bottom" slot="fixed" >
+    <ion-fab-button color="secondary" >
+      <ion-icon name="arrow-dropleft" role="img" aria-label="arrow dropleft"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="start" class="ios fab-list-side-start hydrated">
-      <ion-fab-button (click)="toCloset()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-        <ion-icon style="position: absolute; top: 0" name="shirt" role="img" class="ios hydrated"></ion-icon>
+    <ion-fab-list side="start" >
+      <ion-fab-button (click)="toCloset()" style="width: 89px" color="dark">
+        <ion-icon style="position: absolute; top: 0" name="shirt" role="img"></ion-icon>
         <p style="margin-bottom: inherit">closet</p>
       </ion-fab-button>
-      <ion-fab-button (click)="toTips()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-        <ion-icon style="position: absolute; top: 0" name="open" role="img" class="ios hydrated"></ion-icon>
+      <ion-fab-button (click)="toTips()" style="width: 89px" color="dark">
+        <ion-icon style="position: absolute; top: 0" name="open" role="img"></ion-icon>
         <p style="margin-bottom: inherit">Tips</p>
       </ion-fab-button>
-      <ion-fab-button (click)="toFriends()" style="width: 89px" color="dark" class="ios fab-button-in-list ion-activatable ion-focusable hydrated">
-        <ion-icon style="position: absolute; top: 0" name="people" role="img" class="ios hydrated"></ion-icon>
+      <ion-fab-button (click)="toFriends()" style="width: 89px" color="dark">
+        <ion-icon style="position: absolute; top: 0" name="people" role="img"></ion-icon>
         <p style="margin-bottom: inherit">Friends</p>
       </ion-fab-button>
     </ion-fab-list>
