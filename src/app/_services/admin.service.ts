@@ -11,6 +11,7 @@ export class AdminService {
   token: any;
   id: any;
   hintId: any; //id for hint update
+  newsId: any; //id for news
   constructor(private storage: Storage, private http: HttpClient) { }
 
   async headers() {
@@ -20,6 +21,10 @@ export class AdminService {
 
   async addHint(hint: any) {
     return this.http.post(apiUrl + 'admin/add-hint', hint, {headers: await this.headers()}).toPromise();
+  }
+
+  async addNews(news: any) {
+    return this.http.post(apiUrl + 'admin/add-news', news, {headers: await this.headers()}).toPromise();
   }
 
   async updateStatistics(statistics: any) {
@@ -96,7 +101,26 @@ export class AdminService {
     }
   }
 
+   //update news
+   async updateNews(news: any) {
+    if (this.newsId !== undefined) {
+      return this.http.post(apiUrl + `admin/update-news/${this.newsId}`, news, {headers: await this.headers()}).toPromise();
+    }
+  }
+
   async totalHints() {
     return this.http.get(apiUrl + 'admin/total-hints', {headers: await this.headers()}).toPromise();
+  }
+
+  async deleteHint() {
+    if (this.hintId !== undefined) {
+      return this.http.delete(apiUrl + `admin/delete-hint/${this.hintId}`, {headers: await this.headers()}).toPromise();
+    }
+  }
+
+  async deleteNews() {
+    if (this.newsId !== undefined) {
+      return this.http.delete(apiUrl + `admin/delete-news/${this.newsId}`, {headers: await this.headers()}).toPromise();
+    }
   }
 }

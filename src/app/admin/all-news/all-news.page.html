@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>News</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+          refreshingSpinner="circles"
+          refreshingText="Getting news...">
+        </ion-refresher-content>
+      </ion-refresher>
+    <ion-badge *ngIf="allNews?.length !== 0" color="warning">Total {{allNews?.length}}</ion-badge>
+    <ion-list>
+        <ion-item (click)="toUpdate(news._id)" *ngFor="let news of allNews" class="item-label item ios in-list ion-focusable hydrated">
+          <ion-thumbnail slot="end" class="ios hydrated">
+            <img [src]="news.url">
+          </ion-thumbnail>
+          <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">
+            <small>{{news.genre}}</small> | <small>{{GetPostTime(news.createdAt)}}</small>
+            <h2>{{news.headline}}</h2>
+            <p>{{news.likedBy?.length}} people liked this news</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more news...">
+          </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+</ion-content>

@@ -9,6 +9,8 @@ export class TitleService {
     isAdmin: boolean = false;
     goToAdmin: boolean = false;
     hideLogOut: boolean = false;
+    rainModal: boolean = false; //control display of rain modal
+    rainModalCount: number = 0; //control display of rain modal
     activateHome: boolean = true; // unfreeze home screen
     constructor() {
      }
@@ -88,7 +90,13 @@ export class TitleService {
       url: '/list',
       icon: 'flag',
       value: ''
-    }
+    },
+    {
+        title: 'legal info',
+        url: '/legal-info',
+        icon: 'book',
+        value: ''
+      }
   ];
 
   // list of countries used in html

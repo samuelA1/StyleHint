@@ -20,6 +20,7 @@
     <ion-list lines="none">
         <ion-searchbar *ngIf="search != '' || friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0 && search != ''">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
+        <ion-badge *ngIf="friends.length !== 0" color="warning">{{friends?.length}} friend(s)</ion-badge>
         <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
       <ion-item-sliding *ngFor="let friend of friends">
         <ion-item>

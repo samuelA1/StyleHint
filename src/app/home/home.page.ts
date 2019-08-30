@@ -1,13 +1,15 @@
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
-import { Component, OnInit } from '@angular/core';
-import { ToastController, AlertController, NavController, MenuController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ToastController, AlertController, NavController, MenuController, IonSlides } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
 import { Storage } from '@ionic/storage';
 import * as io from 'socket.io-client';
+import * as moment from 'moment';
 import { NotificationService } from '../_services/notification.service';
+import { NewsService } from '../_services/news.service';
 declare var google;
 
 
@@ -18,6 +20,10 @@ declare var google;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild('slides') slides: IonSlides;
+  allNews: any[];
+  page: number = 1;
+  totalNews: any;
   imgIndex: number = 0;
   changeSeason: boolean = false;
   location: any = {
@@ -38,6 +44,13 @@ export class HomePage implements OnInit {
   season: any;
   socket: any;
   itemSelected: boolean = false; //triggers overlay on occasion selected
+  showWeather: boolean = true; //hide or show weather
+
+  //for controlling slides
+  slideOpts = {
+    initialSlide: 2,
+    // speed: 400
+  };
 
   constructor(private toastCtrl: ToastController,
     private geolocation: Geolocation,
@@ -46,9 +59,10 @@ export class HomePage implements OnInit {
      public titleService: TitleService,
      private hintService: HintsService,
      private authService: AuthService,
+     private newsService: NewsService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
-     private menu: MenuController,
+    //  private menu: MenuController,
      private storage: Storage) {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
@@ -57,6 +71,7 @@ export class HomePage implements OnInit {
        this.getSuggestions();
       this.watchPosition();
       this.getSeason();
+      this.getAllNews();
       this.socket = io('http://www.thestylehint.com')
      }
 
@@ -64,6 +79,57 @@ export class HomePage implements OnInit {
      close() {
        this.titleService.modal = true;
      }
+
+     toggleShowCase() {
+       //hide weather when displaying news slide
+       this.slides.getActiveIndex().then(i => {
+         if (i === 0) {
+          this.showWeather = false;
+         } else {
+          this.showWeather = true;
+         }
+       })
+     }
+
+     GetPostTime(time) {
+      return moment(time).fromNow();
+    }
+
+  
+    //navigate to update
+    toNews(id: any) {
+      this.newsService.id = id;
+      this.navCtrl.navigateForward('news')
+    }
+  
+    async getAllNews() {
+      try {
+        const newsInfo = await this.newsService.allNews(this.page);
+        if (newsInfo['success']) {
+          this.allNews = newsInfo['news'];
+        } else {
+          this.presentAlert('Sorry, an error occured while getting all news');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while getting all news');
+      }
+    }
+
+    loadData(event: any) {
+      this.page++
+      setTimeout(() => {
+        this.newsService.allNews(this.page).then((newsInfo) => {
+          newsInfo['news'].forEach((news: any) => {
+            this.allNews.push(news)
+          });
+          event.target.complete();
+        });
+    
+        if (this.allNews.length == this.totalNews) {
+          event.target.disabled = true;
+        }
+      }, 800);
+    }
 
      //bring up different seasons
      change() {
@@ -114,6 +180,7 @@ export class HomePage implements OnInit {
           this.toastShareNotification('One of your friends just commented on one of your tips.');
         }
       });
+
     }
 
   //seasons array
@@ -132,6 +199,7 @@ export class HomePage implements OnInit {
     {name: 'haze', icon: 'nuclear', isChosen: false},
     {name: 'mist', icon: 'list', isChosen: false},
     {name: 'smoke', icon: 'bonfire', isChosen: false},
+    {name: 'fog', icon: 'flower', isChosen: false},
     {name: 'thunderstorm', icon: 'thunderstorm', isChosen: false},
   ]
 
@@ -142,10 +210,10 @@ export class HomePage implements OnInit {
     {name: 'birthday party', icon: 'color-wand', isChosen: false},
     {name: 'halloween', icon: 'outlet', isChosen: false},
     {name: 'christmas', icon: 'gift', isChosen: false},
-    {name: 'church', icon: 'add-circle-outline', isChosen: false},
+    {name: 'church', icon: 'home', isChosen: false},
     {name: 'date night', icon: 'contacts', isChosen: false},
     {name: 'job interview', icon: 'person-add', isChosen: false},
-    {name: 'culture', icon: 'home', isChosen: false},
+    {name: 'culture', icon: 'add-circle-outline', isChosen: false},
   ]
 
   getSeason() {
@@ -414,10 +482,12 @@ export class HomePage implements OnInit {
 
   //refresh location
   doRefresh(event){
+    this.page = 1;
     setTimeout(() => {
       this.getGeolocation();
       this.getSeason();
       this.watchPosition();
+      this.getAllNews();
       event.target.complete();
     }, 1000);
   }

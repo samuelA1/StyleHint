@@ -38,6 +38,10 @@ const routes: Routes = [
   { path: 'legal-info', loadChildren: './legal-info/legal-info.module#LegalInfoPageModule' },
   { path: 'privacy-policy', loadChildren: './legal-info/privacy-policy/privacy-policy.module#PrivacyPolicyPageModule' },
   { path: 'terms-use', loadChildren: './legal-info/terms-use/terms-use.module#TermsUsePageModule' },
+  { path: 'news', loadChildren: './news/news.module#NewsPageModule' },
+  { path: 'add-news', loadChildren: './admin/add-news/add-news.module#AddNewsPageModule' },
+  { path: 'all-news', loadChildren: './admin/all-news/all-news.module#AllNewsPageModule' },
+  { path: 'update-news', loadChildren: './admin/update-news/update-news.module#UpdateNewsPageModule' },
 ];
 
 @NgModule({

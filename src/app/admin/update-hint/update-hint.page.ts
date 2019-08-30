@@ -32,6 +32,7 @@ export class UpdateHintPage implements OnInit {
     {name: 'clear'},
     {name: 'rain'},
     {name: 'smoke'},
+    {name: 'fog'},
     {name: 'clouds'},
     {name: 'haze'},
     {name: 'mist'},
@@ -127,6 +128,22 @@ export class UpdateHintPage implements OnInit {
           this.presentAlert('Sorry, an error occured while trying to add a hint.')
       }
     }
+
+    async deleteHint() {
+      try {
+        const hintInfo = await this.adminService.deleteHint();
+        if (hintInfo['success']) {
+          this.presentToast(hintInfo['message']);
+          this.navCtrl.navigateRoot('menu').then(() => {
+            this.navCtrl.navigateRoot('all-hints');
+          })
+        } else {
+          this.presentAlert('Sorry, an error occured while trying to delete a hint');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while trying to delete a hint');
+      }
+    }
   
     //toast
     async presentToast(message: any) {
@@ -144,6 +161,27 @@ export class UpdateHintPage implements OnInit {
         header: 'Hint Error',
         message: message,
         buttons: ['OK']
+      });
+  
+      await alert.present();
+    }
+
+    async deleteCnfm() {
+      const alert = await this.alertCtrl.create({
+        header: 'Confirm hint delete',
+        message: `Are you sure you want to delete this hint?`,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          }, {
+            text: 'remove',
+            cssClass: 'delete',
+            handler: () => {
+              this.deleteHint();
+            }
+          }
+        ]
       });
   
       await alert.present();

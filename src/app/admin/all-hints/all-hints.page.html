@@ -10,6 +10,12 @@
 </ion-header>
 
 <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+          refreshingSpinner="circles"
+          refreshingText="Getting hints...">
+        </ion-refresher-content>
+      </ion-refresher>
     <ion-badge *ngIf="allHints?.length !== 0" color="warning">Total {{allHints?.length}}</ion-badge> <ion-badge *ngIf="genderSort" color="primary">{{genderSort | titlecase}}</ion-badge> <ion-badge *ngIf="occasionSort" color="primary">{{occasionSort | titlecase}}</ion-badge> <ion-badge *ngIf="interestSort" color="primary">{{interestSort | titlecase}}</ion-badge>  
   <ion-list >
     <ion-item *ngFor="let hint of allHints">

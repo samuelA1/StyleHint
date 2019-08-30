@@ -6,7 +6,9 @@
     bottom: 0;
     z-index: 1;
     background-color: #fff;
-    overflow: scroll;
+    overflow-y: scroll;
+   scroll-behavior: smooth;
+   -webkit-overflow-scrolling: touch;
     width: 90%;
     height: 100%;
     -webkit-animation-name: slideIn;

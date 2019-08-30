@@ -117,13 +117,23 @@
   </div>
 
    <!-- notify modal -->
-   <div margin *ngIf="titleService.finalData.weather === 'rain' && rainModal" class="notify-modal " (click)="close()">
+   <div margin *ngIf="titleService.finalData.weather === 'rain' && titleService.rainModal" class="notify-modal " (click)="close()">
       <ion-buttons style="float: left" slot="start">
           <ion-button (click)="close()" >
               <ion-icon color="dark"  name="close"></ion-icon>
           </ion-button>
       </ion-buttons>
-      <p>It's currently raining or it might soon rain in your area. Please make sure you have your <b>jacket</b> and <b>umbrella</b> handy</p>
+      <p>It's currently raining or it might soon rain in your area. Please make sure you have your <b>jacket</b> and <b>umbrella</b> handy.</p>
+  </div>
+
+  <!-- notify modal -->
+  <div margin *ngIf="titleService.finalData.weather === 'snow' && titleService.rainModal" class="notify-modal " (click)="close()">
+      <ion-buttons style="float: left" slot="start">
+          <ion-button (click)="close()" >
+              <ion-icon color="dark"  name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <p>It's currently snowing or it might soon snow in your area. Please make sure you have your <b>jacket</b> and <b>booss</b> on.</p>
   </div>
 
   <!--closet Modal content -->

@@ -34,6 +34,7 @@ weathers: any[] =[
   {name: 'clear'},
   {name: 'rain'},
   {name: 'smoke'},
+  {name: 'fog'},
   {name: 'clouds'},
   {name: 'haze'},
   {name: 'mist'},
