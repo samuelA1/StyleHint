@@ -44,6 +44,7 @@ weathers: any[] =[
   {name: 'haze', icon: 'nuclear', isChosen: false},
   {name: 'mist', icon: 'list', isChosen: false},
   {name: 'smoke', icon: 'bonfire', isChosen: false},
+  {name: 'fog', icon: 'flower', isChosen: false},
   {name: 'thunderstorm', icon: 'thunderstorm', isChosen: false},
 ]
   constructor(private storage: Storage,

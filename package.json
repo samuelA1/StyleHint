@@ -47,7 +47,7 @@
     "es6-promise-plugin": "4.2.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "onesignal-cordova-plugin": "2.5.2",
+    "onesignal-cordova-plugin": "^2.5.2",
     "rxjs": "~6.5.1",
     "socket.io-client": "^2.2.0",
     "tslib": "^1.9.0",
@@ -108,8 +108,7 @@
       "cordova-plugin-x-socialsharing": {
         "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
       },
-      "cordova-plugin-camera": {},
-      "onesignal-cordova-plugin": {}
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android",

@@ -11,8 +11,11 @@
             <ion-badge color="danger" *ngIf="notificationService.numberOfNotifications > 0">{{notificationService.numberOfNotifications}}</ion-badge>
         </ion-button>
     </ion-buttons>
-    <ion-title>
-      StyleHint
+    <ion-title *ngIf="showWeather">
+      StyleHint 
+    </ion-title>
+    <ion-title *ngIf="!showWeather">
+      News
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -50,7 +53,7 @@
       </div>
   </div>
   <!-- weather showcase -->
-    <div class="card" *ngIf="location.city">
+    <div class="card" *ngIf="location.city && showWeather">
       <div class="card-container">
         <div class="ion-float-left">
             <h6>{{location.city}}, {{location.state}}</h6>
@@ -65,54 +68,95 @@
       </div>
     </div>
 
-    <h6 *ngIf="!location.city" class="animated pulse infinite">Getting your location...</h6>
+    <h6 *ngIf="!location.city && showWeather" class="animated pulse infinite">Getting your location...</h6>
 
-  <!-- Occasion cards -->
-  <h5>Occasion</h5>
-  <small>Choose the occasion or event you're interested in.</small>
-  <div class="selection-panes" [class.overlay]="itemSelected">
-    <ion-card [class.hide-card]="titleService.appPages[3].value == 'female kid' && occasion.name == 'date night'
-     || titleService.appPages[3].value == 'male kid' && occasion.name == 'date night'
-      || titleService.appPages[3].value == 'female kid' && occasion.name == 'job interview'
-       || titleService.appPages[3].value == 'male kid' && occasion.name == 'job interview'" *ngFor="let occasion of occasions">
-        <ion-card-content  [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
-            <ion-icon [name]="occasion.icon"></ion-icon>
-            <p>{{occasion.name | titlecase}}</p>
-        </ion-card-content>
-    </ion-card>
-  </div>
+  
+  <ion-slides pager="false"  #slides [options]="slideOpts" (ionSlideWillChange)="toggleShowCase()" >
+      
+      <!-- News slide -->
+        <ion-slide  >
+            <ion-grid>
+                <ion-row>
+                  <ion-col>
+                      <ion-list >
+                        <ion-item (click)="toNews(news._id)" *ngFor="let news of allNews" style="width: 80%">
+                          <ion-thumbnail slot="end" >
+                            <img [src]="news.url" style="border-radius: 8px">
+                          </ion-thumbnail>
+                          <ion-label >
+                            <small>{{news.genre}}</small> | <small>{{GetPostTime(news.createdAt)}}</small>
+                            <h2>{{news.headline}}</h2>
+                            <p>{{news.likedBy?.length}} people liked this news</p>
+                          </ion-label>
+                        </ion-item>
+                      </ion-list>
+                  </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-slide>
+        
+        <!-- Home slide -->
+        <ion-slide  class="step-two">
+            <!-- Occasion cards -->
+            <h5>Occasion</h5>
+            <small>Choose the occasion or event you're interested in.</small>
+            <div class="selection-panes" [class.overlay]="itemSelected">
+              <ion-card [class.hide-card]="titleService.appPages[3].value == 'female kid' && occasion.name == 'date night'
+              || titleService.appPages[3].value == 'male kid' && occasion.name == 'date night'
+                || titleService.appPages[3].value == 'female kid' && occasion.name == 'job interview'
+                || titleService.appPages[3].value == 'male kid' && occasion.name == 'job interview'" *ngFor="let occasion of occasions">
+                  <ion-card-content  [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
+                      <ion-icon [name]="occasion.icon"></ion-icon>
+                      <p>{{occasion.name | titlecase}}</p>
+                  </ion-card-content>
+              </ion-card>
+            </div>
 
-  <div *ngIf="changeSeason">
-      <!-- Season cards -->
-    <h5>Season</h5>
-    <small padding>It's currently <b>{{season | titlecase}}</b> in your area, you can choose the season which best suits you.</small>
-    <div class="selection-panes">
-      <ion-card *ngFor="let season of seasons">
-          <ion-card-content [class.chose]="season.isChosen" (click)="chooseSeason(season.name)">
-              <ion-icon [name]="season.icon"></ion-icon>
-              <p>{{season.name | titlecase}}</p>
-          </ion-card-content>
-      </ion-card>
-    </div>
-    <!-- Weather cards -->
-    <h5>Weather</h5>
-      <small *ngIf="weather.main == 'Clear'"> It's currently </small>
-      <small *ngIf="weather.main !== 'Clear'">Your area is currently covered with </small>
-      <small><b>{{weather.main | titlecase}}</b></small>
-      <small>, you can choose the weather condition which best suits you.</small>
-    <div class="selection-panes">
-      <ion-card *ngFor="let weather of weathers">
-        <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
-            <ion-icon [name]="weather.icon"></ion-icon>
-            <p>{{weather.name | titlecase}}</p>
-        </ion-card-content>
-      </ion-card>
-    </div>
-  </div>
+            <div *ngIf="changeSeason">
+                <!-- Season cards -->
+              <h5>Season</h5>
+              <small padding>It's currently <b>{{season | titlecase}}</b> in your area, you can choose the season which best suits you.</small>
+              <div class="selection-panes">
+                <ion-card *ngFor="let season of seasons">
+                    <ion-card-content [class.chose]="season.isChosen" (click)="chooseSeason(season.name)">
+                        <ion-icon [name]="season.icon"></ion-icon>
+                        <p>{{season.name | titlecase}}</p>
+                    </ion-card-content>
+                </ion-card>
+              </div>
+              <!-- Weather cards -->
+              <h5>Weather</h5>
+                <small *ngIf="weather.main == 'Clear'"> It's currently </small>
+                <small *ngIf="weather.main !== 'Clear'">Your area is currently covered with </small>
+                <small><b>{{weather.main | titlecase}}</b></small>
+                <small>, you can choose the weather condition which best suits you.</small>
+              <div class="selection-panes">
+                <ion-card *ngFor="let weather of weathers">
+                  <ion-card-content [class.chose]="weather.isChosen" (click)="chooseWeather(weather.name)">
+                      <ion-icon [name]="weather.icon"></ion-icon>
+                      <p>{{weather.name | titlecase}}</p>
+                  </ion-card-content>
+                </ion-card>
+              </div>
+            </div>
 
-  <ion-text color="secondary" (click)="change()" padding>
-    <p>Customize season and weather <b *ngIf="!changeSeason">&#62;</b><b *ngIf="changeSeason">&#8593;</b></p>
-  </ion-text>
+            <ion-text color="secondary" (click)="change()" padding>
+              <p>Customize season and weather <b *ngIf="!changeSeason">&#62;</b><b *ngIf="changeSeason">&#8593;</b></p>
+            </ion-text>
+        </ion-slide>
+    
+        <!-- slide three -->
+        <!-- <ion-slide  class="step-three">
+          
+        </ion-slide> -->
+    </ion-slides>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!showWeather">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more news...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 
   <ion-fab *ngIf="titleService.modal" horizontal="end" activated={{titleService.activateHome}} vertical="bottom" slot="fixed" >
     <ion-fab-button color="secondary" >

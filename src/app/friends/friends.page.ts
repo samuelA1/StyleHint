@@ -200,7 +200,7 @@ export class FriendsPage implements OnInit {
 
   async deleteFriend(friendId: any, username: any) {
     const alert = await this.alertCtrl.create({
-      header: 'Confirm hint delete',
+      header: 'Confirm friend delete',
       message: `Are you sure you want to remove ${username} as a friend?`,
       buttons: [
         {

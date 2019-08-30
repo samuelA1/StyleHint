@@ -1,9 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>legal-info</ion-title>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>Legal information</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content padding>
+  <span class="slide-logo">
+      <ion-img class="animated fadeInLeft" src="../../assets/towel.png"></ion-img>
+      <h1 class="animated bounce">StyleHint</h1>
+  </span>
+  <ion-card>
+      <ion-item [routerDirection]="'forward'" [routerLink]="['/privacy-policy']"  href="#" class="ion-padding-bottom ion-padding-top">
+        <ion-label>Privacy policy</ion-label>
+      </ion-item>
+    
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/terms-use']">
+        <ion-label>Terms of use</ion-label>
+      </ion-item>
+    </ion-card>
 </ion-content>

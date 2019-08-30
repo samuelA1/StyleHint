@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+    <ion-title>Update news</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+          <ion-col>
+            <form #f="ngForm" style="display: grid;">
+              <ion-button  color="warning" shape="round" (click)="getImage()" expand="block" size="small">
+                  Get image
+              </ion-button>
+              <img *ngIf="base64Image" [src]="base64Image">
+              <ion-label margin>Image citation:</ion-label>
+              <textarea name="citation" [(ngModel)]="news.citation" cols="30" rows="3" required></textarea>
+              <ion-label margin>Overview:</ion-label>
+              <textarea name="overview" [(ngModel)]="news.overview" cols="30" rows="10" required></textarea>
+              <ion-label margin>Headline:</ion-label>
+              <textarea name="headline" [(ngModel)]="news.headline" cols="30" rows="10" required></textarea>
+              <ion-label margin>Genre:</ion-label>
+              <textarea name="genre" [(ngModel)]="news.genre" cols="30" rows="10" required></textarea>    
+              <ion-button color="warning" shape="round" (click)="updateNews()" expand="block" size="large" [disabled]="!f.dirty">
+                  update news
+              </ion-button>
+              <ion-button color="danger" shape="round" (click)="deleteCnfm()" expand="block" size="large">
+                  Delete news
+              </ion-button>
+            </form>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+</ion-content>

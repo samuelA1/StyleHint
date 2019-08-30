@@ -256,5 +256,12 @@ export class AllHintsPage implements OnInit {
     toast.present();
   }
 
+  doRefresh(event){
+    setTimeout(() => {
+     this.getAllHints();
+      event.target.complete();
+    }, 1000);
+  }
+
 
 }

@@ -1,3 +1,4 @@
+import { NewsService } from './_services/news.service';
 import { ClosetService } from './_services/closet.service';
 import { FriendService } from './_services/friend.service';
 import { HintsService } from './_services/hints.service';
@@ -61,6 +62,7 @@ import { NotificationService } from './_services/notification.service';
     FriendService,
     TipService,
     NotificationService,
+    NewsService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
