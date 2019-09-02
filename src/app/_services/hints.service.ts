@@ -14,7 +14,7 @@ export class HintsService {
   hints: any = {};
   token: any;
   backRoute: any = ''; //backward nav for tip and closet pages
-  id: any;
+  id: any = '';
   //occasion/event array
   occasions: any[] = [
   {name: 'school', icon: 'school', isChosen: false},

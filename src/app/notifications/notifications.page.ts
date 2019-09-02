@@ -6,6 +6,7 @@ import { NotificationService } from '../_services/notification.service';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import { Storage } from '@ionic/storage';
+import { NewsService } from '../_services/news.service';
 
 
 
@@ -23,6 +24,7 @@ export class NotificationsPage implements OnInit {
   constructor(private navCtrl: NavController,
     private notificationService: NotificationService,
     private friendService: FriendService,
+    private newsService: NewsService,
     private tipService: TipService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
@@ -132,6 +134,11 @@ async clearAll() {
     this.tipService.backRoute = 'notifications'
     this.storage.set('tipId', tipId);
     this.seenBy(tipId);
+  }
+
+  toNews(newsId: any) {
+    this.newsService.id = newsId;
+    this.navCtrl.navigateForward('news');
   }
 
    //navigations

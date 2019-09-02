@@ -31,6 +31,17 @@
                   <small>{{GetPostTime(notify.createdAt)}}</small>
                 </div>
             </div>
+
+            <!-- for news -->
+            <div *ngIf="notify.typeOf == 'news'">
+                <ion-text color="secondary">
+                    <h4>{{notify.typeOf | titlecase}}</h4>
+                  </ion-text>
+                  <div margin>
+                    <p style="margin: 0" (click)="toNews(notify.route)"><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                    <small>{{GetPostTime(notify.createdAt)}}</small>
+                  </div>
+              </div>
       
             <!-- friend request -->
             <div *ngIf="notify.typeOf == 'friend'">

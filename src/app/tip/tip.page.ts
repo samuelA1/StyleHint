@@ -36,17 +36,19 @@ freezePane: any = false;
     }
 
   ngOnInit() {
-    this.socket.on('commented', ownerId => {
+    this.socket.on('commented', comment => {
       this.storage.get('tipId').then((tipId) => {
         this.tipService.tipToView = tipId;
-        this.getTip();
+        // this.getTip();
+        this.comments.unshift({commentId: comment.commentId, comment: comment.comment, commenterId: comment.commenterId, commenter: comment.commenter})
         this.freezePane = false;
       })
     });
-    this.socket.on('commentDeleted', ownerId => {
+    this.socket.on('commentDeleted', comment => {
       this.storage.get('tipId').then((tipId) => {
         this.tipService.tipToView = tipId;
-        this.getTip();
+        // this.getTip();
+        this.comments.splice(this.comments.findIndex(c => c._id == comment.commentId), 1)
         this.freezePane = false;
       })
     });
@@ -102,11 +104,11 @@ freezePane: any = false;
       const commentInfo = await this.tipService.addComment(tipId, {comment: this.comment});
       if (commentInfo['success']) {
         if (this.tip.owner == this.authService.userId) {
+          this.socket.emit('comment', {ownerId: 'owner', commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName});
           this.comment = '';
-          this.socket.emit('comment', 'owner');
           this.toComment = false;
         }else {
-          this.socket.emit('comment', this.tip.owner);
+          this.socket.emit('comment', {ownerId: this.tip.owner, commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName});
           this.comment = '';
           this.toComment = false;
         }
@@ -122,7 +124,7 @@ freezePane: any = false;
     try {
       const deleteInfo = await this.tipService.deleteComment(tipId, commentId);
       if (deleteInfo['success']) {
-        this.socket.emit('deleteComment', {});
+        this.socket.emit('deleteComment', {commentId: commentId});
         this.presentToast(deleteInfo['message'])
       } else {
         this.presentAlert('Sorry, an error occured while trying to delete a comment.')

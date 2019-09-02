@@ -7,8 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-card ><!---->
+<ion-content scrollY="{{!freezePane}}">
+    <ion-card *ngIf="news.url"><!---->
       <img [src]="news.url" class="prev-img">
       <ion-card-header>
         <ion-card-subtitle role="heading" aria-level="3">{{news.genre | titlecase}}</ion-card-subtitle>
@@ -16,6 +16,73 @@
       </ion-card-header>
       <ion-card-content >
         {{news.overview}}
+        <div class="action" padding>
+          <ion-text (click)="abtToComment()">
+              <ion-icon name="text"></ion-icon><small *ngIf="comments?.length !== 0" >{{comments?.length}}</small>
+          </ion-text>
+          
+          <ion-text [class.liked]="true">
+              <ion-icon  name="heart"></ion-icon><small>2</small>
+          </ion-text>
+          <ion-icon (click)="share()" name="share"></ion-icon>
+        </div>
       </ion-card-content>
     </ion-card>
+
+    <!-- comment button -->
+    <div *ngIf="toComment" class="comment">
+        <ion-button color="dark" (click)="addComment(news._id)" [disabled]="comment === ''" class="post">Send</ion-button>
+        <ion-button color="danger" (click)="cancelComment()" class="cancel">Cancel</ion-button>
+        <textarea [(ngModel)]="comment" name="comment" rows="5"></textarea>
+    </div>
+    
+    <!-- comments -->
+  <div class="comments">
+      <ion-list lines="none">
+        <ion-item-sliding *ngFor="let comment of comments">
+          <ion-item>
+            <ion-card style="width: 100% !important">
+                <ion-card-content>
+                    <b>@{{comment?.commenter}}</b> {{comment?.comment}}
+                  <div>
+                      <ion-note slot="end">
+                          {{GetPostTime(comment.commentedAt)}}
+                      </ion-note>
+                  </div>
+                </ion-card-content>
+            </ion-card>
+          </ion-item>
+      
+          <ion-item-options (click)="deleteComment(news._id, comment._id)" *ngIf="comment.commenterId === authService.userId" side="end">
+            <ion-item-option color="danger">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+
+    <!--share Modal content -->
+  <div *ngIf="modal" class="modal-content " padding>
+      <ion-list lines="none">
+          <div class="friends-header ion-margin-top"  >
+              <p style="float: left;margin: 0;" (click)="cancel()">cancel</p>
+              <b >Share</b>
+          </div>
+          <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
+          <ion-searchbar  (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
+          <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
+          <ion-item *ngFor="let friend of friends">
+              <ion-avatar style="font-size: xx-large;padding-top: 3px;">
+                  <ion-icon name="contact"></ion-icon>
+              </ion-avatar>
+              <ion-label>
+                <h2>@{{friend.username}}</h2> 
+              </ion-label>
+              <ion-checkbox (ionChange)="selectFriend()" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-button style="margin-top: 50px" *ngIf="!friends?.length == 0" [disabled]="!friendSelected" (click)="shareNews()" color="warning" expand="full" shape="round">Send</ion-button>
+      </ion-list>
+    </div>
+  
 </ion-content>

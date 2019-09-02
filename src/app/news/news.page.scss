@@ -2,3 +2,107 @@
     height: 100% !important;
     max-height: 100% !important;
 }
+
+.action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.liked {
+    color: red;
+}
+
+.post {
+    position: absolute;
+    right: 0;
+    z-index: 5;
+	width: 70px;
+	border: solid 1px rgba(255,255,255,0.8);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	font-size: x-small;
+	text-align: center;
+	border-radius: 0 25px 0 0;
+	cursor: pointer;
+}
+
+.cancel {
+    position: absolute;
+    left: 0;
+    top: 68px;
+    z-index: 5;
+	width: 70px;
+	border: solid 1px rgba(255,255,255,0.8);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	font-size: x-small;
+	text-align: center;
+	border-radius: 0 25px 0 0;
+	cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    height: 109px;
+	border-radius: 25px 0 25px 0;
+    text-align: center;
+}
+
+.comment {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    overflow: scroll;
+    width: 100%;
+    height: 40%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+}
+
+textarea {
+  width: 60%;
+  min-height: 100px;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+ /* Modal Content */
+ .modal-content {
+    display: grid;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 80%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }
+
+  /* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}

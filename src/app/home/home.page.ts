@@ -147,15 +147,23 @@ export class HomePage implements OnInit {
          if (friend === this.authService.userId) {
           //  this.notificationService.numberOfNotifications++
           this.notificationService.notifyNumber();
-           this.toastShareNotification('Someone just shared a hint with you.');
+           this.toastShareNotification('Someone just shared a hint with you.', 'tertiary');
          }
        });
+
+       this.socket.on('informed', friend => {
+        if (friend === this.authService.userId) {
+         //  this.notificationService.numberOfNotifications++
+         this.notificationService.notifyNumber();
+          this.toastShareNotification('Someone just shared some news with you.', 'secondary');
+        }
+      });
 
        this.socket.on('friendRequested', friend => {
         if (friend === this.authService.userId) {
           // this.notificationService.numberOfNotifications++
           this.notificationService.notifyNumber();
-          this.toastShareNotification('Someone just sent you a friend request.');
+          this.toastShareNotification('Someone just sent you a friend request.', 'warning');
         }
       });
 
@@ -163,7 +171,7 @@ export class HomePage implements OnInit {
         if (friend === this.authService.userId) {
           // this.notificationService.numberOfNotifications++
           this.notificationService.notifyNumber();
-          this.toastShareNotification('Someone just accepted your friend request.');
+          this.toastShareNotification('Someone just accepted your friend request.', 'warning');
         }
       });
 
@@ -173,11 +181,11 @@ export class HomePage implements OnInit {
         }
       });
 
-       this.socket.on('commented', ownerId => {
-        if (ownerId === this.authService.userId) {
+       this.socket.on('commented', comment => {
+        if (comment.ownerId === this.authService.userId) {
           // this.notificationService.numberOfNotifications++
           this.notificationService.notifyNumber();
-          this.toastShareNotification('One of your friends just commented on one of your tips.');
+          this.toastShareNotification('One of your friends just commented on one of your tips.', 'success');
         }
       });
 
@@ -421,12 +429,12 @@ export class HomePage implements OnInit {
   }
 
   //toast notification
-  async toastShareNotification(message) {
+  async toastShareNotification(message, color) {
     const toast = await this.toastCtrl.create({
       header: message,
       position: 'bottom',
-      duration: 3000,
-      color: 'dark'
+      duration: 1000,
+      color: color
     });
     toast.present();
   }

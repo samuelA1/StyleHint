@@ -70,7 +70,9 @@ export class FashionModalPage implements OnInit {
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
     private navCtrl: NavController ) {
-      this.getSingleHint();
+      if (this.hintService.id !== '') {
+        this.getSingleHint();
+      }
       this.socket = io('http://www.thestylehint.com');
      }
 

@@ -10,7 +10,7 @@ const apiUrl = environment.apiUrl;
 })
 export class NewsService {
   token: any;
-  id: any;
+  id: any = '';
   constructor(private storage: Storage,
      private http: HttpClient) { }
 
