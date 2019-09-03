@@ -1,7 +1,7 @@
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ToastController, AlertController, NavController, MenuController, IonSlides } from '@ionic/angular';
+import { ToastController, AlertController, NavController, MenuController, IonSlides, Platform } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
@@ -64,14 +64,19 @@ export class HomePage implements OnInit {
      public notificationService: NotificationService,
      private navCtrl: NavController,
      private onesignal: OneSignal,
+     private platform: Platform,
     //  private menu: MenuController,
      private storage: Storage) {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
         this.getGeolocation();
        }, 3000);
-       this.setupPush();
-       this.getSuggestions();
+       if (this.platform.is('cordova')) {
+        setTimeout(() => {
+          this.setupPush();
+        }, 6000);
+       }
+      this.getSuggestions();
       this.watchPosition();
       this.getSeason();
       this.getAllNews();
@@ -317,7 +322,8 @@ export class HomePage implements OnInit {
 
     this.onesignal.endInit();
     this.onesignal.getIds().then((id) => {
-      this.authService.onesignalId({username: this.authService.userName}, JSON.stringify(id));
+      const info = id
+      this.authService.onesignalId({username: this.authService.userName}, info['userId']);
     })
   }
 
