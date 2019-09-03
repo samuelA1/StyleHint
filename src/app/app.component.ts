@@ -10,7 +10,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TitleService } from './_services/title.service';
 import { NotificationService } from './_services/notification.service';
 import * as io from 'socket.io-client';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @Component({
@@ -32,7 +31,6 @@ export class AppComponent {
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private menu: MenuController,
-    private onesignal: OneSignal
   ) {
     this.initializeApp();
     this.processing();
@@ -45,29 +43,10 @@ export class AppComponent {
       this.splashScreen.hide();
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       this.titleService.modal = false;
-
-      if (this.platform.is('cordova')) {
-        this.setupPush();
-      }
     });
   }
 
-  setupPush() {
-    this.onesignal.startInit('4e5b4450-3330-4ac4-a16e-c60e26ec271d', '933703398245');
-
-    this.onesignal.inFocusDisplaying(this.onesignal.OSInFocusDisplayOption.None);
-
-    this.onesignal.handleNotificationOpened().subscribe(data => {
-
-    });
-
-    this.onesignal.handleNotificationReceived().subscribe(data => {
-      
-    });
-
-    this.onesignal.endInit();
-  }
-
+ 
   //routes the user and sets up the app
   processing() {
      //root navigation

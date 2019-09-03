@@ -10,6 +10,7 @@ import * as io from 'socket.io-client';
 import * as moment from 'moment';
 import { NotificationService } from '../_services/notification.service';
 import { NewsService } from '../_services/news.service';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 declare var google;
 
 
@@ -62,12 +63,14 @@ export class HomePage implements OnInit {
      private newsService: NewsService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
+     private onesignal: OneSignal,
     //  private menu: MenuController,
      private storage: Storage) {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
         this.getGeolocation();
        }, 3000);
+       this.setupPush();
        this.getSuggestions();
       this.watchPosition();
       this.getSeason();
@@ -297,6 +300,27 @@ export class HomePage implements OnInit {
 
     }
   }
+
+  //set up onesignal
+  setupPush() {
+    this.onesignal.startInit('4e5b4450-3330-4ac4-a16e-c60e26ec271d', '933703398245');
+
+    this.onesignal.inFocusDisplaying(this.onesignal.OSInFocusDisplayOption.None);
+
+    this.onesignal.handleNotificationOpened().subscribe(data => {
+
+    });
+
+    this.onesignal.handleNotificationReceived().subscribe(data => {
+      
+    });
+
+    this.onesignal.endInit();
+    this.onesignal.getIds().then((id) => {
+      this.authService.onesignalId({username: this.authService.userName}, id);
+    })
+  }
+
 
   //get latitude and longitude
   getGeolocation(){

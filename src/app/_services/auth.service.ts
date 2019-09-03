@@ -48,4 +48,8 @@ export class AuthService {
       }
     });
   }
+
+  onesignalId(user: any, oneSignalId: any) {
+    return this.http.post(apiUrl + `auth/onesignal-id/${oneSignalId}`, user).toPromise();
+  }
 }
