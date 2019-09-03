@@ -313,7 +313,7 @@ export class HomePage implements OnInit {
     this.onesignal.inFocusDisplaying(this.onesignal.OSInFocusDisplayOption.None);
 
     this.onesignal.handleNotificationOpened().subscribe(data => {
-
+      this.navCtrl.navigateForward('notifications');
     });
 
     this.onesignal.handleNotificationReceived().subscribe(data => {
