@@ -307,7 +307,7 @@ export class HomePage implements OnInit {
   }
 
   //set up onesignal
-  async setupPush() {
+  setupPush() {
     this.onesignal.startInit('4e5b4450-3330-4ac4-a16e-c60e26ec271d', '933703398245');
 
     this.onesignal.inFocusDisplaying(this.onesignal.OSInFocusDisplayOption.None);
@@ -321,9 +321,12 @@ export class HomePage implements OnInit {
     });
 
     this.onesignal.endInit();
-    const userId = await this.onesignal.getIds();
-    const info = userId;
-    this.authService.onesignalId({username: this.authService.userName}, info['userId']);
+    for (let i = 0; i < 2; i++) {
+      this.onesignal.getIds().then((id) => {
+        this.authService.onesignalId({username: this.authService.userName}, id['userId']);
+      });
+    }
+    
   }
 
 
