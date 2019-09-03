@@ -317,7 +317,7 @@ export class HomePage implements OnInit {
 
     this.onesignal.endInit();
     this.onesignal.getIds().then((id) => {
-      this.authService.onesignalId({username: this.authService.userName}, id);
+      this.authService.onesignalId({username: this.authService.userName}, JSON.stringify(id));
     })
   }
 
