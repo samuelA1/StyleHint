@@ -55,7 +55,7 @@
       <ion-item-sliding *ngFor="let comment of comments">
         <ion-item>
             <ion-label>
-                <small class="ion-float-left" [routerDirection]="'forward'" [routerLink]="['/comments']"><b>@{{comment?.commenter}}</b> {{comment?.comment}}</small> 
+                <small [ngStyle]="{'color': comment.commenterId === authService.userId ? 'green' : 'black'}" class="ion-float-left" [routerDirection]="'forward'" [routerLink]="['/comments']"><b>@{{comment?.commenter}}</b> {{comment?.comment}}</small> 
             </ion-label>
           <ion-note slot="end">
               {{GetPostTime(comment.commentedAt)}}

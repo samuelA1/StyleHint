@@ -6,7 +6,7 @@
       </ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-        <ion-button (click)="clearNotifications()" >
+        <ion-button  (click)="clearNotifications()">
             <ion-icon color="dark"  name="notifications"></ion-icon>
             <ion-badge color="danger" *ngIf="notificationService.numberOfNotifications > 0">{{notificationService.numberOfNotifications}}</ion-badge>
         </ion-button>

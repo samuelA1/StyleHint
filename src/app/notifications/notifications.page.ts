@@ -1,3 +1,4 @@
+import { AuthService } from './../_services/auth.service';
 import { FriendService } from './../_services/friend.service';
 import { TipService } from './../_services/tip.service';
 import { Component, OnInit } from '@angular/core';
@@ -24,12 +25,14 @@ export class NotificationsPage implements OnInit {
   constructor(private navCtrl: NavController,
     private notificationService: NotificationService,
     private friendService: FriendService,
+    private authService: AuthService,
     private newsService: NewsService,
     private tipService: TipService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private storage: Storage) { 
       this.getNotifications();
+      this.clearNotifications();
       this.socket = io('http://www.thestylehint.com');
     }
 
@@ -101,10 +104,9 @@ async denyRequest(notifyId: any) {
 
 //clear notifications
 async clearNotifications() {
-  this.navCtrl.navigateForward('notifications').then(async () => {
-    await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
-    this.notificationService.numberOfNotifications = 0;
-  });
+  await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
+  this.notificationService.numberOfNotifications = 0;
+  this.socket.emit('viewNotification', this.authService.userId);
 }
 
 async clearAll() {

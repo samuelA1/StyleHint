@@ -21,7 +21,7 @@
       <small *ngIf="tip.message" style="border-bottom: 1px solid #ccc; width: 100%; padding-bottom: 20px;" class="ion-float-right">{{GetPostTime(tip?.createdAt)}}</small>
     <ion-item-sliding *ngFor="let comment of comments">
       <ion-item>
-          <p><b>@{{comment?.commenter}}</b> {{comment?.comment}}</p>
+          <p [ngStyle]="{'color': comment.commenterId === authService.userId ? 'green' : 'black'}"><b>@{{comment?.commenter}}</b> {{comment?.comment}}</p>
       </ion-item>
       <small style="border-bottom: 1px solid #ccc;" class="ion-float-right">{{GetPostTime(comment.commentedAt)}}</small>
   

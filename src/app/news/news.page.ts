@@ -2,7 +2,7 @@ import { AuthService } from './../_services/auth.service';
 import { FriendService } from './../_services/friend.service';
 import { NewsService } from 'src/app/_services/news.service';
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import * as _ from 'lodash';
@@ -20,6 +20,7 @@ export class NewsPage implements OnInit {
   toComment: any = false;
   socket: any;
   freezePane: any = false;
+  liked: boolean = false; //toggle if you like a comment
 
   scrollOnModal: any = true
   searched:boolean = false;
@@ -32,9 +33,12 @@ export class NewsPage implements OnInit {
     private friendsService: FriendService,
     public authService: AuthService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController) { 
+    private toastCtrl: ToastController,
+    private navCtrl: NavController) { 
       if (this.newsService.id !== '') {
-        this.getNews();
+        this.getNews().then(() => {
+          this.getLikes();
+        });
       }
       this.socket = io('http://www.thestylehint.com');
     }
@@ -52,6 +56,15 @@ export class NewsPage implements OnInit {
         this.freezePane = false;
         this.comments.splice(this.comments.findIndex(c => c._id == comment.commentId), 1)
     });
+    this.socket.on('toggleLiked', async news => {
+      const newsInfo = await this.newsService.getSingleNews();
+      this.news['likedBy'] = newsInfo['news']['likedBy']
+      this.getLikes();
+    });
+  }
+
+  navigateBack() {
+    this.navCtrl.navigateBack('home');
   }
 
   GetPostTime(time) {
@@ -78,6 +91,19 @@ export class NewsPage implements OnInit {
   cancel() {
     this.modal = !this.modal;
     this.freezePane = !this.freezePane;
+  }
+
+  async toggleLike() {
+    try {
+      const likeInfo = await this.newsService.toggleLikes();
+      if (likeInfo['success']) {
+        this.socket.emit('toggleLike', {});
+      } else {
+        this.presentAlert('Sorry, an error occured while trying to like a news');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while trying to like a news');
+    }
   }
 
   async share() {
@@ -133,13 +159,19 @@ export class NewsPage implements OnInit {
       const newsInfo = await this.newsService.getSingleNews();
       if (newsInfo['success']) {
         this.news = newsInfo['news'];
-        this.comments = _.orderBy(newsInfo['news'].comments, ['commentedAt'],['desc']);;
+        this.comments = _.orderBy(newsInfo['news'].comments, ['commentedAt'],['desc']);
+        // this.liked = newsInfo['news']['likedBy'].some(n => n === this.authService.userId);
       } else {
         this.presentAlert('Sorry, an error occured while getting a news');
       }
     } catch (error) {
       this.presentAlert('Sorry, an error occured while getting a news');
     }
+  }
+
+  getLikes () {
+    console.log(this.news);
+    this.liked = this.news.likedBy.some(n => n === this.authService.userId);
   }
 
   async addComment(newsId: any) {

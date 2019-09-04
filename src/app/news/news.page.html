@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
       <ion-buttons slot="start">
-          <ion-back-button color="dark" text=""></ion-back-button>
+          <ion-button (click)="navigateBack()">
+              <ion-icon color="dark" name="arrow-back" class="ion-margin-start"></ion-icon>
+          </ion-button>
       </ion-buttons>
     <ion-title>{{news.headline}}</ion-title>
   </ion-toolbar>
@@ -21,8 +23,8 @@
               <ion-icon name="text"></ion-icon><small *ngIf="comments?.length !== 0" >{{comments?.length}}</small>
           </ion-text>
           
-          <ion-text [class.liked]="true">
-              <ion-icon  name="heart"></ion-icon><small>2</small>
+          <ion-text [class.liked]="liked" (click)="toggleLike()">
+              <ion-icon  name="heart"></ion-icon><small>{{news.likedBy?.length}}</small>
           </ion-text>
           <ion-icon (click)="share()" name="share"></ion-icon>
         </div>

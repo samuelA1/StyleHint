@@ -197,6 +197,11 @@ export class HomePage implements OnInit {
         }
       });
 
+      //when news is liked or unliked
+      this.socket.on('toggleLiked', async news => {
+        this.getAllNews();
+      });
+
     }
 
   //seasons array
@@ -418,11 +423,7 @@ export class HomePage implements OnInit {
 
   //clear notifications
   async clearNotifications() {
-    this.navCtrl.navigateForward('notifications').then(async () => {
-      await this.notificationService.changeNotify({notify:this.notificationService.numberOfNotifications});
-      this.notificationService.numberOfNotifications = 0;
-      this.socket.emit('viewNotification', this.authService.userId);
-    });
+    this.navCtrl.navigateForward('notifications');
   }
 
   //navigations

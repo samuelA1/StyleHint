@@ -33,7 +33,7 @@ export class NewsService {
   //like and unlike news
   async toggleLikes() {
     if (this.id !== undefined) {
-      return this.http.post(apiUrl + `news/toggle-like/${this.id}`, {headers: await this.headers()}).toPromise();
+      return this.http.get(apiUrl + `news/toggle-like/${this.id}`, {headers: await this.headers()}).toPromise();
     }
   }
 
