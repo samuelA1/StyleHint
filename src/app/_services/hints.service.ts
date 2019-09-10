@@ -63,6 +63,11 @@ weathers: any[] =[
     }
   }
 
+  //hint images to be used on home page
+  async getOccasionHint() {
+    return this.http.get(apiUrl + `hints/occasion-hints`, {headers: await this.headers()}).toPromise();
+  }
+
   async getSingleHint() {
     if (this.id !== undefined) {
       return this.http.get(apiUrl + `hints/get-single-hint/${this.id}`, {headers: await this.headers()}).toPromise();

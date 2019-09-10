@@ -16,7 +16,7 @@
       refreshingText="Notifications...">
     </ion-refresher-content>
   </ion-refresher>
-  <p *ngIf="notifications?.length == 0" style="padding-top: 50px">You do not have any notifications</p>
+  <p *ngIf="notifications?.length == 0">You do not have any notifications</p>
   <ion-list lines="none">
     <small *ngIf="notifications?.length !== 0" (click)="deleteNotificationsAlert()" class="ion-float-right" style="color: red; padding: 10px"><b>clear all</b></small>
     <ion-item-sliding *ngFor="let notify of notifications">

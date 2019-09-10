@@ -100,16 +100,14 @@
             <!-- Occasion cards -->
             <h5>Occasion</h5>
             <small>Choose the occasion or event you're interested in.</small>
-            <div class="selection-panes" [class.overlay]="itemSelected">
-              <ion-card [class.hide-card]="titleService.appPages[3].value == 'female kid' && occasion.name == 'date night'
-              || titleService.appPages[3].value == 'male kid' && occasion.name == 'date night'
-                || titleService.appPages[3].value == 'female kid' && occasion.name == 'job interview'
-                || titleService.appPages[3].value == 'male kid' && occasion.name == 'job interview'" *ngFor="let occasion of occasions">
-                  <ion-card-content  [class.chose]="occasion.isChosen" (click)="chooseOccasion(occasion.icon)">
-                      <ion-icon [name]="occasion.icon"></ion-icon>
-                      <p>{{occasion.name | titlecase}}</p>
-                  </ion-card-content>
-              </ion-card>
+            <div class="selection-panes" >
+              <div *ngFor="let hint of homeHints" [class.hide-card]="titleService.appPages[3].value == 'female kid' && hint.occasion == 'date night'
+              || titleService.appPages[3].value == 'male kid' && hint.occasion == 'date night'
+                || titleService.appPages[3].value == 'female kid' && hint.occasion == 'job interview'
+                || titleService.appPages[3].value == 'male kid' && hint.occasion == 'job interview'" (click)="chooseOccasion(hint.occasion)">
+                  <img   [src]="hint?.url?.url">
+                  <p class="occasion animated fadeInRight delay-1s">{{hint.occasion | titlecase}}</p>
+              </div>
             </div>
 
             <div *ngIf="changeSeason">

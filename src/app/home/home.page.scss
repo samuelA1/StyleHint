@@ -16,8 +16,35 @@ ion-card {
   max-height: 102px;
   cursor: pointer;
 }
+
+.selection-panes > div {
+  flex: 0 50%;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.occasion {
+  font-family: 'Merienda';
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  left: 5px;
+  font-size: xx-large;
+  font-weight: bold;
+  margin: 0;
+}
+
+.step-two {
+  background: url("https://images.unsplash.com/photo-1544306094-e2dcf9479da3") 0/100% 100% no-repeat;
+  background-size: cover;
+  z-index: -100;
+}
+
 //divs containing cards
 .selection-panes {
+  display: flex;
+  flex-wrap: wrap;
   margin-top: 20px !important;
 }
 
@@ -54,12 +81,6 @@ ion-card .chose {
   padding: 2px 16px;
 }
 
-.overlay {
-  background-color: lightslategrey;
-  pointer-events: none;
-
-}
-
 ion-badge {
   position: relative;
   right: 10px;
@@ -68,6 +89,9 @@ ion-badge {
 }
 
 img {
+  object-fit: cover;
+  border-radius: 12px;
+  padding: 3px;
   width: 100% !important;
   height: 100% !important;
   max-width: 100% !important;

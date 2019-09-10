@@ -53,7 +53,7 @@ export class FriendsPage implements OnInit {
 
   cancel() {
     this.query = ''
-    this.searched = true;
+    // this.searched = true;
     this.modal = !this.modal;
   }
 

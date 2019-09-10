@@ -43,8 +43,8 @@ export class HomePage implements OnInit {
   suggestions: any[];
   icon: any;
   season: any;
+  homeHints: any; //hints for each occasion
   socket: any;
-  itemSelected: boolean = false; //triggers overlay on occasion selected
   showWeather: boolean = true; //hide or show weather
 
   //for controlling slides
@@ -80,6 +80,10 @@ export class HomePage implements OnInit {
       this.watchPosition();
       this.getSeason();
       this.getAllNews();
+      this.occasionHints();
+      setTimeout(() => {
+        this.checkFields();
+      }, 10000);
       this.socket = io('http://www.thestylehint.com')
      }
 
@@ -108,6 +112,13 @@ export class HomePage implements OnInit {
     toNews(id: any) {
       this.newsService.id = id;
       this.navCtrl.navigateForward('news')
+    }
+
+    //check if user has gender, size and interest
+    checkFields() {
+      if (!this.titleService.appPages[3].value || !this.titleService.appPages[4].value || !this.titleService.appPages[5].value) {
+        this.presentAlert('Please make sure you selected your gender, size and interest on the side menu. This is very important as this will help us give you the best content and experience you need. Failure to do this will lead to you having no content. The gender, size or interest can be selected on the side menu to the left of your screen.')
+      }
     }
   
     async getAllNews() {
@@ -268,13 +279,25 @@ export class HomePage implements OnInit {
 }
 
   //choose option
-  async chooseOccasion(iconName: any) {
-    this.itemSelected = true;
-    this.titleService.hideLogOut = true;
-    this.occasions.map(occasion => {
-      occasion.isChosen =  occasion.icon === iconName ? (true) : false
-    });
-    await this.presentToastWithOptions();
+  async chooseOccasion(occasion: any) {
+    this.finalData.occasion = occasion;
+    this.titleService.finalData = this.finalData;
+    this.navCtrl.navigateForward('fashion');
+    this.storage.set('finalData', JSON.stringify(this.finalData));
+  }
+
+  //occasion hints
+  async occasionHints() {
+    try {
+      const sortedInfo = await this.hintService.getOccasionHint();
+      if (sortedInfo['success']) {
+        this.homeHints = sortedInfo['hints'];
+      } else {
+        this.presentAlert('Sorry, an error occured while getting all hints');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting all hints');
+    }
   }
 
   //choose season
@@ -477,44 +500,6 @@ export class HomePage implements OnInit {
       color: color,
       position: 'top',
       duration: 2000
-    });
-    toast.present();
-  }
-
-  //toast
-  async presentToastWithOptions() {
-    const toast = await this.toastCtrl.create({
-      header: 'Are you set and ready to go?',
-      position: 'bottom',
-      color: 'dark',
-      buttons: [
-        {
-          side: 'end',
-          icon: 'thumbs-up',
-          text: 'Yes',
-          handler: () => {
-            this.itemSelected = false;
-            this.occasions.forEach(o => {
-              if (o.isChosen) {
-                this.finalData.occasion = o.name;
-              }
-            })
-            this.titleService.finalData = this.finalData;
-            this.navCtrl.navigateForward('fashion');
-            this.storage.set('finalData', JSON.stringify(this.finalData));
-            this.titleService.hideLogOut = false;
-          }
-        }, {
-          side: 'start',
-          icon: 'thumbs-down',
-          text: 'No',
-          handler: () => {
-            this.itemSelected = false;
-            this.titleService.hideLogOut = false;
-
-          }
-        }
-      ]
     });
     toast.present();
   }
