@@ -1,6 +1,14 @@
 .prev-img {
-    height: 100% !important;
+    height: 300px !important;
     max-height: 100% !important;
+    object-fit: cover;
+}
+
+.news-citation {
+  position: absolute;
+  top: 0;
+  left: 3px;
+  color: blueviolet;
 }
 
 .action {

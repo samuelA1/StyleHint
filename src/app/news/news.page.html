@@ -12,6 +12,7 @@
 <ion-content scrollY="{{!freezePane}}">
     <ion-card *ngIf="news.url"><!---->
       <img [src]="news.url" class="prev-img">
+      <small class="news-citation">via <b>{{news.citation}}</b></small>
       <ion-card-header>
         <ion-card-subtitle role="heading" aria-level="3">{{news.genre | titlecase}}</ion-card-subtitle>
         <ion-card-title role="heading" aria-level="2">{{news.headline | titlecase}}</ion-card-title>

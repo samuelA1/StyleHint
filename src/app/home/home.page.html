@@ -20,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollY="{{titleService.modal}}">
+<ion-content scrollY="{{titleService.modal}}" [scrollEvents]="true">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       refreshingSpinner="circles">
@@ -79,7 +79,7 @@
                 <ion-row>
                   <ion-col>
                       <ion-list >
-                        <ion-item (click)="toNews(news._id)" *ngFor="let news of allNews" style="width: 80%">
+                        <ion-item (click)="toNews(news._id)" *ngFor="let news of allNews" style="width: 70%">
                           <ion-thumbnail slot="end" >
                             <img [src]="news.url" style="border-radius: 8px">
                           </ion-thumbnail>

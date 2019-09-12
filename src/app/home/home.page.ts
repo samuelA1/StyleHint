@@ -1,7 +1,7 @@
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ToastController, AlertController, NavController, MenuController, IonSlides, Platform } from '@ionic/angular';
+import { ToastController, AlertController, NavController, MenuController, IonSlides, Platform, IonContent } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
@@ -22,6 +22,7 @@ declare var google;
 })
 export class HomePage implements OnInit {
   @ViewChild('slides') slides: IonSlides;
+  @ViewChild(IonContent) content: IonContent;
   allNews: any[];
   page: number = 1;
   totalNews: any;
@@ -97,6 +98,9 @@ export class HomePage implements OnInit {
        this.slides.getActiveIndex().then(i => {
          if (i === 0) {
           this.showWeather = false;
+          setTimeout(() => {
+            this.content.scrollToTop(1000);
+          }, 1000);
          } else {
           this.showWeather = true;
          }

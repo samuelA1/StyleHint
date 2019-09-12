@@ -42,6 +42,7 @@ const routes: Routes = [
   { path: 'add-news', loadChildren: './admin/add-news/add-news.module#AddNewsPageModule' },
   { path: 'all-news', loadChildren: './admin/all-news/all-news.module#AllNewsPageModule' },
   { path: 'update-news', loadChildren: './admin/update-news/update-news.module#UpdateNewsPageModule' },
+  { path: 'cookie-policy', loadChildren: './legal-info/cookie-policy/cookie-policy.module#CookiePolicyPageModule' },
 ];
 
 @NgModule({
