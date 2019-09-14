@@ -46,7 +46,7 @@
     </platform>
     <platform name="ios">
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-            <string>We use your location for full functionality of certain app features.</string>
+            <string>This lets StyleHints, collect and use your device's precise location, such as GPS information in order to provide you with fashion hints or ideas based on the climatic condition at the moment.</string>
         </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
