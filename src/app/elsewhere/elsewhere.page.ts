@@ -45,12 +45,12 @@ export class ElsewherePage implements OnInit {
     {name: 'school', icon: 'school', isChosen: false},
     {name: 'sport', icon: 'american-football', isChosen: false},
     {name: 'birthday party', icon: 'color-wand', isChosen: false},
-    {name: 'halloween', icon: 'outlet', isChosen: false},
-    {name: 'christmas', icon: 'gift', isChosen: false},
+    // {name: 'halloween', icon: 'outlet', isChosen: false},
+    // {name: 'christmas', icon: 'gift', isChosen: false},
     {name: 'church', icon: 'add-cirle-outline', isChosen: false},
-    {name: 'date night', icon: 'contacts', isChosen: false},
-    {name: 'job interview', icon: 'person-add', isChosen: false},
-    {name: 'culture', icon: 'home', isChosen: false},
+    // {name: 'date night', icon: 'contacts', isChosen: false},
+    // {name: 'job interview', icon: 'person-add', isChosen: false},
+    // {name: 'culture', icon: 'home', isChosen: false},
   ]
 
    //get season based on loaction
