@@ -14,3 +14,10 @@ display: inline-flex;
 .card-container {
     padding: 2px 16px;
 }
+
+ion-badge {
+  position: relative;
+  right: 10px;
+  bottom: 8px;
+  font-size: x-small;
+}

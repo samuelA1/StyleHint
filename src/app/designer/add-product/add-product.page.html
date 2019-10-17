@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>Add product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <form #f="ngForm" style="display: grid;">
+              <ion-label>Main image:</ion-label>
+              <ion-text color="tertiary">
+                  <i>This is going to be the image to be used as a hint. It should be appropriate. </i>
+              </ion-text>
+              <ion-button  color="warning" shape="round" (click)="getMainImage()" expand="block" size="small">
+                  Get image
+              </ion-button>
+              <img *ngIf="base64Image" [src]="base64Image">
+
+
+              <div *ngIf="base64Image" class="ion-text-center">
+                <h6><b>Supporting images</b></h6>
+                <ion-text color="tertiary">
+                    <i>Images which will help the user know more about what he or she is about to purchase.</i>
+                </ion-text>
+
+                <div>
+                    <ion-label>Image 1:</ion-label>
+                    <ion-button  color="warning" shape="round" (click)="getImageOne()" expand="block" size="small">
+                        Get image
+                    </ion-button>
+                    <img *ngIf="imgOne" [src]="imgOne">
+    
+                    <ion-label>Image 2:</ion-label>
+                    <ion-button  color="warning" shape="round" (click)="getImageTwo()" expand="block" size="small">
+                        Get image
+                    </ion-button>
+                    <img *ngIf="imgTwo" [src]="imgTwo">
+    
+                    <ion-label>Image 3:</ion-label>
+                    <ion-button  color="warning" shape="round" (click)="getImageThree()" expand="block" size="small">
+                        Get image
+                    </ion-button>
+                    <img *ngIf="imgThree" [src]="imgThree">
+                </div>
+              </div>
+              <ion-label>Price: $</ion-label>
+              <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
+              <small *ngIf="price.errors?.pattern">Please enter price of product</small>
+
+              <ion-label>Type of product:</ion-label>
+              <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+              <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
+
+              <div class="ion-text-center">
+                <h6><b>Quantity and sizes</b></h6>
+                <ion-text color="tertiary">
+                    <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
+                    <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                </ion-text>
+                <div>
+                    <ion-label>Small:</ion-label>
+                    <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" required></ion-input>
+                    <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
+                    
+                    <ion-label>Medium:</ion-label>
+                    <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" required></ion-input>
+                    <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
+
+                    <ion-label>Large:</ion-label>
+                    <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" required></ion-input>
+                    <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
+                </div>
+              </div>
+              
+  
+              <ion-button color="warning" shape="round" (click)="addProduct()" expand="block" size="large" [disabled]="!f.valid">
+                  Add product
+              </ion-button>
+            </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

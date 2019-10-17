@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button>
+            <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Reviews</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+          refreshingSpinner="circles"
+          refreshingText="Getting reviews...">
+        </ion-refresher-content>
+      </ion-refresher>
+    <ion-badge style="margin-right: 10px" *ngIf="reviews?.length !== 0 && reviewType == 'review'" color="warning">Total {{reviews?.length}}</ion-badge> <ion-badge  *ngIf="reviewType == 'review'" color="warning">{{reviewType | titlecase}}</ion-badge>
+    <ion-badge style="margin-right: 10px" *ngIf="reviews?.length !== 0 && reviewType == 'approved'" color="success">Total {{reviews?.length}}</ion-badge> <ion-badge *ngIf="reviewType == 'approved'" color="success">{{reviewType | titlecase}}</ion-badge>
+    <ion-badge style="margin-right: 10px" *ngIf="reviews?.length !== 0 && reviewType == 'denied'" color="danger">Total {{reviews?.length}}</ion-badge> <ion-badge *ngIf="reviewType == 'denied'" color="danger">{{reviewType | titlecase}}</ion-badge>
+
+    <p *ngIf="reviews?.length == 0">There are no reviews with this category.</p>
+    <ion-list class="ion-margin-top">
+        <ion-item (click)="toDecision(review._id)" *ngFor="let review of reviews" class="item-label item ios in-list ion-focusable hydrated">
+          <ion-thumbnail slot="end" class="ios hydrated">
+            <img [src]="review.mainImage">
+          </ion-thumbnail>
+          <ion-label class="sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">
+            <p>${{review.price}} {{review.whatYouSell}}</p>
+            <small>{{GetPostTime(review.createdAt)}}</small>
+            <div>
+                <ion-badge *ngIf="reviewType == 'review'" color="tertiary">{{review.isPublished}}</ion-badge>
+                <ion-badge *ngIf="reviewType == 'denied'" color="danger">{{review.isPublished}}</ion-badge>
+                <ion-badge *ngIf="reviewType == 'approved'" color="success">{{review.isPublished}}</ion-badge>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more reviews...">
+          </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+      <!-- status actionsheet -->
+      <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button color="light" (click)="statusActionSheet()">
+            <ion-icon name="options"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+</ion-content>

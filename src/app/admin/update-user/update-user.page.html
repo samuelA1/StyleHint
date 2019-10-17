@@ -13,9 +13,16 @@
         <ion-row>
           <ion-col>
             <form #f="ngForm">
-              <div>
-                  <b>Joined on: {{user.createdAt | date: fullDate}}</b>
+              <div class="ion-text-center">
+                  <img class="profile-img" src="{{user.picture}}" alt="">
               </div>
+              <div class="ion-text-center">
+                <b>Joined on: {{user.createdAt | date: fullDate}}</b>
+              </div>
+                <ion-label margin><b>Name</b>:</ion-label>
+                <ion-input (keyup)="removeErrors()" name="name" [(ngModel)]="user.name" type="text" placeholder="Name" required></ion-input>
+                <small *ngIf="error.name">{{error.name}}</small>
+
                 <ion-label margin><b>Country</b>:</ion-label>
                 <ion-select (ionChange)="removeErrors()" name="country" [(ngModel)]="user.country" placeholder="Country" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
                     <ion-select-option *ngFor="let country of countries" [value]="country.name" role="option" id="ion-selopt-45">{{country.name}}</ion-select-option>
@@ -51,7 +58,22 @@
                 <ion-select name="isAdmin" [(ngModel)]="user.isAdmin"  placeholder="select admin role">
                   <ion-select-option *ngFor="let admin of isAdmin" value="{{admin.name}}">{{admin.name}}</ion-select-option>
                 </ion-select>
-          
+
+                <ion-label margin><b>Choose designer</b> role:</ion-label>
+                <ion-select  name="isDesigner" [(ngModel)]="user.isDesigner"  placeholder="select designer role">
+                  <ion-select-option *ngFor="let designer of isDesigner" value="{{designer.name}}">{{designer.name}}</ion-select-option>
+                </ion-select>
+
+                <div *ngIf="user.isDesigner == 'true'">
+                  <ion-label margin><b>Stripe Account#</b></ion-label>
+                  <ion-input name="stripeAcct" [(ngModel)]="user.stripeAcct" type="text" placeholder="stripeAcct" required></ion-input>
+            
+                  <ion-label margin><b>Choose interested occasions:</b></ion-label>
+                  <ion-select multiple="true" name="category" [(ngModel)]="user.category"  placeholder="select occasion">
+                    <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
+                  </ion-select>
+                </div>
+
                 <div>
                     <ion-label margin><b>New password</b>:</ion-label>
                     <div>

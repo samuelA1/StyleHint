@@ -16,6 +16,11 @@ export class PasswordPage implements OnInit {
      private customizeService: CustomizeService,
      private alertCtrl: AlertController,
      private toastCtrl: ToastController) { }
+
+     navigateBack() {
+      this.navCtrl.back();
+    }
+
    //updates password
    updatePassword() {
     this.loading = true;

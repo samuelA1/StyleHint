@@ -1,6 +1,6 @@
 import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 
 @Component({
@@ -13,11 +13,14 @@ export class EmailPage implements OnInit {
   error: any = {};
   loading: boolean = false; //loader on the page after the user clicks the create account button
   constructor(private navCtrl: NavController,
-     private menu: MenuController,
       private titleService: TitleService,
       private customizeService: CustomizeService,
       private alertCtrl: AlertController,
       private toastCtrl: ToastController) { }
+
+      navigateBack() {
+        this.navCtrl.back();
+      }
 
    //updates Email
    updateEmail() {
@@ -32,8 +35,7 @@ export class EmailPage implements OnInit {
             });
             this.presentToast(emailInfo['message'])
             this.loading = false;
-            this.navCtrl.navigateRoot('home');
-            this.openCustom();
+            this.navCtrl.back();
           } else {
             this.loading = false;
             this.presentAlert(emailInfo['message']);
@@ -57,12 +59,6 @@ export class EmailPage implements OnInit {
      
       
       return false;
-  }
-
-  //open side menu
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
   }
 
   //alert

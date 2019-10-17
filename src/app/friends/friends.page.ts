@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client';
 import * as moment from 'moment';
 import { NotificationService } from '../_services/notification.service';
+import { TitleService } from '../_services/title.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class FriendsPage implements OnInit {
     private notificationService: NotificationService,
     private friendService: FriendService,
     public authService: AuthService,
+    public titleService: TitleService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private navCtrl: NavController) { 
@@ -79,9 +81,9 @@ export class FriendsPage implements OnInit {
             this.content = []
             data['content'].hits.forEach(user => {
             if (this.friends.some(friend => friend._id === user.objectID)) {
-              this.content.push({isFriend: true, username: user.username, objectID: user.objectID, sent: false})
+              this.content.push({isFriend: true, username: user.username, name: user.name, picture: user.picture, objectID: user.objectID, sent: false})
             } else {
-              this.content.push({isFriend: false, username: user.username, objectID: user.objectID, sent: false})
+              this.content.push({isFriend: false, username: user.username, name: user.name, picture: user.picture, objectID: user.objectID, sent: false})
             }
           });
         } else {

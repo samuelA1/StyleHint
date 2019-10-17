@@ -12,6 +12,7 @@ export class AdminService {
   id: any;
   hintId: any; //id for hint update
   newsId: any; //id for news
+  productId: any;
   constructor(private storage: Storage, private http: HttpClient) { }
 
   async headers() {
@@ -122,5 +123,24 @@ export class AdminService {
     if (this.newsId !== undefined) {
       return this.http.delete(apiUrl + `admin/delete-news/${this.newsId}`, {headers: await this.headers()}).toPromise();
     }
+  }
+
+  //getReviews by status
+  async getReviews(status: any, page: any) {
+    return this.http.post(apiUrl + `admin/review-status?page=${page-1}`, status, {headers: await this.headers()}).toPromise();
+  }
+
+  async getSingleProduct() {
+    return this.http.get(apiUrl + `hints/customer-product/${this.productId}`, {headers: await this.headers()}).toPromise();
+  }
+
+  //product review decion
+  async reviewDecision(hint: any) {
+    return this.http.post(apiUrl + `admin/review-process/${this.productId}`, hint, {headers: await this.headers()}).toPromise();
+  }
+
+  //get all designers
+  async getDesigners() {
+    return this.http.get(apiUrl + 'admin/all-designs', {headers: await this.headers()}).toPromise();
   }
 }

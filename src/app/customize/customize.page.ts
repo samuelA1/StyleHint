@@ -120,8 +120,10 @@ export class CustomizePage implements OnInit {
     try {
       const customizationInfo = await this.customizeService.customize(customizedUser);
       if (customizationInfo['success']) {
+        this.titleService.actMenu = false;
         this.titleService.showSplitPane = false;
         this.titleService.isAdmin = customizationInfo['user']['isAdmin'];
+        this.titleService.isDesigner = customizationInfo['user']['isDesigner'];
         this.navCtrl.navigateRoot('/home');
         this.updateStatistics('add')
         this.authService.userId = customizationInfo['user']['_id'];

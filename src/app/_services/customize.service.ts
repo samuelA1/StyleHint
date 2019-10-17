@@ -11,6 +11,8 @@ const apiUrl = environment.apiUrl;
 })
 export class CustomizeService {
   token: any;
+  addressId: any = '';
+  cardId: any = '';
   constructor(private storage: Storage,
      private http: HttpClient,
      private authService: AuthService) { }
@@ -47,6 +49,18 @@ export class CustomizeService {
 
   async updateUsername(username: any) {
     return this.http.post(apiUrl + 'profile/username', username, {headers: await this.headers()}).toPromise()
+    .then((res) => {
+      if (res['success']) {
+        this.storage.set('user', JSON.stringify(res['user']));
+        return res;
+      } else {
+        return res;
+      }
+    });
+  }
+
+  async updateName(name: any) {
+    return this.http.post(apiUrl + 'profile/name', name, {headers: await this.headers()}).toPromise()
     .then((res) => {
       if (res['success']) {
         this.storage.set('user', JSON.stringify(res['user']));
@@ -116,4 +130,44 @@ export class CustomizeService {
       }
     });
   }
+
+  async addAdress(address: any) {
+    return this.http.post(apiUrl + 'profile/add-address', address, {headers: await this.headers()}).toPromise();
+  }
+
+  async removeAdress(id: any) {
+    return this.http.post(apiUrl + `profile/delete-address/${id}`,{}, {headers: await this.headers()}).toPromise();
+  }
+
+  async updateAdress(address: any) {
+    return this.http.post(apiUrl + `profile/edit-address/${this.addressId}`,address, {headers: await this.headers()}).toPromise();
+  }
+
+  //get single address
+  async getAddress() {
+    return this.http.get(apiUrl + `profile/single-address/${this.addressId}`, {headers: await this.headers()}).toPromise();
+  }
+
+  async addCard(card: any) {
+    return this.http.post(apiUrl + 'profile/add-card', card, {headers: await this.headers()}).toPromise();
+  }
+
+  async removeCard(id: any) {
+    return this.http.post(apiUrl + `profile/delete-card/${id}`,{}, {headers: await this.headers()}).toPromise();
+  }
+
+  async updateCard(card: any) {
+    return this.http.post(apiUrl + `profile/edit-card/${this.cardId}`,card, {headers: await this.headers()}).toPromise();
+  }
+
+  //get single card
+  async getCard() {
+    return this.http.get(apiUrl + `profile/single-card/${this.cardId}`, {headers: await this.headers()}).toPromise();
+  }
+
+  //get all cards and addresses
+  async getCardsAddresses() {
+    return this.http.get(apiUrl + 'profile/card-address', {headers: await this.headers()}).toPromise();
+  }
+
 }

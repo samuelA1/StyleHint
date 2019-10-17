@@ -1,6 +1,6 @@
 import { CustomizeService } from './../_services/customize.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 
 @Component({
@@ -10,18 +10,14 @@ import { TitleService } from '../_services/title.service';
 })
 export class ListPage implements OnInit {
     constructor(private navCtrl: NavController,
-       private menu: MenuController,
        public titleService: TitleService,
        private customizeService: CustomizeService,
        private alertCtrl: AlertController,
        private toastCtrl: ToastController) { }
 
-    
-  //open side menu
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
-  }
+       navigateBack() {
+        this.navCtrl.back();
+      }
 
   //selects country
   async selectCountry(name: any) {
@@ -39,8 +35,7 @@ export class ListPage implements OnInit {
           p.selected =  p.name.toLowerCase() == name.toLowerCase() ? true : false;
         });
         this.presentToast(countryInfo['message'])
-        this.navCtrl.navigateRoot('home');
-        this.openCustom();
+        this.navCtrl.back();
       } else {
         this.presentAlert(countryInfo['message']);
       }

@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-        <ion-menu-button>
-            <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
-        </ion-menu-button>
-    </ion-buttons>
+      <ion-buttons slot="start">
+          <ion-button (click)="navigateBack()">
+              <ion-icon color="dark"  name="arrow-back" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
     <ion-title>
       Update country
     </ion-title>

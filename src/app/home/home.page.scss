@@ -35,11 +35,15 @@ ion-card {
   margin: 0;
 }
 
-// .step-two {
-//   background: url("https://images.unsplash.com/photo-1544306094-e2dcf9479da3") 0/100% 100% no-repeat;
-//   background-size: cover;
-//   z-index: -100;
-// }
+.selected-icon {
+  position: absolute;
+  top: 14px;
+  background-color: lightcoral;
+  height: 19px;
+  width: 19px;
+  border-radius: 50%;
+  display: inline-block;
+}
 
 //divs containing cards
 .selection-panes {
@@ -86,6 +90,15 @@ ion-badge {
   right: 10px;
   bottom: 8px;
   font-size: x-small;
+}
+
+.designer-img {
+  border-radius: 100% !important;
+  width: 60px !important;
+  max-width: 60px !important;
+  height: 60px !important;
+  max-height: 60px !important;
+  object-fit: cover !important;
 }
 
 img {

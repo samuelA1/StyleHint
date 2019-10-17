@@ -2,7 +2,9 @@
   <ion-toolbar>
       <ion-buttons slot="start">
           <ion-menu-button>
-              <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+              <ion-avatar >
+                  <img style="height: 30px !important; max-height: 30px !important; width: 30px !important; max-width: 30px !important; border-radius: 100% !important; object-fit: cover !important" [src]="titleService.appPages[0].value">
+                </ion-avatar>
           </ion-menu-button>
       </ion-buttons>
     <ion-title>Legal information</ion-title>

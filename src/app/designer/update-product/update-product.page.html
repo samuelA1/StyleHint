@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-back-button color="dark" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Update product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="product.reason">
+      <ion-label margin>Reason:</ion-label>
+      <textarea name="reason" [(ngModel)]="product.reason" cols="30" rows="10" [disabled]="true"></textarea>
+      <ion-text color="danger">
+        <p>Click on the ADD PRODUCT tab on the side menu, make the necessary changes, and resubmit your product as a new product.</p>
+      </ion-text>
+  </div>
+  <ion-grid>
+      <ion-row>
+        <ion-col *ngIf="product.mainImage">
+          <img [src]="product.mainImage" alt="product image">
+          <small style="color: red">main</small>
+        </ion-col>
+        <ion-col *ngIf="product.imgOne">
+          <img [src]="product.imgOne" alt="product image">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="product.imgTwo">
+          <img [src]="product.imgTwo" alt="product image">
+        </ion-col>
+        <ion-col *ngIf="product.imgThree">
+            <img [src]="product.imgThree" alt="product image">
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+
+  <form *ngIf="product.reason"  #f="ngForm" style="display: grid;">
+    <ion-label>Price: $</ion-label>
+    <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*"  placeholder="Price" [disabled]="true"></ion-input>
+    <small *ngIf="price.errors?.pattern">Please enter price of product</small>
+
+    <ion-label>Type of product:</ion-label>
+    <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+    <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  [disabled]="true"></ion-input>
+
+    <div class="ion-text-center">
+      <h6><b>Quantity and sizes</b></h6>
+      <ion-text color="tertiary">
+          <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
+          <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+      </ion-text>
+      <div>
+          <ion-label>Small:</ion-label>
+          <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
+          <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
+          
+          <ion-label>Medium:</ion-label>
+          <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
+          <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
+
+          <ion-label>Large:</ion-label>
+          <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
+          <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
+      </div>
+    </div>
+
+    <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
+        Delete product
+    </ion-button>
+  </form>
+
+  <form *ngIf="!product.reason"  #f="ngForm" style="display: grid;">
+    <ion-label>Price: $</ion-label>
+    <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
+    <small *ngIf="price.errors?.pattern">Please enter price of product</small>
+
+    <ion-label>Type of product:</ion-label>
+    <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+    <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
+
+    <div class="ion-text-center">
+      <h6><b>Quantity and sizes</b></h6>
+      <ion-text color="tertiary">
+          <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
+          <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+      </ion-text>
+      <div>
+          <ion-label>Small:</ion-label>
+          <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" required></ion-input>
+          <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
+          
+          <ion-label>Medium:</ion-label>
+          <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" required></ion-input>
+          <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
+
+          <ion-label>Large:</ion-label>
+          <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" required></ion-input>
+          <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
+      </div>
+    </div>
+
+    <ion-button color="warning" shape="round" (click)="updateProduct()" expand="block" size="large" [disabled]="!f.dirty">
+        Update product
+    </ion-button>
+    <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
+        Delete product
+    </ion-button>
+  </form>
+</ion-content>

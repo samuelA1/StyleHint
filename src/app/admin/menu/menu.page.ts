@@ -6,6 +6,7 @@ import { TitleService } from './../../_services/title.service';
 import { Component, OnInit } from '@angular/core';
 import { MenuController, AlertController, ToastController } from '@ionic/angular';
 import * as io from 'socket.io-client';
+import { NotificationService } from 'src/app/_services/notification.service';
 declare var google;
 
 
@@ -38,6 +39,7 @@ export class MenuPage implements OnInit {
     private menuCtrl: MenuController,
     private geolocation: Geolocation,
     private weatherService: WeatherService,
+    public notificationService: NotificationService,
     public authService: AuthService,
     private adminService: AdminService,
     private alertCtrl: AlertController,

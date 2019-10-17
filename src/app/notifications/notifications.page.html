@@ -23,7 +23,7 @@
         <ion-item >
             <!-- for tip -->
             <div *ngIf="notify.typeOf == 'tip'" (click)="toTip(notify.route, false)">
-              <ion-text color="tertiary">
+              <ion-text color="primary">
                   <h4>{{notify.typeOf | titlecase}}</h4>
                 </ion-text>
                 <div margin>
@@ -31,6 +31,17 @@
                   <small>{{GetPostTime(notify.createdAt)}}</small>
                 </div>
             </div>
+
+            <!-- for review decision -->
+            <div *ngIf="notify.typeOf == 'decision'">
+                <ion-text color="tertiary">
+                    <h4>{{notify.typeOf | titlecase}}</h4>
+                  </ion-text>
+                  <div margin>
+                    <p style="margin: 0" ><b>@{{notify.fromUsername}} </b>{{notify.message}}.</p>
+                    <small>{{GetPostTime(notify.createdAt)}}</small>
+                  </div>
+              </div>
 
             <!-- for news -->
             <div *ngIf="notify.typeOf == 'news'" (click)="toNews(notify.route)">

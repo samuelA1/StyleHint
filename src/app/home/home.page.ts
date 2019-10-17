@@ -1,13 +1,15 @@
+import { BusinessService } from './../_services/business.service';
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ToastController, AlertController, NavController, MenuController, IonSlides, Platform, IonContent } from '@ionic/angular';
+import { ToastController, AlertController, NavController, IonSlides, Platform, IonContent, ActionSheetController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { WeatherService } from '../_services/weather.service';
 import { TitleService } from '../_services/title.service';
 import { Storage } from '@ionic/storage';
 import * as io from 'socket.io-client';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import { NotificationService } from '../_services/notification.service';
 import { NewsService } from '../_services/news.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
@@ -24,7 +26,19 @@ export class HomePage implements OnInit {
   @ViewChild('slides') slides: IonSlides;
   @ViewChild(IonContent) content: IonContent;
   allNews: any[];
+  allDesigners: any[];
+  unfilteredDesigners: any[];
+  selectedDesigners: any[] = [];
+  occasion: any = {
+    occasion: ''
+  };
+  forDesign: boolean = false;
+  counter: number = 0; //for counting selected designers
+  counted: number = 0; //control toast withoptions
+  searched: boolean = false; //after a search is made and a result gotten
+  searchNum: number = 0; //limit the times allDesigners is stored in local storage
   page: number = 1;
+  search: any = ''
   totalNews: any;
   imgIndex: number = 0;
   changeSeason: boolean = false;
@@ -50,7 +64,7 @@ export class HomePage implements OnInit {
 
   //for controlling slides
   slideOpts = {
-    initialSlide: 2,
+    initialSlide: 1,
     // speed: 400
   };
 
@@ -61,13 +75,14 @@ export class HomePage implements OnInit {
      public titleService: TitleService,
      private hintService: HintsService,
      private authService: AuthService,
+     private businessService: BusinessService,
      private newsService: NewsService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
      private onesignal: OneSignal,
      private platform: Platform,
-    //  private menu: MenuController,
-     private storage: Storage) {
+     private storage: Storage,
+     private actionSheetCtrl: ActionSheetController) {
       this.geocoder = new google.maps.Geocoder();
       setTimeout(() => {
         this.getGeolocation();
@@ -81,6 +96,7 @@ export class HomePage implements OnInit {
       this.watchPosition();
       this.getSeason();
       this.getAllNews();
+      this.getDesigners();
       this.occasionHints();
       setTimeout(() => {
         this.checkFields();
@@ -96,14 +112,22 @@ export class HomePage implements OnInit {
      toggleShowCase() {
        //hide weather when displaying news slide
        this.slides.getActiveIndex().then(i => {
-         if (i === 0) {
+         if (i === 0 || i === 2) {
           this.showWeather = false;
-          setTimeout(() => {
-            this.content.scrollToTop(1000);
-          }, 1000);
+          if (i === 0) {
+            setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
+          }
          } else {
           this.showWeather = true;
          }
+         if (i === 2) {
+          this.forDesign = true;
+          this.titleService.activateHome = false;
+          } else {
+            this.forDesign = false;
+          }
        })
      }
 
@@ -135,6 +159,34 @@ export class HomePage implements OnInit {
         }
       } catch (error) {
         this.presentAlert('Sorry, an error occured while getting all news');
+      }
+    }
+
+    //all designers for the users to choose
+    async getDesigners() {
+      try {
+        const designersInfo = await this.businessService.getDesigners();
+        if (designersInfo['success']) {
+          this.allDesigners = designersInfo['designers'];
+        } else {
+          this.presentAlert('Sorry, an error occured while getting all designers');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while getting all designers');
+      }
+    }
+
+    //designers by occasion
+    async getDesignersByOccasion() {
+      try {
+        const designersInfo = await this.businessService.getDesignersOccasion(this.occasion);
+        if (designersInfo['success']) {
+          this.allDesigners = designersInfo['designers'];
+        } else {
+          this.presentAlert('Sorry, an error occured while getting all designers for that occasion.');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while getting all designers for that occasion.');
       }
     }
 
@@ -215,6 +267,25 @@ export class HomePage implements OnInit {
       //when news is liked or unliked
       this.socket.on('toggleLiked', async news => {
         this.getAllNews();
+      });
+
+      //a designer adds a product for review
+      this.socket.on('designReviewed', ownerId => {
+        if (this.titleService.isAdmin) {
+          this.notificationService.adminAlertNumber();
+          this.toastShareNotification('A product has just been submitted for review.', 'success');
+        }
+      });
+
+      //after admin review
+      this.socket.on('reviewDecision', ownerId => {
+        if (ownerId === this.authService.userId) {
+          this.notificationService.notifyNumber();
+          this.toastShareNotification('A decision has just been made on one of your submitted products.', 'tertiary');
+        }
+        if (this.titleService.isAdmin) {
+          this.notificationService.adminAlertNumber();
+        }
       });
 
     }
@@ -336,6 +407,86 @@ export class HomePage implements OnInit {
       this.presentToast('No internet connection. Please connect to the internet', 'danger');
 
     }
+  }
+
+  //select and chose designers of interest
+  async selectDesigner(occasion: any, i: any) {
+    this.selectSearchDesigners(occasion, i);
+    this.allDesigners.map(o => {
+          if (o.occasion === occasion) {
+            if (o.designers[i].chose > 0) {
+              this.counter--
+              o.designers[i].chose = 0;
+              this.selectedDesigners.splice(this.selectedDesigners.findIndex(x => x == o.designers[i]._id), 1);
+            } else if (o.designers[i].chose === 0) {
+              this.counter++
+              o.designers[i].chose = this.counter;
+              this.selectedDesigners.push(o.designers[i]._id);
+            } else {
+              this.counter++
+              o.designers[i] = Object.assign({chose: this.counter}, o.designers[i]);
+              this.selectedDesigners.push(o.designers[i]._id);
+            }
+          }
+        });
+    
+        this.storage.set('designers', JSON.stringify(this.allDesigners));
+        
+        if (this.counter > 4 && this.counter == 5 && this.counted == 0) {
+          this.counted = 1;
+          this.presentToastWithOptions();
+        } else if (this.counter < 5) {
+          this.toastCtrl.dismiss();
+          if (this.counted > 0) {
+            this.counted = 0
+          } else if (this.counted == 0) {
+            this.counted = 0;
+          }
+        } 
+  }
+
+  async selectSearchDesigners(occasion: any, i: any) {
+    let friend = JSON.parse(await this.storage.get('designers'))
+    friend.map(o => {
+      if (o.occasion === occasion) {
+        if (o.designers[i].chose > 0) {
+          o.designers[i].chose = 0;
+        } else if (o.designers[i].chose === 0) {
+          o.designers[i].chose = this.counter;
+        } else {
+          o.designers[i] = Object.assign({chose: this.counter}, o.designers[i]);
+        }
+      }
+    })
+    this.storage.set('designers', JSON.stringify(friend));
+  }
+
+  //search designers
+  async searchDesigners() {
+    if (this.searchNum === 0) {
+      this.storage.set('designers', JSON.stringify(this.allDesigners));
+      this.searchNum++;
+    }
+    this.searched = true;
+    let designers = [];
+    if (this.search) {
+      this.allDesigners.forEach(des => {
+        let result = des.designers.filter(de => de.username.includes(this.search.toLowerCase()));
+         if (result.length !== 0) {
+           designers.push({occasion: des.occasion, designers: result});
+          this.allDesigners = designers;
+        } 
+      });
+    } else {
+      this.searched = false;
+      this.allDesigners = JSON.parse(await this.storage.get('designers'));
+    }
+    
+  }
+
+  //what happens after selectint at least five fav designers
+  afterSelection() {
+
   }
 
   //set up onesignal
@@ -508,6 +659,25 @@ export class HomePage implements OnInit {
     toast.present();
   }
 
+  async presentToastWithOptions() {
+    const toast = await this.toastCtrl.create({
+      header: 'All set and ready to go?',
+      position: 'bottom',
+      animated: true,
+      color: 'medium',
+      buttons: [
+        {
+          side: 'end',
+          text: 'Yes',
+          handler: () => {
+            console.log('Favorite clicked');
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
   //refresh location
   doRefresh(event){
     this.page = 1;
@@ -518,5 +688,80 @@ export class HomePage implements OnInit {
       this.getAllNews();
       event.target.complete();
     }, 1000);
+  }
+
+  async presentOccasionActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Occasions',
+      buttons: [
+        {
+          text: 'All Designers',
+          handler: async () => {
+            this.allDesigners = JSON.parse(await this.storage.get('designers'));          }
+        },
+        {
+        text: `${this.occasions[0].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[0].name}`;
+          this.getDesignersByOccasion();
+        }
+      }, {
+        text: `${this.occasions[1].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[1].name}`;
+          this.getDesignersByOccasion();
+        }
+      }, {
+        text: `${this.occasions[2].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[2].name}`;
+          this.getDesignersByOccasion();
+        }
+      },
+       {
+        text: `${this.occasions[3].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[3].name}`;
+          this.getDesignersByOccasion();
+        }
+      }, 
+      {
+        text: `${this.occasions[4].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[4].name}`;
+          this.getDesignersByOccasion();
+        }
+      },
+      {
+        text: `${this.occasions[5].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[5].name}`;
+          this.getDesignersByOccasion();
+        }
+      },
+      {
+        text: `${this.occasions[6].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[6].name}`;
+          this.getDesignersByOccasion();
+        }
+      },
+      {
+        text: `${this.occasions[7].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[7].name}`;
+          this.getDesignersByOccasion();
+        }
+      },
+      {
+        text: `${this.occasions[8].name}`,
+        handler: () => {
+          this.occasion.occasion = `${this.occasions[8].name}`;
+          this.getDesignersByOccasion();
+        }
+      }
+    ]
+    });
+    await actionSheet.present();
   }
 }

@@ -9,6 +9,10 @@
         <ion-button >
             @{{authService.userName}}
         </ion-button>
+        <ion-button  [routerDirection]="'forward'" [routerLink]="['/all-reviews']">
+            <ion-icon color="dark"  name="notifications"></ion-icon>
+            <ion-badge color="danger" *ngIf="notificationService.numberOfAdminAlerts > 0">{{notificationService.numberOfAdminAlerts}}</ion-badge>
+        </ion-button>
     </ion-buttons>
     <ion-title>Admin</ion-title>
   </ion-toolbar>

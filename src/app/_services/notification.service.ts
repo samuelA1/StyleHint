@@ -10,6 +10,7 @@ const apiUrl = environment.apiUrl;
 })
 export class NotificationService {
   numberOfNotifications: number = 0;
+  numberOfAdminAlerts: number = 0;
   token: any;
   constructor(private storage: Storage,
     private http: HttpClient) { }
@@ -40,6 +41,14 @@ export class NotificationService {
       if (res['success']) this.numberOfNotifications = res['notifyNumber'];
     });
  }
+
+ //get number of admin notifications
+ async adminAlertNumber() {
+  return this.http.get(apiUrl + 'admin/alerts', {headers: await this.headers()}).toPromise()
+   .then(async (res) => {
+     if (res['success']) this.numberOfAdminAlerts = res['numberOfAlerts'];
+   });
+}
 
  //set number of notifications to a value
  async changeNotify(notify: any) {

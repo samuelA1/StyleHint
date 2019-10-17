@@ -7,7 +7,10 @@ export class TitleService {
     showSplitPane: boolean  = false;
     modal: boolean = true;
     isAdmin: boolean = false;
+    isDesigner: boolean = false;
+    actMenu: boolean = false; //controls the showing and hiding of main side menu icon/image after visiting the designer/admin section
     goToAdmin: boolean = false;
+    goToDesigner: boolean = false;
     hideLogOut: boolean = false;
     rainModal: boolean = false; //control display of rain modal
     rainModalCount: number = 0; //control display of rain modal
@@ -37,67 +40,67 @@ export class TitleService {
         { val: 'large', isChecked: false },
     ];
 
-  // list menu titles
+   // list menu titles
   appPages = [
     {
-      title: 'home',
-      url: '/home',
-      icon: 'home'
+    title: 'picture',
+    value: '',
     },
     {
-        title: 'elsewhere',
-        url: '/elsewhere',
-        icon: 'pin'
-      },
-    {
     title: 'username',
-    url: '/username',
-    icon: 'body',
     value: '',
-    symbol: '@'
     },
     {
       title: 'gender',
-      url: '/gender',
-      icon: 'contacts',
       value: ''
     },
     {
       title: 'size',
-      url: '/size',
-      icon: 'resize',
       value: ''
     },
     {
       title: 'interest',
-      url: '/interest',
-      icon: 'happy',
       value: ''
     },
     {
       title: 'email',
-      url: '/email',
-      icon: 'mail',
       value: ''
     },
     {
       title: 'passord',
-      url: '/password',
-      icon: 'lock'
     },
     {
       title: 'country',
-      url: '/list',
-      icon: 'flag',
       value: ''
     },
     {
-        title: 'legal info',
-        url: '/legal-info',
-        icon: 'book',
-        value: ''
-      }
-  ];
+        title: 'name',
+        value: '',
+        },
+  ]; 
+
+//side menu content
+   sideMenu = [
+    {
+        title: 'home',
+        url: '/home',
+        icon: 'home'
+      },
+      {
+          title: 'elsewhere',
+          url: '/elsewhere',
+          icon: 'pin'
+        },
+      {
+      title: 'profile',
+      url: '/profile',
+      },
+      {
+          title: 'legal info',
+          url: '/legal-info',
+          icon: 'book',
+        }
+   ] 
 
   // list of countries used in html
   countries = [ {

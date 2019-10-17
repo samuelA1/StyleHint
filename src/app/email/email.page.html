@@ -1,21 +1,21 @@
 <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-menu-button>
-              <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
-          </ion-menu-button>
-      </ion-buttons>
+        <ion-buttons slot="start">
+            <ion-button (click)="navigateBack()">
+                <ion-icon color="dark"  name="arrow-back" class="ion-margin-start"></ion-icon>
+            </ion-button>
+        </ion-buttons>
       <ion-title>Update email</ion-title>
-    <ion-progress-bar *ngIf="loading" type="indeterminate" color="medium"></ion-progress-bar>
+      <ion-progress-bar *ngIf="loading" type="indeterminate" color="medium"></ion-progress-bar>
     </ion-toolbar>
-  </ion-header>
+</ion-header>
 
 <ion-content>
     <form #f="ngForm">
             <ion-input #email="ngModel" (keyup)="removeErrors()" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" name="email" [(ngModel)]="user.email" type="email" placeholder="Enter new email" required></ion-input>
             <small *ngIf="error.email">{{error.email}}</small>
             <small *ngIf="email.errors?.pattern">Please enter a valid email</small>
-        <ion-button color="warning" shape="round" (click)="updateEmail()" expand="block" size="large" [disabled]="!f.valid">
+        <ion-button style="margin-top: 50px;" color="warning" shape="round" (click)="updateEmail()" expand="block" size="large" [disabled]="!f.valid">
             Update email
         </ion-button>
     </form>

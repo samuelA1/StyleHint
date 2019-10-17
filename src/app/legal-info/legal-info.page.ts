@@ -1,3 +1,4 @@
+import { TitleService } from './../_services/title.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LegalInfoPage implements OnInit {
 
-  constructor() { }
+  constructor(public titleService: TitleService) { }
 
   ngOnInit() {
   }

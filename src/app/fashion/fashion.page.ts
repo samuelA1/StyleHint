@@ -65,11 +65,11 @@ export class FashionPage implements OnInit {
     {name: 'Sport', icon: 'american-football', isChosen: false},
     {name: 'Birthday party', icon: 'color-wand', isChosen: false},
     {name: 'church', icon: 'add-circle-outline', isChosen: false},
-    // {name: 'Date night', icon: 'contacts', isChosen: false},
-    // {name: 'Job interview', icon: 'person-add', isChosen: false},
-    // {name: 'Culture', icon: 'home', isChosen: false},
-    // {name: 'Christmas', icon: 'gift', isChosen: false},
-    // {name: 'Halloween', icon: 'outlet', isChosen: false},
+    {name: 'Date night', icon: 'contacts', isChosen: false},
+    {name: 'Job interview', icon: 'person-add', isChosen: false},
+    {name: 'Culture', icon: 'home', isChosen: false},
+    {name: 'Christmas', icon: 'gift', isChosen: false},
+    {name: 'Halloween', icon: 'outlet', isChosen: false},
   ]
 
   async presentOccasionActionSheet() {
@@ -114,56 +114,56 @@ export class FashionPage implements OnInit {
           this.getInitialContent();
         }
       }, 
-      // {
-      //   text: `${this.occasions[4].name}`,
-      //   handler: () => {
-      //     this.occasion = `${this.occasions[4].name}`;
-      //     this.titleService.finalData['occasion'] = this.occasion;
-      //     this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
-      //     this.page = 1;
-      //     this.getInitialContent();
-      //   }
-      // },
-      // {
-      //   text: `${this.occasions[5].name}`,
-      //   handler: () => {
-      //     this.occasion = `${this.occasions[5].name}`;
-      //     this.titleService.finalData['occasion'] = this.occasion;
-      //     this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
-      //     this.page = 1;
-      //     this.getInitialContent();
-      //   }
-      // },
-      // {
-      //   text: `${this.occasions[6].name}`,
-      //   handler: () => {
-      //     this.occasion = `${this.occasions[6].name}`;
-      //     this.titleService.finalData['occasion'] = this.occasion;
-      //     this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
-      //     this.page = 1;
-      //     this.getInitialContent();
-      //   }
-      // },
-      // {
-      //   text: `${this.occasions[7].name}`,
-      //   handler: () => {
-      //     this.occasion = `${this.occasions[7].name}`;
-      //     this.titleService.finalData['occasion'] = this.occasion;
-      //     this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
-      //     this.page = 1;
-      //     this.getInitialContent();
-      //   }
-      // },
-      // {
-      //   text: `${this.occasions[8].name}`,
-      //   handler: () => {
-      //     this.occasion = `${this.occasions[8].name}`;
-      //     this.titleService.finalData['occasion'] = this.occasion;
-      //     this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
-      //     this.page = 1;
-      //     this.getInitialContent();
-      //   }
-      // }
+      {
+        text: `${this.occasions[4].name}`,
+        handler: () => {
+          this.occasion = `${this.occasions[4].name}`;
+          this.titleService.finalData['occasion'] = this.occasion;
+          this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
+        }
+      },
+      {
+        text: `${this.occasions[5].name}`,
+        handler: () => {
+          this.occasion = `${this.occasions[5].name}`;
+          this.titleService.finalData['occasion'] = this.occasion;
+          this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
+        }
+      },
+      {
+        text: `${this.occasions[6].name}`,
+        handler: () => {
+          this.occasion = `${this.occasions[6].name}`;
+          this.titleService.finalData['occasion'] = this.occasion;
+          this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
+        }
+      },
+      {
+        text: `${this.occasions[7].name}`,
+        handler: () => {
+          this.occasion = `${this.occasions[7].name}`;
+          this.titleService.finalData['occasion'] = this.occasion;
+          this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
+        }
+      },
+      {
+        text: `${this.occasions[8].name}`,
+        handler: () => {
+          this.occasion = `${this.occasions[8].name}`;
+          this.titleService.finalData['occasion'] = this.occasion;
+          this.storage.set('finalData', JSON.stringify(this.titleService.finalData));
+          this.page = 1;
+          this.getInitialContent();
+        }
+      }
     ]
     });
     await actionSheet.present();

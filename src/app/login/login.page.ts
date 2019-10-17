@@ -46,9 +46,12 @@ export class LoginPage implements OnInit {
             }
             const loginInfo = await this.authService.login(login);
             if (loginInfo['success']) {
+              this.titleService.actMenu = false;
               this.titleService.showSplitPane = false;
               this.titleService.isAdmin = loginInfo['user']['isAdmin'];
+              this.titleService.isDesigner = loginInfo['user']['isDesigner'];
               this.titleService.goToAdmin = false;
+              this.titleService.goToDesigner = false;
               this.notificationService.notifyNumber();
               this.navCtrl.navigateRoot('/home');
               this.updateStatistics('add');

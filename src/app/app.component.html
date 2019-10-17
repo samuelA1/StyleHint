@@ -1,6 +1,6 @@
 <ion-app >
   <ion-split-pane [disabled]="titleService.showSplitPane">
-    <ion-menu (ionDidClose)="actHome()" (ionDidOpen)="actHome()" *ngIf="!titleService.goToAdmin" swipeGesture="false" menuId="custom">
+    <ion-menu (ionDidClose)="actHome()" (ionDidOpen)="actHome()" *ngIf="!titleService.actMenu" swipeGesture="false" menuId="custom">
       <ion-header>
         <ion-toolbar>
           <ion-title>Account</ion-title>
@@ -8,21 +8,30 @@
       </ion-header>
       <ion-content>
         <ion-list>
-          <ion-menu-toggle  auto-hide="false" *ngFor="let p of titleService.appPages">
+            <div class="ion-text-center"  [routerDirection]="'forward'" [routerLink]="['/profile']">
+                <img class="profile-img ion-margin-top" [src]="titleService.appPages[0].value">
+                <h3 style="margin: 0">{{titleService.appPages[8].value | titlecase}}</h3>
+                <p style="margin: 0">@{{titleService.appPages[1].value}}</p>
+            </div>
+          <ion-menu-toggle  auto-hide="false" *ngFor="let p of titleService.sideMenu">
             <ion-item class="ion-margin-bottom" [routerDirection]="'forward'" [routerLink]="[p.url]" lines="none">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-icon *ngIf="p.title !== 'profile'" slot="start" [name]="p.icon"></ion-icon>
+              <ion-avatar slot="start" *ngIf="p.title == 'profile'">
+                  <img  [src]="titleService.appPages[0].value">
+                </ion-avatar>
               <ion-label>
                 {{p.title | titlecase}}
               </ion-label>
-              <ion-text color="medium">
-                <small *ngIf="p.symbol">{{p.symbol}}</small>
-                <small *ngIf="p.value">{{p.value}}</small>
-              </ion-text>
             </ion-item>
           </ion-menu-toggle>
           <ion-item *ngIf="titleService.isAdmin" class="log-out-button" lines="none">
               <ion-button class="log-out" color="secondary" expand="block" (click)="toAdmin()" size="medium">
                   Admin
+              </ion-button>
+          </ion-item>
+          <ion-item *ngIf="titleService.isDesigner" class="log-out-button" lines="none">
+              <ion-button class="log-out" color="tertiary" expand="block" (click)="toDesigner()" size="medium">
+                  Designer
               </ion-button>
           </ion-item>
           <ion-item *ngIf="!titleService.hideLogOut" class="log-out-button" lines="none">
@@ -48,8 +57,40 @@
             <ion-item [routerDirection]="'forward'" [routerLink]="['/add-hint']">Add hint</ion-item>
             <ion-item [routerDirection]="'forward'" [routerLink]="['/all-users']">Users</ion-item>
             <ion-item [routerDirection]="'forward'" [routerLink]="['/all-hints']">Hints</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/all-reviews']">Reviews</ion-item>
             <ion-item [routerDirection]="'forward'" [routerLink]="['/add-news']">Add news</ion-item>
             <ion-item [routerDirection]="'forward'" [routerLink]="['/all-news']">News</ion-item>
+          </ion-list>
+        </ion-menu-toggle>
+        <ion-item class="log-out-button" lines="none">
+            <ion-button class="log-out" color="secondary" expand="block" (click)="toUser()" lines="none" size="medium">
+                Switch view
+            </ion-button>
+        </ion-item>
+        <ion-item class="log-out-button" lines="none">
+            <ion-button class="log-out" color="warning" expand="block" (click)="logout()" size="medium">
+                Log out
+            </ion-button>
+        </ion-item>
+      </ion-content>
+    </ion-menu>
+
+    <!-- designer menu -->
+    <ion-menu *ngIf="titleService.goToDesigner" swipeGesture="false" menuId="second">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Tools</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-menu-toggle auto-hide="false">
+          <ion-list>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/designer']">Designer</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/add-product']">Add product</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/all-products']">Products</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/all-orders']">Orders</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/all-finances']">Finances</ion-item>
+            <ion-item [routerDirection]="'forward'" [routerLink]="['/info']">Info</ion-item>
           </ion-list>
         </ion-menu-toggle>
         <ion-item class="log-out-button" lines="none">

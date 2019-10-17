@@ -121,7 +121,7 @@ sizes: any = [
         this.presentToast(hintInfo['message']);
         this.socket.emit('logIn', {});
     } else {
-        this.presentAlert(hintInfo['message']);
+        this.presentAlert('Sorry, an error occured while trying to add a hint.');
     } 
     } catch (error) {
         this.presentAlert('Sorry, an error occured while trying to add a hint.')

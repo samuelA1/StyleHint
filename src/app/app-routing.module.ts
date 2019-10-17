@@ -43,6 +43,23 @@ const routes: Routes = [
   { path: 'all-news', loadChildren: './admin/all-news/all-news.module#AllNewsPageModule' },
   { path: 'update-news', loadChildren: './admin/update-news/update-news.module#UpdateNewsPageModule' },
   { path: 'cookie-policy', loadChildren: './legal-info/cookie-policy/cookie-policy.module#CookiePolicyPageModule' },
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'name', loadChildren: './name/name.module#NamePageModule' },
+  { path: 'address', loadChildren: './address/address.module#AddressPageModule' },
+  { path: 'card', loadChildren: './card/card.module#CardPageModule' },
+  { path: 'add-address', loadChildren: './add-address/add-address.module#AddAddressPageModule' },
+  { path: 'add-card', loadChildren: './add-card/add-card.module#AddCardPageModule' },
+  { path: 'update-address', loadChildren: './update-address/update-address.module#UpdateAddressPageModule' },
+  { path: 'update-card', loadChildren: './update-card/update-card.module#UpdateCardPageModule' },
+  { path: 'designer', loadChildren: './designer/designer.module#DesignerPageModule' },
+  { path: 'add-product', loadChildren: './designer/add-product/add-product.module#AddProductPageModule' },
+  { path: 'all-products', loadChildren: './designer/all-products/all-products.module#AllProductsPageModule' },
+  { path: 'all-orders', loadChildren: './designer/all-orders/all-orders.module#AllOrdersPageModule' },
+  { path: 'all-finances', loadChildren: './designer/all-finances/all-finances.module#AllFinancesPageModule' },
+  { path: 'info', loadChildren: './designer/info/info.module#InfoPageModule' },
+  { path: 'all-reviews', loadChildren: './admin/all-reviews/all-reviews.module#AllReviewsPageModule' },
+  { path: 'decision', loadChildren: './admin/decision/decision.module#DecisionPageModule' },
+  { path: 'update-product', loadChildren: './designer/update-product/update-product.module#UpdateProductPageModule' },
 ];
 
 @NgModule({

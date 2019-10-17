@@ -57,6 +57,8 @@ export class AppComponent {
         const loginInfo = await this.authService.autoLogin({email: user['email']});
         if (loginInfo['success']) {
           this.titleService.isAdmin = user['isAdmin'];
+          this.titleService.isDesigner = user['isDesigner'];
+          this.titleService.actMenu = false;
           this.navCtrl.navigateRoot('home');
           this.updateStatistics('add');
           this.titleService.showSplitPane = false;
@@ -116,6 +118,7 @@ export class AppComponent {
       this.storage.clear();
       this.menu.close('custom');
       this.menu.close('first');
+      this.menu.close('second');
       this.titleService.showSplitPane = true;
       this.notificationService.numberOfNotifications = 0;
       this.navCtrl.navigateRoot('slides');
@@ -124,15 +127,28 @@ export class AppComponent {
 
   //navigation to admin
   toAdmin() {
+    this.notificationService.adminAlertNumber();
     this.titleService.goToAdmin = true;
+    this.titleService.actMenu = true;
     this.navCtrl.navigateRoot('menu');
+    this.menu.enable(false, 'custom');
+  }
+
+  //navigation to designer
+  toDesigner() {
+    this.titleService.goToDesigner = true;
+    this.titleService.actMenu = true;
+    this.navCtrl.navigateRoot('designer');
     this.menu.enable(false, 'custom');
   }
 
   //navigation back to user view
   toUser() {
-    this.menu.enable(false, 'first');
+    this.menu.enable(false, 'first');;
+    this.menu.enable(false, 'second');;
     this.titleService.goToAdmin = false;
+    this.titleService.goToDesigner = false;
+    this.titleService.actMenu = false;
     this.navCtrl.navigateRoot('home')
   }
 

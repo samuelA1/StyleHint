@@ -78,7 +78,9 @@ export class UpdateHintPage implements OnInit {
       private adminService: AdminService,
       private toastCtrl: ToastController,
       private navCtrl: NavController) {
-        this.getHint();
+        if (this.adminService.hintId !== '') {
+          this.getHint();
+        }
       }
 
       ngOnInit() {

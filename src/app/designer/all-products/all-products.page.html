@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content
+        refreshingSpinner="circles"
+        refreshingText="Getting products...">
+      </ion-refresher-content>
+    </ion-refresher>
+  <div>
+      <ion-badge style="margin-right: 10px" *ngIf="products?.length !== 0 && statusType == 'review'" color="warning">Total {{products?.length}}</ion-badge> <ion-badge  *ngIf="statusType == 'review'" color="warning">{{statusType | titlecase}}</ion-badge>
+      <ion-badge style="margin-right: 10px" *ngIf="products?.length !== 0 && statusType == 'approved'" color="success">Total {{products?.length}}</ion-badge> <ion-badge *ngIf="statusType == 'approved'" color="success">{{statusType | titlecase}}</ion-badge>
+      <ion-badge style="margin-right: 10px" *ngIf="products?.length !== 0 && statusType == 'denied'" color="danger">Total {{products?.length}}</ion-badge> <ion-badge *ngIf="statusType == 'denied'" color="danger">{{statusType | titlecase}}</ion-badge>
+  </div>
+
+  <p *ngIf="products?.length == 0">There are no products with this category.</p>
+
+  <div  (click)="toUpdate(product._id)" class="card" *ngFor="let product of products">
+    <div>
+      <img class="animated fadeInRight delay-1s"  [src]="product.mainImage">
+    </div>
+    <ion-text *ngIf="statusType == 'approved'" color="success">
+        <b class="animated fadeInRight delay-1s">{{product.isPublished | titlecase}}</b>
+        <small *ngIf="product.oos">(Out of stock)</small>
+    </ion-text>
+    <ion-text *ngIf="statusType == 'review'" color="warning">
+        <b class="animated fadeInRight delay-1s">{{product.isPublished | titlecase}}</b>
+    </ion-text>
+    <ion-text *ngIf="statusType == 'denied'" color="danger">
+        <b class="animated fadeInRight delay-1s">{{product.isPublished | titlecase}}</b>
+    </ion-text>
+  </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more products...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+    <!-- status actionsheet -->
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button color="light" (click)="statusActionSheet()">
+          <ion-icon name="options"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>

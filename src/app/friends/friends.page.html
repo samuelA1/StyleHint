@@ -20,15 +20,16 @@
     <ion-list lines="none">
         <ion-searchbar *ngIf="search != '' || friends?.length !== 0" (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0 && search != ''">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
-        <ion-badge *ngIf="friends.length !== 0" color="warning">{{friends?.length}} friend(s)</ion-badge>
+        <ion-badge *ngIf="friends?.length !== 0" color="warning">{{friends?.length}} friend(s)</ion-badge>
         <p *ngIf="!searched && friends?.length == 0">You have no friends yet, try adding some friends.</p>
       <ion-item-sliding *ngFor="let friend of friends">
         <ion-item>
-            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
-                <ion-icon name="contact"></ion-icon>
+            <ion-avatar  slot="start">
+              <img  [src]="friend?.picture">
             </ion-avatar>
             <ion-label>
-              <h2>@{{friend.username}}</h2> 
+              <h2>{{friend.name | titlecase}}</h2>
+              <h5>@{{friend.username}}</h5>
             </ion-label>
         </ion-item>
     
@@ -65,12 +66,13 @@
             <ion-searchbar  (ionChange)="searchAddFriend()" name="query" [(ngModel)]="query"  placeholder="search by username"></ion-searchbar>
             <p *ngIf="content?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
             <ion-item *ngFor="let friend of content">
-                <ion-avatar style="font-size: xx-large;padding-top: 3px;">
-                    <ion-icon name="contact"></ion-icon>
-                </ion-avatar>
-                <ion-label>
-                  <h2>@{{friend.username}}</h2>
-                </ion-label>
+                  <ion-avatar  slot="start">
+                    <img  [src]="friend?.picture">
+                  </ion-avatar>
+                  <ion-label>
+                    <h2>{{friend.name | titlecase}}</h2>
+                    <h5>@{{friend.username}}</h5>
+                  </ion-label>
                 <div *ngIf="!friend.isFriend && friend.objectID !== authService.userId">
                     <ion-button *ngIf="!friend.sent" (click)="friendRequest(friend.objectID)" color="tertiary">Friend request</ion-button>
                     <ion-text color="tertiary" *ngIf="friend.sent">
@@ -79,7 +81,7 @@
                 </div>
                 <div *ngIf="friend.isFriend">
                     <ion-text color="tertiary">
-                      <p>Already your friend</p>
+                      <small>Already your friend</small>
                     </ion-text>
                 </div>
                 <div *ngIf="friend.objectID === authService.userId">

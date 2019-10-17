@@ -1,3 +1,4 @@
+import { TitleService } from './../_services/title.service';
 import { AuthService } from './../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
@@ -9,14 +10,16 @@ import { NavController, AlertController } from '@ionic/angular';
 })
 export class SignupPage implements OnInit {
 user: any = {
-  country: ''
+  country: '',
+  picture: 'https://res.cloudinary.com/stylehint/image/upload/v1568625260/blank-profile-picture-973460_640_ian3xo.png'
 }; // user object to be sent to the database
 error: any = {};
 loading: boolean = false; //loader on the page after the user clicks the create account button
 
   constructor(private navCtrl: NavController,
      private authService: AuthService,
-     private alertCtrl: AlertController) { }
+     private alertCtrl: AlertController,
+     private titleService: TitleService) { }
 
   //performs registration
   async register() {
@@ -28,6 +31,7 @@ loading: boolean = false; //loader on the page after the user clicks the create 
         try {
           const registrationInfo = await this.authService.signup(this.user);
           if (registrationInfo['success']) {
+            this.titleService.actMenu = false;
             this.navCtrl.navigateRoot('/customize', {animationDirection: 'forward'});
             this.authService.userName = this.user['username'];
           } else {
@@ -44,6 +48,11 @@ loading: boolean = false; //loader on the page after the user clicks the create 
 
 //Validate user inputs
   validation(user: any) {
+    if (user['name']) {
+    } else {
+      this.error.name = 'Please enter a name.';
+    }
+
     if (user['username'].length >= 3) {
     } else {
       this.error.username = 'Sorry, your username must be at least 3 characters.';

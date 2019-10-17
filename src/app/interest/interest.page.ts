@@ -1,7 +1,7 @@
 import { CustomizeService } from './../_services/customize.service';
 import { TitleService } from './../_services/title.service';
 import { Component, OnInit } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-interest',
@@ -10,12 +10,15 @@ import { NavController, MenuController, AlertController, ToastController } from 
 })
 export class InterestPage implements OnInit {
   constructor(private navCtrl: NavController,
-     private menu: MenuController,
      public titleService: TitleService,
      private customizeService: CustomizeService,
      private alertCtrl: AlertController,
      private toastCtrl: ToastController)
       { }
+
+      navigateBack() {
+        this.navCtrl.back();
+      }
 
   async selectInterest(val: any) {
     let user = {
@@ -31,8 +34,7 @@ export class InterestPage implements OnInit {
           p.isChecked =  p.val == val ? true : false;
         });
         this.presentToast(InterestInfo['message'])
-        this.navCtrl.navigateRoot('home');
-        this.openCustom();
+        this.navCtrl.back();
       } else {
         this.presentAlert(InterestInfo['message']);
       }
@@ -61,12 +63,6 @@ export class InterestPage implements OnInit {
       });
       toast.present();
     }
-
-  //open side menu
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
-  }
 
   ngOnInit() {
   }

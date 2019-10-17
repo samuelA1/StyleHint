@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
-          <ion-icon color="dark" style="height: 41px; width: 32px;" name="contact"></ion-icon>
+          <ion-avatar >
+            <img style="height: 35px !important; max-height: 35px !important; width: 35px !important; max-width: 35px !important; border-radius: 100% !important; object-fit: cover !important" [src]="titleService.appPages[0].value">
+          </ion-avatar>
       </ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
@@ -14,14 +16,17 @@
     <ion-title *ngIf="showWeather">
       StyleHints 
     </ion-title>
-    <ion-title *ngIf="!showWeather">
+    <ion-title *ngIf="!showWeather && !forDesign">
       News
     </ion-title>
+    <ion-title *ngIf="forDesign">
+        Designers
+      </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content scrollY="{{titleService.modal}}" [scrollEvents]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+  <ion-refresher *ngIf="!forDesign" slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       refreshingSpinner="circles">
     </ion-refresher-content>
@@ -143,13 +148,35 @@
             </ion-text>
         </ion-slide>
     
-        <!-- slide three -->
-        <!-- <ion-slide  class="step-three">
-          
-        </ion-slide> -->
+        <!-- Designer's slide -->
+        <ion-slide  class="step-three ion-text-center">
+          <!-- select designers -->
+          <div>
+            <h2 style="color: lightcoral">Some of the Best, Top and Upcoming Designers</h2>
+            <ion-text>
+              <small>Please select at least three designers you're most interested in.</small>
+            </ion-text>
+            <!-- Searchbar with cancel button shown on focus -->
+            <ion-searchbar (ionChange)="searchDesigners()" name="search" [(ngModel)]="search"  placeholder="search designers"></ion-searchbar>
+          </div>
+          <div *ngFor="let designers of allDesigners"> 
+            <h3>{{designers.occasion | titlecase}}</h3>
+            <ion-grid>
+              <ion-row class="ion-justify-content-between">
+                <ion-col *ngFor="let designer of designers.designers; let i = index" (click)="selectDesigner(designers.occasion, i)" size="4">
+                    <small *ngIf="designer?.chose > 0" class="selected-icon">&#10003;</small>
+                    <img style="margin-left: 18px;"  class=" designer-img ion-margin-top" [src]="designer.picture">
+                    <div>
+                      <small style="margin-left: 25px; display: flex;"><b>{{designer.name | titlecase}}</b></small>
+                    </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-slide>
     </ion-slides>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!showWeather">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="!showWeather && !forDesign">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
           loadingText="Loading more news...">
@@ -174,5 +201,12 @@
         <p style="margin-bottom: inherit">Friends</p>
       </ion-fab-button>
     </ion-fab-list>
+  </ion-fab>
+
+  <!-- occasion actionsheet -->
+ <ion-fab *ngIf="forDesign" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="dark" (click)="presentOccasionActionSheet()">
+        <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 </ion-content>

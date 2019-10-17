@@ -1,3 +1,4 @@
+import { BusinessService } from './_services/business.service';
 import { NewsService } from './_services/news.service';
 import { ClosetService } from './_services/closet.service';
 import { FriendService } from './_services/friend.service';
@@ -5,6 +6,7 @@ import { HintsService } from './_services/hints.service';
 import { AuthService } from './_services/auth.service';
 import { CustomizeService } from './_services/customize.service';
 import { AdminService } from './_services/admin.service';
+import { DesignerService } from './_services/designer.service';
 import { TitleService } from './_services/title.service';
 import { WeatherService } from './_services/weather.service';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +34,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TipService } from './_services/tip.service';
 import { NotificationService } from './_services/notification.service';
+import { Crop } from '@ionic-native/crop/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -51,10 +54,13 @@ import { NotificationService } from './_services/notification.service';
     ScreenOrientation,
     SocialSharing,
     Camera,
+    Crop,
     OneSignal,
     WeatherService,
     TitleService,
     AdminService,
+    DesignerService,
+    BusinessService,
     ClosetService,
     CustomizeService,
     AuthService,

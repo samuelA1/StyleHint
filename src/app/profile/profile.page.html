@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-avatar >
+                  <img style="height: 30px !important; max-height: 30px !important; width: 30px !important; max-width: 30px !important; border-radius: 100% !important; object-fit: cover !important" [src]="titleService.appPages[0].value">
+                </ion-avatar>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <div class="ion-text-center">
+        <img *ngIf="!base64Image" class="profile-img ion-margin-top" [src]="titleService.appPages[0].value">
+        <img class="profile-img ion-margin-top" *ngIf="base64Image" [src]="base64Image">
+        <div (click)="getImage()">
+            <small style="color: lightcoral"><b>Change profile photo</b></small>
+        </div>
+    </div>
+  <ion-card>
+    <ion-item [routerDirection]="'forward'" [routerLink]="['/name']"  href="#">
+      <ion-label>
+          <h2>Name</h2>
+          <ion-text color="medium">
+              <p>{{titleService.appPages[8].value}}</p>
+            </ion-text>
+        </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/username']">
+        <ion-label>
+          <h2>Username</h2>
+          <ion-text color="medium">
+              <p>@{{titleService.appPages[1].value}}</p>
+            </ion-text>
+        </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/email']">
+        <ion-label>
+            <h2>Email</h2>
+            <ion-text color="medium">
+                <p>{{titleService.appPages[5].value}}</p>
+              </ion-text>
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/password']">
+        <ion-label>Password</ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/gender']">
+        <ion-label>
+            <h2>Gender</h2>
+            <ion-text color="medium">
+                <p>{{titleService.appPages[2].value}}</p>
+              </ion-text>
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/size']">
+        <ion-label>
+            <h2>Size</h2>
+            <ion-text color="medium">
+                <p>{{titleService.appPages[3].value}}</p>
+              </ion-text>
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/interest']">
+        <ion-label>
+            <h2>Interest</h2>
+            <ion-text color="medium">
+                <p>{{titleService.appPages[4].value}}</p>
+              </ion-text>
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+      <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/list']">
+        <ion-label>
+            <h2>Country</h2>
+            <ion-text color="medium">
+                <p>{{titleService.appPages[7].value}}</p>
+              </ion-text>
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/address']">
+      <ion-label>
+          <h2>Address</h2>
+        </ion-label>
+    </ion-item>
+</ion-card>
+
+<ion-card>
+  <ion-item href="#" [routerDirection]="'forward'" [routerLink]="['/card']">
+    <ion-label>
+        <h2>Card</h2>
+      </ion-label>
+  </ion-item>
+</ion-card>
+ </ion-content>

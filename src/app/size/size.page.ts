@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, MenuController, AlertController, ToastController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 import { TitleService } from '../_services/title.service';
 import { CustomizeService } from '../_services/customize.service';
 
@@ -11,11 +11,14 @@ import { CustomizeService } from '../_services/customize.service';
 export class SizePage implements OnInit {
 
   constructor(private navCtrl: NavController,
-    private menu: MenuController,
     public titleService: TitleService,
     private customizeService: CustomizeService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController) { }
+
+    navigateBack() {
+      this.navCtrl.back();
+    }
 
 
  async selectSize(val: any) {
@@ -33,20 +36,13 @@ export class SizePage implements OnInit {
         p.isChecked =  p.val == val ? true : false;
       });
       this.presentToast(sizeInfo['message'])
-      this.navCtrl.navigateRoot('home');
-      this.openCustom();
+      this.navCtrl.back();
     } else {
       this.presentAlert(sizeInfo['message']);
     }
   } catch (error) {
     this.presentAlert('Sorry, an error occured while trying to update your size');
   }
- }
-
- //open side menu
- openCustom() {
-   this.menu.enable(true, 'custom');
-   this.menu.open('custom');
  }
 
  //alert

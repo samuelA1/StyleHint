@@ -14,7 +14,10 @@ export class UpdateUserPage implements OnInit {
     country: 'United States',
     gender: '',
     interest: '',
-    isAdmin:  ''
+    isAdmin:  '',
+    isDesigner: '',
+    stripeAcct: '',
+    category: ''
   }; // user object to be sent to the database
   error: any = {};
   loading: boolean = false; //loader on the page after the user clicks the create account button
@@ -31,6 +34,25 @@ export class UpdateUserPage implements OnInit {
     { name: true},
     { name: false }
   ];
+
+   //is designer
+   isDesigner: any = [
+    { name: true},
+    { name: false }
+  ];
+
+  //occasion/event array
+  occasions: any[] = [
+    {name: 'school'},
+    {name: 'sport'},
+    {name: 'birthday party'},
+    {name: 'halloween'},
+    {name: 'christmas'},
+    {name: 'church'},
+    {name: 'date night'},
+    {name: 'job interview'},
+    {name: 'culture'},
+  ]
 
   //list of genders
   genders: any = [
@@ -50,7 +72,9 @@ export class UpdateUserPage implements OnInit {
        private alertCtrl: AlertController,
        private toastCtrl: ToastController,
        private adminService: AdminService) {
-         this.getUser();
+          if (this.adminService.id !== '') {
+            this.getUser();
+          }
         }
 
        //get total users
@@ -59,13 +83,18 @@ export class UpdateUserPage implements OnInit {
       const userInfo = await this.adminService.getUser();
       if (userInfo['success']) {
         this.user = Object.assign({}, {isAdmin: `${userInfo['user']['isAdmin']}`,
+                                       isDesigner: `${userInfo['user']['isDesigner']}`,
                                        interest: `${userInfo['user']['interest']}`,
                                        gender: `${userInfo['user']['gender']}`,
                                        country: `${userInfo['user']['country']}`,
                                        email: `${userInfo['user']['email']}`,
                                        username: `${userInfo['user']['username']}`,
+                                       name: `${userInfo['user']['name']}`,
+                                       picture: `${userInfo['user']['picture']}`,
                                        createdAt: `${userInfo['user']['createdAt']}`,
                                        password: '',
+                                       stripeAcct: `${userInfo['user']['stripeAcct']}`,
+                                       category: userInfo['user']['category'],
                                        size: `${userInfo['user']['size']}`});
       } else {
         this.presentAlert('Sorry, an error occured while getting a user');

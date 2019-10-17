@@ -27,6 +27,15 @@ ion-slide {
   .alert-button.delete.sc-ion-alert-ios:last-child {
       color: red;
   }
+
+.profile-img {
+    border-radius: 100%;
+    width: 100px;
+    max-width: 100px;
+    height: 100px;
+    max-height: 100px;
+    object-fit: cover;
+}
     
 ion-content {
     // background-color: white;

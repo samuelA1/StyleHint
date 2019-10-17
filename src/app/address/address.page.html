@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-button (click)="navigateBack()">
+              <ion-icon color="dark"  name="arrow-back" class="ion-margin-start"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+    <ion-title>Addresses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div (click)="toAddress()">
+    <small style="color: lightcoral"><b>Add new address</b></small>
+  </div>
+  <ion-list>
+    <ion-item *ngFor="let address of addresses" (click)="toUpdate(address._id)">
+      <div class="ion-margin-top">
+          <p style="padding: 0;margin: 0">{{address.main}}</p>
+          <p style="padding: 0;margin: 0">{{address.city}}, {{address.state | titlecase}} {{address.zip}}</p>
+          <p style="padding: 0;margin: 0">{{address.country}}</p>
+          <small (click)="deleteAddress(address._id)" style="color: red"><b>remove</b></small>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -40,6 +40,7 @@ export class AllNewsPage implements OnInit {
       const newsInfo = await this.newsService.allNews(this.page);
       if (newsInfo['success']) {
         this.allNews = newsInfo['news'];
+        this.totalNews = newsInfo['totalNews'];
       } else {
         this.presentAlert('Sorry, an error occured while getting all news');
       }

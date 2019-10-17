@@ -1,0 +1,19 @@
+.card {
+    display: inline-block;
+    padding-top: 10px;
+    margin: 6px !important;
+    width: 40vw;
+    height: 20vh;
+    max-width: 40vw;
+    max-height: 40vh;
+    cursor: pointer;
+    img {
+      margin-top: 10px;
+      height: 100%;
+      width: 100%;
+    }
+}
+
+img {
+    border-radius: 10px;
+}
