@@ -149,12 +149,12 @@
         </ion-slide>
     
         <!-- Designer's slide -->
-        <ion-slide  class="step-three ion-text-center">
+        <ion-slide *ngIf="businessService.numDesigners === 0"  class="step-three ion-text-center">
           <!-- select designers -->
           <div>
             <h2 style="color: lightcoral">Some of the Best, Top and Upcoming Designers</h2>
             <ion-text>
-              <small>Please select at least three designers you're most interested in.</small>
+              <small>Please select at least five designers you're most interested in.</small>
             </ion-text>
             <!-- Searchbar with cancel button shown on focus -->
             <ion-searchbar (ionChange)="searchDesigners()" name="search" [(ngModel)]="search"  placeholder="search designers"></ion-searchbar>
@@ -162,17 +162,43 @@
           <div *ngFor="let designers of allDesigners"> 
             <h3>{{designers.occasion | titlecase}}</h3>
             <ion-grid>
-              <ion-row class="ion-justify-content-between">
+              <ion-row style="display: block" class="ion-justify-content-between">
                 <ion-col *ngFor="let designer of designers.designers; let i = index" (click)="selectDesigner(designers.occasion, i)" size="4">
                     <small *ngIf="designer?.chose > 0" class="selected-icon">&#10003;</small>
-                    <img style="margin-left: 18px;"  class=" designer-img ion-margin-top" [src]="designer.picture">
+                    <img  class=" designer-img ion-margin-top" [src]="designer.picture">
                     <div>
-                      <small style="margin-left: 25px; display: flex;"><b>{{designer.name | titlecase}}</b></small>
+                      <small ><b>{{designer.username | titlecase}}</b></small>
                     </div>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </div>
+        </ion-slide>
+        <ion-slide *ngIf="businessService.numDesigners > 0">
+              <ion-slides style="border-bottom: 1px solid black" class="ion-margin-top ion-margin-bottom" pager="true" [options]="sliderConfig">
+                <ion-slide (click)="getProducts(designer._id)" *ngFor="let designer of preferedDesigners">
+                   <div class="designer-profile">
+                      <img style="width: 100px !important" [class.designer-selected]="designer.selected" class="profile-img ion-margin-top" [src]="designer?.picture">
+                      <small style="display: block"><b>{{designer.username | titlecase}}</b></small>
+                   </div>
+                </ion-slide>
+              </ion-slides>
+
+              <ion-grid>
+                <ion-row>
+                  <p *ngIf="products?.length === 0">This designer has no products on sale yet.</p>
+                  <ion-col size="6" *ngFor="let product of products">
+                    <!-- products -->
+                    <div class="product">
+                      <img [src]="product.mainImage" alt="product image" style="width:100%">
+                      <div class="container">
+                        <h6><b>{{product.whatYouSell}}</b></h6> 
+                        <p>${{product.price}}</p> 
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
         </ion-slide>
     </ion-slides>
 
@@ -183,7 +209,14 @@
         </ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-  <ion-fab *ngIf="titleService.modal" horizontal="end" activated={{titleService.activateHome}} vertical="bottom" slot="fixed" >
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadProducts($event)" *ngIf="forDesign && businessService.numDesigners > 0 &&  products?.length > 0">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more products...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  <ion-fab *ngIf="titleService.modal && !forDesign" horizontal="end" activated={{titleService.activateHome}} vertical="bottom" slot="fixed" >
     <ion-fab-button color="secondary" >
       <ion-icon name="arrow-dropleft" role="img" aria-label="arrow dropleft"></ion-icon>
     </ion-fab-button>
@@ -204,7 +237,7 @@
   </ion-fab>
 
   <!-- occasion actionsheet -->
- <ion-fab *ngIf="forDesign" vertical="bottom" horizontal="center" slot="fixed">
+ <ion-fab *ngIf="forDesign && businessService.numDesigners === 0" vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button color="dark" (click)="presentOccasionActionSheet()">
         <ion-icon name="options"></ion-icon>
     </ion-fab-button>

@@ -28,7 +28,10 @@
     <p *ngIf="allUsers?.length === 0 && query != ''">Can't find user with username <ion-text color="danger">{{query}}</ion-text></p>
   <ion-list >
     <ion-item *ngFor="let user of allUsers">
-        <ion-label (click)="toUpdate(user._id || user.objectID)">
+          <ion-avatar  slot="start">
+            <img  [src]="user?.picture">
+          </ion-avatar>
+          <ion-label (click)="toUpdate(user._id || user.objectID)">
             <h2>@{{user.username}}</h2>
           </ion-label>
           <div >

@@ -26,22 +26,25 @@
       <ion-button (click)="viewHint(tip?.hintId)" color="warning" expand="full" fill="outline">view complete hint</ion-button>
   </div>
   <div class="tip-container" padding>
-    <p class="ion-float-left"><b>@{{tip?.ownerUsername}}</b> {{tip?.message}}</p>
-    <ion-note style="float: right;padding-top: 17px;" slot="end">
-        {{GetPostTime(tip?.createdAt)}}
-    </ion-note>
+    <div style="display: flex !important">
+        <ion-avatar  slot="start">
+            <img style="height: 35px !important; max-height: 35px !important; width: 35px !important; max-width: 35px !important; border-radius: 100% !important; object-fit: cover !important"  [src]="tip?.picture">
+        </ion-avatar>
+        <p style="margin-top: 10px;"><b>@{{tip?.ownerUsername}}</b> {{tip?.message}}</p>
+    </div>
+    <p style="float: left; margin: 0px"><small>{{GetPostTime(tip?.createdAt)}}</small></p>
     <div *ngIf="toComment" class="comment">
         <ion-button color="dark" (click)="addComment(tip._id)" [disabled]="comment === ''" class="post">Send</ion-button>
         <ion-button color="danger" (click)="cancel()" class="cancel">Cancel</ion-button>
         <textarea [(ngModel)]="comment" name="comment" rows="5"></textarea>
     </div>
     <ion-item (click)="abtToComment()">
-        <ion-avatar style="font-size: x-large">
-            <ion-icon name="contact"></ion-icon>
+        <ion-avatar >
+            <img style="height: 35px !important; max-height: 35px !important; width: 35px !important; max-width: 35px !important; border-radius: 100% !important; object-fit: cover !important" [src]="titleService.appPages[0].value">
         </ion-avatar>
         <ion-label>
             <ion-text color="medium">
-              <small style="position: absolute;top: 11px;padding: 0;margin: 0;left: 25px;">Add a comment...</small>
+              <small style="position: absolute;top: 16px;padding: 0;margin: 0;left: 40px;">Add a comment...</small>
             </ion-text> 
         </ion-label>
     </ion-item>
@@ -54,6 +57,9 @@
     <ion-list lines="none">
       <ion-item-sliding *ngFor="let comment of comments">
         <ion-item>
+            <ion-avatar>
+                <img style="height: 35px !important; max-height: 35px !important; width: 35px !important; max-width: 35px !important; border-radius: 100% !important; object-fit: cover !important" [src]="comment.picture">
+            </ion-avatar>
             <ion-label>
                 <small [ngStyle]="{'color': comment.commenterId === authService.userId ? 'green' : 'black'}" class="ion-float-left" [routerDirection]="'forward'" [routerLink]="['/comments']"><b>@{{comment?.commenter}}</b> {{comment?.comment}}</small> 
             </ion-label>
@@ -79,12 +85,13 @@
             <h3>Shared with</h3>
         </div>
         <ion-item *ngFor="let friend of tip.usersToSee">
-            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
-                <ion-icon name="contact"></ion-icon>
-            </ion-avatar>
-            <ion-label>
-                <h2>@{{friend.username}}</h2> 
-            </ion-label>
+              <ion-avatar  slot="start">
+                <img style="height: 35px !important; max-height: 35px !important; width: 35px !important; max-width: 35px !important; border-radius: 100% !important; object-fit: cover !important"  [src]="friend?.picture">
+              </ion-avatar>
+              <ion-label>
+                <h2>{{friend.name | titlecase}}</h2>
+                <h5>@{{friend.username}}</h5>
+              </ion-label>
         </ion-item>
     </ion-list>
   </div>

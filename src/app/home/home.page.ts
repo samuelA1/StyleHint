@@ -29,6 +29,20 @@ export class HomePage implements OnInit {
   allDesigners: any[];
   unfilteredDesigners: any[];
   selectedDesigners: any[] = [];
+  preferedDesigners: any[];
+  sliderConfig = {
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    },
+    zoom: false
+  };
+  productsPage: number = 1;
+  designerId: any;
+  products: any[];
+  totalProducts: number;
   occasion: any = {
     occasion: ''
   };
@@ -37,6 +51,7 @@ export class HomePage implements OnInit {
   counted: number = 0; //control toast withoptions
   searched: boolean = false; //after a search is made and a result gotten
   searchNum: number = 0; //limit the times allDesigners is stored in local storage
+  actSheetNum: number = 0; //limit the times allDesigners is stored in local storage
   page: number = 1;
   search: any = ''
   totalNews: any;
@@ -65,6 +80,7 @@ export class HomePage implements OnInit {
   //for controlling slides
   slideOpts = {
     initialSlide: 1,
+    zoom: false
     // speed: 400
   };
 
@@ -75,7 +91,7 @@ export class HomePage implements OnInit {
      public titleService: TitleService,
      private hintService: HintsService,
      private authService: AuthService,
-     private businessService: BusinessService,
+     public businessService: BusinessService,
      private newsService: NewsService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
@@ -98,6 +114,9 @@ export class HomePage implements OnInit {
       this.getAllNews();
       this.getDesigners();
       this.occasionHints();
+      this.businessService.cartDesigners();
+      //get prefered designers
+      this.getPreferedDesigners();
       setTimeout(() => {
         this.checkFields();
       }, 10000);
@@ -189,6 +208,7 @@ export class HomePage implements OnInit {
         this.presentAlert('Sorry, an error occured while getting all designers for that occasion.');
       }
     }
+
 
     loadData(event: any) {
       this.page++
@@ -287,7 +307,6 @@ export class HomePage implements OnInit {
           this.notificationService.adminAlertNumber();
         }
       });
-
     }
 
   //seasons array
@@ -446,8 +465,8 @@ export class HomePage implements OnInit {
   }
 
   async selectSearchDesigners(occasion: any, i: any) {
-    let friend = JSON.parse(await this.storage.get('designers'))
-    friend.map(o => {
+    let designers = JSON.parse(await this.storage.get('designers'));
+    designers.map(o => {
       if (o.occasion === occasion) {
         if (o.designers[i].chose > 0) {
           o.designers[i].chose = 0;
@@ -458,7 +477,25 @@ export class HomePage implements OnInit {
         }
       }
     })
-    this.storage.set('designers', JSON.stringify(friend));
+    this.storage.set('designers', JSON.stringify(designers));
+  }
+
+  //add selected designers to users collection
+ async  afterSelection() {
+    try {
+      const designersInfo = await this.businessService.addSelectedDesigners({designers: this.selectedDesigners});
+      if (designersInfo['success']) {
+        this.businessService.numDesigners = this.selectedDesigners.length;
+        this.getPreferedDesigners();
+        setTimeout(() => {
+          this.content.scrollToTop(1000);
+        }, 1000);
+      } else {
+        this.presentAlert('Sorry, an error occured while adding your favorite designers to your collection.');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while adding your favorite designers to your collection.');
+    }
   }
 
   //search designers
@@ -470,7 +507,8 @@ export class HomePage implements OnInit {
     this.searched = true;
     let designers = [];
     if (this.search) {
-      this.allDesigners.forEach(des => {
+      let toBeSearched = JSON.parse(await this.storage.get('designers'))
+      toBeSearched.forEach(des => {
         let result = des.designers.filter(de => de.username.includes(this.search.toLowerCase()));
          if (result.length !== 0) {
            designers.push({occasion: des.occasion, designers: result});
@@ -482,11 +520,6 @@ export class HomePage implements OnInit {
       this.allDesigners = JSON.parse(await this.storage.get('designers'));
     }
     
-  }
-
-  //what happens after selectint at least five fav designers
-  afterSelection() {
-
   }
 
   //set up onesignal
@@ -662,7 +695,7 @@ export class HomePage implements OnInit {
   async presentToastWithOptions() {
     const toast = await this.toastCtrl.create({
       header: 'All set and ready to go?',
-      position: 'bottom',
+      position: 'top',
       animated: true,
       color: 'medium',
       buttons: [
@@ -670,7 +703,7 @@ export class HomePage implements OnInit {
           side: 'end',
           text: 'Yes',
           handler: () => {
-            console.log('Favorite clicked');
+            this.afterSelection();
           }
         }
       ]
@@ -691,31 +724,48 @@ export class HomePage implements OnInit {
   }
 
   async presentOccasionActionSheet() {
+    if (this.actSheetNum === 0) {
+      this.storage.set('designers', JSON.stringify(this.allDesigners));
+      this.actSheetNum++;
+    }
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Occasions',
       buttons: [
         {
           text: 'All Designers',
           handler: async () => {
-            this.allDesigners = JSON.parse(await this.storage.get('designers'));          }
+            this.allDesigners = JSON.parse(await this.storage.get('designers'));
+            setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
+          }
         },
         {
         text: `${this.occasions[0].name}`,
         handler: () => {
           this.occasion.occasion = `${this.occasions[0].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       }, {
         text: `${this.occasions[1].name}`,
         handler: () => {
           this.occasion.occasion = `${this.occasions[1].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       }, {
         text: `${this.occasions[2].name}`,
         handler: () => {
           this.occasion.occasion = `${this.occasions[2].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       },
        {
@@ -723,6 +773,9 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[3].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       }, 
       {
@@ -730,6 +783,9 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[4].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       },
       {
@@ -737,6 +793,9 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[5].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       },
       {
@@ -744,6 +803,9 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[6].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       },
       {
@@ -751,6 +813,9 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[7].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       },
       {
@@ -758,10 +823,67 @@ export class HomePage implements OnInit {
         handler: () => {
           this.occasion.occasion = `${this.occasions[8].name}`;
           this.getDesignersByOccasion();
+           setTimeout(() => {
+              this.content.scrollToTop(1000);
+            }, 1000);
         }
       }
     ]
     });
     await actionSheet.present();
+  }
+
+  /******************************************* Designers************************************* */
+//all designers for the users to choose
+  async getPreferedDesigners() {
+    try {
+      const designersInfo = await this.businessService.getPreferedDesigners();
+      if (designersInfo['success']) {
+        this.preferedDesigners = designersInfo['designers'];
+        if (this.preferedDesigners.length !== 0) {
+          this.getProducts(this.preferedDesigners[0]._id);
+        }
+      } else {
+        this.presentAlert('Sorry, an error occured while getting all designers');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting all designers');
+    }
+  }
+
+  //get product of selected designer
+  async getProducts(designerId: any) {
+    this.productsPage = 1;
+    this.designerId = designerId;
+    this.preferedDesigners.map(d => {
+      d.selected = d._id == designerId ? true : false;
+    })
+    try {
+      const designersProducts = await this.businessService.designersProducts({owner: designerId}, this.productsPage);
+      if (designersProducts['success']) {
+        this.products = designersProducts['products'];
+        this.totalProducts = designersProducts['totalProducts']
+      } else {
+        this.presentAlert('Sorry, an error occured while getting all products of the selected designer.');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while getting all products of the selected designer.');
+    }
+  }
+
+  loadProducts(event: any) {
+    this.productsPage++
+    setTimeout(() => {
+      this.businessService.designersProducts({owner: this.designerId}, this.productsPage).then((productsInfo) => {
+        productsInfo['products'].forEach((products: any) => {
+          this.products.push(products)
+        });
+        event.target.complete();
+      });
+  
+      if (this.allNews.length == this.totalNews) {
+        event.target.disabled = true;
+      }
+    }, 800);
   }
 }

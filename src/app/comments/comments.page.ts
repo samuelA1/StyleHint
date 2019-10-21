@@ -1,3 +1,4 @@
+import { TitleService } from './../_services/title.service';
 import { AuthService } from './../_services/auth.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TipService } from './../_services/tip.service';
@@ -19,6 +20,7 @@ export class CommentsPage implements OnInit {
   socket: any;
 
   constructor(private tipService: TipService,
+    public titleService: TitleService,
     public authService: AuthService,
     private alertCtrl: AlertController,
     private storage: Storage,
@@ -50,9 +52,9 @@ export class CommentsPage implements OnInit {
         if (commentInfo['success']) {
           if (this.tip.owner == this.authService.userId) {
             this.comment = '';
-            this.socket.emit('comment', 'owner');
+            this.socket.emit('comment', {ownerId: 'owner', commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName, picture: `${this.titleService.appPages[0].value}`});
           }else {
-            this.socket.emit('comment', this.tip.owner);
+            this.socket.emit('comment', {ownerId: this.tip.owner, commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName, picture: `${this.titleService.appPages[0].value}`});
             this.comment = '';
           }
         } else {

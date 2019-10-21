@@ -115,27 +115,39 @@ imgThree: string;
 
   async addProduct() {
     if (this.base64Image) {
-      try {
-        const form = new FormData();
-        for(const key in this.product) {
-         if (this.product.hasOwnProperty(key)) {
-           this.product.mainImage = this.base64Image;
-           this.product.imgOne = this.imgOne;
-           this.product.imgTwo = this.imgTwo;
-           this.product.imgThree = this.imgThree;
-          form.append(key, this.product[key])
-         }
-       }
-       const productInfo = await this.designerService.addProduct(form);
-       if (productInfo['success']) {
-           this.presentToast(productInfo['message']);
-           this.socket.emit('designReview', {});
-       } else {
-           this.presentAlert(productInfo['message']);
-       } 
-       } catch (error) {
-           this.presentAlert('Sorry, an error occured while trying to add a product.')
-       }
+      if (this.imgOne) {
+        if (this.imgTwo) {
+          if (this.imgThree) {
+            try {
+              const form = new FormData();
+              for(const key in this.product) {
+               if (this.product.hasOwnProperty(key)) {
+                 this.product.mainImage = this.base64Image;
+                 this.product.imgOne = this.imgOne;
+                 this.product.imgTwo = this.imgTwo;
+                 this.product.imgThree = this.imgThree;
+                form.append(key, this.product[key])
+               }
+             }
+             const productInfo = await this.designerService.addProduct(form);
+             if (productInfo['success']) {
+                 this.presentToast(productInfo['message']);
+                 this.socket.emit('designReview', {});
+             } else {
+                 this.presentAlert(productInfo['message']);
+             } 
+             } catch (error) {
+                 this.presentAlert('Sorry, an error occured while trying to add a product.')
+             }
+          } else {
+            this.presentAlert('Please upload at least three supporting images for this product.')
+          }
+        } else {
+          this.presentAlert('Please upload at least three supporting images for this product.')
+        }
+      } else {
+        this.presentAlert('Please upload at least three supporting images for this product.')
+      }
     } else {
       this.presentAlert('Please upload the main image for this product.')
     }

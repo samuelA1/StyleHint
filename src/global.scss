@@ -11,15 +11,6 @@
 @import '~@ionic/angular/css/flex-utils.css';
 @import '~animate.css/animate.min.css';
 
-
-.swiper-pagination-bullet-active {
-    background: #fff !important;
-}
-
- .swiper-pagination-bullets {
-    bottom: 230px !important;
-}
-
 ion-slide {
     overflow: hidden !important;
 }
@@ -29,12 +20,12 @@ ion-slide {
   }
 
 .profile-img {
-    border-radius: 100%;
-    width: 100px;
-    max-width: 100px;
-    height: 100px;
-    max-height: 100px;
-    object-fit: cover;
+    border-radius: 100% !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    height: 100px !important;
+    max-height: 100px !important;
+    object-fit: cover !important;
 }
     
 ion-content {

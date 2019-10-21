@@ -111,18 +111,22 @@ export class UpdateUserPage implements OnInit {
         this.validation(this.user)
         if (Object.keys(this.error).length == 0) {
           this.loading = false;
-          try {
-            const updateInfo = await this.adminService.updateUser(this.user);
-            if (updateInfo['success']) {
-              this.navCtrl.navigateRoot('menu').then(() => {
-                this.navCtrl.navigateRoot('all-users');
-              })
-              this.presentToast('update successful')
-            } else {
-              this.presentAlert(updateInfo['message']);
+          if (this.user.category.length === 1) {
+            try {
+              const updateInfo = await this.adminService.updateUser(this.user);
+              if (updateInfo['success']) {
+                this.navCtrl.navigateRoot('menu').then(() => {
+                  this.navCtrl.navigateRoot('all-users');
+                })
+                this.presentToast('update successful')
+              } else {
+                this.presentAlert(updateInfo['message']);
+              }
+            } catch (error) {
+              this.presentAlert('Sorry, an error occured while trying to update an account')
             }
-          } catch (error) {
-            this.presentAlert('Sorry, an error occured while trying to update an account')
+          } else {
+            this.presentAlert('Sorry, a designer must have at least and only one interested occasion')
           }
         } else {
           this.loading = false;

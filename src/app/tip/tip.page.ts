@@ -1,3 +1,4 @@
+import { TitleService } from './../_services/title.service';
 import { Storage } from '@ionic/storage';
 import { AuthService } from './../_services/auth.service';
 import { HintsService } from './../_services/hints.service';
@@ -22,6 +23,7 @@ toComment: any = false;
 socket: any;
 freezePane: any = false;
   constructor(public tipService: TipService,
+    public titleService: TitleService,
     private hintService: HintsService,
     public authService: AuthService,
     private navCtrl: NavController,
@@ -40,7 +42,7 @@ freezePane: any = false;
       this.storage.get('tipId').then((tipId) => {
         this.tipService.tipToView = tipId;
         // this.getTip();
-        this.comments.unshift({commentId: comment.commentId, comment: comment.comment, commenterId: comment.commenterId, commenter: comment.commenter})
+        this.comments.unshift({commentId: comment.commentId, comment: comment.comment, commenterId: comment.commenterId, commenter: comment.commenter, picture: comment.picture})
         this.freezePane = false;
       })
     });
@@ -104,11 +106,11 @@ freezePane: any = false;
       const commentInfo = await this.tipService.addComment(tipId, {comment: this.comment});
       if (commentInfo['success']) {
         if (this.tip.owner == this.authService.userId) {
-          this.socket.emit('comment', {ownerId: 'owner', commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName});
+          this.socket.emit('comment', {ownerId: 'owner', commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName, picture: `${this.titleService.appPages[0].value}`});
           this.comment = '';
           this.toComment = false;
         }else {
-          this.socket.emit('comment', {ownerId: this.tip.owner, commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName});
+          this.socket.emit('comment', {ownerId: this.tip.owner, commentId: commentInfo['commentId'],  comment: this.comment, commenterId: this.authService.userId, commenter: this.authService.userName, picture: `${this.titleService.appPages[0].value}`});
           this.comment = '';
           this.toComment = false;
         }

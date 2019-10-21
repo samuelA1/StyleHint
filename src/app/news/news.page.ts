@@ -6,6 +6,7 @@ import { AlertController, ToastController, NavController } from '@ionic/angular'
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import * as _ from 'lodash';
+import { TitleService } from '../_services/title.service';
 
 @Component({
   selector: 'app-news',
@@ -31,6 +32,7 @@ export class NewsPage implements OnInit {
 
   constructor(private newsService: NewsService,
     private friendsService: FriendService,
+    public titleService: TitleService,
     public authService: AuthService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
@@ -48,7 +50,7 @@ export class NewsPage implements OnInit {
       this.newsService.id = comment.newsId;
       // this.getNews();
       this.freezePane = false;
-      this.comments.unshift({commentId: comment.commentId, comment: comment.comment, commenterId: comment.commenterId, commenter: comment.commenter});
+      this.comments.unshift({commentId: comment.commentId, comment: comment.comment, commenterId: comment.commenterId, commenter: comment.commenter, picture: comment.picture});
     });
     this.socket.on('newsCommentDeleted', comment => {
       this.newsService.id = comment.newsId;
@@ -179,7 +181,7 @@ export class NewsPage implements OnInit {
     try {
       const commentInfo = await this.newsService.addComment({comment: this.comment});
       if (commentInfo['success']) {
-        this.socket.emit('newsComment', {commentId: commentInfo['commentId'],  comment: this.comment, newsId: newsId, commenterId: this.authService.userId, commenter: this.authService.userName});
+        this.socket.emit('newsComment', {commentId: commentInfo['commentId'],  comment: this.comment, newsId: newsId, commenterId: this.authService.userId, commenter: this.authService.userName, picture: `${this.titleService.appPages[0].value}`});
         this.comment = '';
         this.toComment = false;
       } else {

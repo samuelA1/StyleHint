@@ -7,6 +7,10 @@ ion-slide {
   // color: white;
 }
 
+.swiper-pagination {
+  bottom: 132px !important;
+}
+
 ion-card {
   display: inline-grid;
   width: 32vw;
@@ -101,6 +105,10 @@ ion-badge {
   object-fit: cover !important;
 }
 
+.designer-selected {
+  border: 4px solid lightcoral
+}
+
 img {
   object-fit: cover;
   border-radius: 12px;
@@ -109,6 +117,20 @@ img {
   height: 100% !important;
   max-width: 100% !important;
   max-height: 100% !important;
+}
+
+.product {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+.product:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
 }
 
 /* Modal Content */
@@ -198,4 +220,11 @@ img {
 @keyframes fade {
   from {opacity: .4} 
   to {opacity: 1}
+}
+
+/************************************************************Designers***************************************************/
+.designer-profile {
+  position: relative;
+  bottom: 70px;
+  margin-top: 70px;
 }
