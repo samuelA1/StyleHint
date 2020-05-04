@@ -1,9 +1,67 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>all-orders</ion-title>
+      <ion-buttons slot="start">
+          <ion-menu-button>
+              <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+          </ion-menu-button>
+      </ion-buttons>
+    <ion-title>Orders</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+        refreshingSpinner="circles"
+        refreshingText="Getting orders...">
+      </ion-refresher-content>
+    </ion-refresher>
+    <!-- //chart -->
+  <div>
+      <ion-button shape="round" *ngIf="toggleChart"  size="small" (click)="toggleCharts()">Hide chart</ion-button>
+      <ion-button shape="round" *ngIf="!toggleChart"  size="small" (click)="toggleCharts()">Show chart</ion-button>
+  </div>
+  <div *ngIf="toggleChart">
+    <h6>Showing order chart for the year <b>{{date}}</b></h6>
+    <ion-select (ionChange)="chartStatistics()" name="year" [(ngModel)]="year.year" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+      <ion-select-option *ngFor="let year of years" [value]="year" role="option" id="ion-selopt-45">{{year}}</ion-select-option>
+    </ion-select>
+    <canvas #barCanvas></canvas>
+  </div>
+  
+  <div>
+      <ion-badge style="margin-right: 10px" color="warning">All orders {{grandTotalOrders}}</ion-badge> 
+  </div>
+
+  <div *ngIf="monthNumber !== -1">
+    <p *ngIf="orders?.length == 0">There are no orders for <b *ngIf="month">{{month}}</b> of <b>{{date}}</b>.</p>
+    <h4 *ngIf="month && orders?.length !== 0">Showing orders for <b>{{month}}</b> of <b>{{date}}</b></h4>
+  </div>
+
+  <p *ngIf="monthNumber == -1 && orders?.length == 0">There are no others yet for the day.</p>
+  <ion-list>
+    <ion-item *ngFor="let order of orders"  (click)="toOrder(order._id)">
+      <ion-label>
+        <h3>${{order?.designerReceived}}</h3>
+        <p>{{order?.products?.length}} product(s) purchased</p>
+        <h4><small>{{order.orderedAt | date: 'fullDate'}}</small></h4>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more orders...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+    <!-- status actionsheet -->
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button color="light" (click)="monthlyActionSheet()">
+          <ion-icon name="options"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>

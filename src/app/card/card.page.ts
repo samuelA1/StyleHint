@@ -43,6 +43,7 @@ unionRegex = RegExp('^62\\d{0,14}');
   }
 
   toCard() {
+    this.customizeService.navTo = 'card';
     this.navCtrl.navigateRoot('add-card', {animationDirection: 'forward'});
   }
 

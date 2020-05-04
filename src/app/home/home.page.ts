@@ -1,3 +1,4 @@
+import { AdminService } from './../_services/admin.service';
 import { BusinessService } from './../_services/business.service';
 import { HintsService } from './../_services/hints.service';
 import { AuthService } from './../_services/auth.service';
@@ -27,6 +28,7 @@ export class HomePage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   allNews: any[];
   allDesigners: any[];
+  newModal: boolean = false; //open modal to add new designers
   unfilteredDesigners: any[];
   selectedDesigners: any[] = [];
   preferedDesigners: any[];
@@ -93,6 +95,7 @@ export class HomePage implements OnInit {
      private authService: AuthService,
      public businessService: BusinessService,
      private newsService: NewsService,
+     private adminService: AdminService,
      public notificationService: NotificationService,
      private navCtrl: NavController,
      private onesignal: OneSignal,
@@ -123,11 +126,6 @@ export class HomePage implements OnInit {
       this.socket = io('http://www.thestylehint.com')
      }
 
-     //close suggestions modal
-     close() {
-       this.titleService.modal = true;
-     }
-
      toggleShowCase() {
        //hide weather when displaying news slide
        this.slides.getActiveIndex().then(i => {
@@ -142,6 +140,9 @@ export class HomePage implements OnInit {
           this.showWeather = true;
          }
          if (i === 2) {
+          setTimeout(() => {
+            this.content.scrollToTop(1000);
+          }, 1000);
           this.forDesign = true;
           this.titleService.activateHome = false;
           } else {
@@ -193,6 +194,26 @@ export class HomePage implements OnInit {
       } catch (error) {
         this.presentAlert('Sorry, an error occured while getting all designers');
       }
+    }
+
+    //all unselected designers
+    async getUnSelectedDesigners() {
+      try {
+        const designersInfo = await this.businessService.getUnSelectedDesigners();
+        if (designersInfo['success']) {
+          this.allDesigners = designersInfo['designers'];
+        } else {
+          this.presentAlert('Sorry, an error occured while getting all designers');
+        }
+      } catch (error) {
+        this.presentAlert('Sorry, an error occured while getting all designers');
+      }
+    }
+
+    //open modal for adding new designers
+    openNewModal() {
+      this.getUnSelectedDesigners();
+      this.newModal = !this.newModal;
     }
 
     //designers by occasion
@@ -650,15 +671,6 @@ export class HomePage implements OnInit {
     this.navCtrl.navigateForward('closet');
   }
 
-  //suggestions navigations
-  prev() {
-    this.imgIndex--
-  }
-
-  next() {
-    this.imgIndex++
-  }
-
   //alert
    async presentAlert(message: any) {
     const alert = await this.alertCtrl.create({
@@ -704,6 +716,27 @@ export class HomePage implements OnInit {
           text: 'Yes',
           handler: () => {
             this.afterSelection();
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
+  //for adding new designers to collection
+  async addNewDesigner() {
+    const toast = await this.toastCtrl.create({
+      header: 'Add selected designers to collection?',
+      position: 'top',
+      animated: true,
+      color: 'medium',
+      buttons: [
+        {
+          side: 'end',
+          text: 'Yes',
+          handler: () => {
+            this.afterSelection();
+            this.newModal = false;
           }
         }
       ]
@@ -871,6 +904,41 @@ export class HomePage implements OnInit {
     }
   }
 
+  async deleteDesigner(id: any, name: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm designer delete',
+      message: `Are you sure you want to remove ${name} from your designer collection?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        }, {
+          text: 'remove',
+          cssClass: 'delete',
+          handler: () => {
+            this.removeDesigner(id);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async removeDesigner(id: any) {
+    try {
+      const removeDesigner = await this.businessService.removeSelectedDesigner(id);
+      if (removeDesigner['sucess']) {
+        this.preferedDesigners.splice(this.preferedDesigners.findIndex(d => d._id == id), 1);
+        this.getPreferedDesigners();
+      } else {
+        this.presentAlert('Sorry, an error occured while removing a designer.');
+      }
+    } catch (error) {
+      this.presentAlert('Sorry, an error occured while removing a designer.');
+    }
+  }
+
   loadProducts(event: any) {
     this.productsPage++
     setTimeout(() => {
@@ -886,4 +954,44 @@ export class HomePage implements OnInit {
       }
     }, 800);
   }
+
+  //nav to product
+  toProduct(productId: any) {
+    this.adminService.productId = productId;
+    this.adminService.navFromProduct = 'home';
+    this.navCtrl.navigateForward('product');
+  }
+
+    //for adding new designers to collection
+    async selectNewDesigner(occasion: any, i: any) {
+      this.allDesigners.map(o => {
+            if (o.occasion === occasion) {
+              if (o.designers[i].chose > 0) {
+                this.counter--
+                o.designers[i].chose = 0;
+                this.selectedDesigners.splice(this.selectedDesigners.findIndex(x => x == o.designers[i]._id), 1);
+              } else if (o.designers[i].chose === 0) {
+                this.counter++
+                o.designers[i].chose = this.counter;
+                this.selectedDesigners.push(o.designers[i]._id);
+              } else {
+                this.counter++
+                o.designers[i] = Object.assign({chose: this.counter}, o.designers[i]);
+                this.selectedDesigners.push(o.designers[i]._id);
+              }
+            }
+          });
+                
+          if (this.counter > 0 && this.counted == 0) {
+            this.counted = 1;
+            this.addNewDesigner();
+          } else if (this.counter < 1) {
+            this.toastCtrl.dismiss();
+            if (this.counted > 0) {
+              this.counted = 0
+            } else if (this.counted == 0) {
+              this.counted = 0;
+            }
+          } 
+    }
 }

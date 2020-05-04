@@ -88,8 +88,8 @@ sizes: any = [
     private navCtrl: NavController) { 
       if (this.adminService.productId !== '') {
         this.getProduct();
-        this.socket = io('http://www.thestylehint.com');
       }
+      this.socket = io('http://www.thestylehint.com');
     }
 
   ngOnInit() {

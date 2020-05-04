@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+    <ion-title>Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <p *ngIf="orders?.length === 0">You have not made any purchases.</p>
+  <ion-list>
+    <ion-item *ngFor="let order of orders" (click)="toOrder(order._id)">
+      <ion-label>
+        <h3>${{order.totalPaid}}</h3>
+        <p>{{order.products?.length}} product(s) bought</p>
+      </ion-label>
+      <ion-label><small>{{order.orderedAt | date: 'fullDate'}}</small></ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

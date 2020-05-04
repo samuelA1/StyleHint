@@ -15,12 +15,12 @@ export class AddAddressPage implements OnInit {
   loading: boolean = false; //loader on the page after the address clicks the create account button
   constructor(private navCtrl: NavController,
      private titleService: TitleService,
-     private customizeService: CustomizeService,
+     public customizeService: CustomizeService,
      private alertCtrl: AlertController,
      private toastCtrl: ToastController) { }
 
      navigateBack() {
-      this.navCtrl.navigateBack('address');
+      this.navCtrl.navigateBack(this.customizeService.navTo);
     }
 
    //add address
@@ -30,9 +30,9 @@ export class AddAddressPage implements OnInit {
       try {
         const adressInfo = await this.customizeService.addAdress(this.address);
         if (adressInfo['success']) {
-          this.presentToast(adressInfo['message'])
+          this.presentToast(adressInfo['message']);
           this.loading = false;
-          this.navCtrl.navigateBack('address');
+          this.navCtrl.navigateBack(this.customizeService.navTo);
         } else {
           this.loading = false;
           this.presentAlert('Sorry, an error occured while trying to add a new adress');

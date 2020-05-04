@@ -1,0 +1,52 @@
+<ion-header no-border   [ngClass]="{'fade':!hideHeader,'fadeOut':hideHeader}">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-back-button color="dark" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-button  [routerDirection]="'forward'" [routerLink]="['/cart']">
+            <ion-icon color="dark"  name="cart"></ion-icon>
+            <ion-badge color="primary" *ngIf="businessService.numCart > 0">{{businessService.numCart}}</ion-badge>
+        </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content  [scrollEvents]="true"
+(ionScroll)="logScrolling($event)">
+<ion-buttons (click)="navigateBack()" [ngClass]="{'fade':hideHeader,'fadeOut':!hideHeader}" class="product-icons" style="left: 0">
+    <ion-button>
+        <ion-icon  color="dark" name="arrow-back" class="ion-margin-start product-inner-icon"></ion-icon>
+    </ion-button>
+</ion-buttons>
+<ion-buttons [routerDirection]="'forward'" [routerLink]="['/cart']"  [ngClass]="{'fade':hideHeader,'fadeOut':!hideHeader}" class="product-icons" style="right: 0">
+    <ion-button>
+        <ion-icon  color="dark" name="cart" class="ion-margin-start product-inner-icon"></ion-icon>
+        <ion-badge color="primary" *ngIf="businessService.numCart > 0">{{businessService.numCart}}</ion-badge>
+    </ion-button>
+</ion-buttons>
+    <ion-slides pager="true" [options]="sliderConfig">
+      <ion-slide   *ngFor="let image of productImages">
+          <img [src]="image" alt="product images">
+      </ion-slide>
+    </ion-slides>
+    <ion-button (click)="viewHint(product?.hintId)" color="warning" expand="full" fill="outline">know how to wear this product</ion-button>
+    <div padding>
+        <h6><b>{{product?.whatYouSell}}</b></h6> 
+        <p style="color: lightcoral">${{product?.price}}</p>
+        <ion-list>
+            <ion-item class="ion-margin-top" *ngFor="let color of colors" (click)="selectColor(color.val)">
+                <ion-label>{{color.val | titlecase}}</ion-label>
+                <ion-checkbox slot="end" [(ngModel)]="color.isChecked"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+        <form #f="ngForm">
+            <ion-select name="size" [(ngModel)]="item.size" placeholder="Size" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+                <ion-select-option *ngFor="let size of sizes?.info" [value]="size?.size" role="option" id="ion-selopt-45" [disabled]="size?.quantity <= 0">{{size?.size}}</ion-select-option>
+            </ion-select>
+            <ion-button color="primary" shape="round" (click)="addToCart()" expand="block" size="large" [disabled]="!f.valid">
+                Add to cart
+            </ion-button>
+        </form>
+    </div>
+    
+</ion-content>

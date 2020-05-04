@@ -43,6 +43,17 @@
                   </div>
               </div>
 
+              <!-- for purchase -->
+            <div *ngIf="notify.typeOf == 'purchase'">
+                <ion-text color="danger">
+                    <h4>{{notify.typeOf | titlecase}}</h4>
+                  </ion-text>
+                  <div margin>
+                    <p style="margin: 0" ><b>@{{notify.fromUsername}} </b>{{notify.message}}</p>
+                    <small>{{GetPostTime(notify.createdAt)}}</small>
+                  </div>
+              </div>
+
             <!-- for news -->
             <div *ngIf="notify.typeOf == 'news'" (click)="toNews(notify.route)">
                 <ion-text color="secondary">

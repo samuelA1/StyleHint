@@ -13,6 +13,8 @@ export class CustomizeService {
   token: any;
   addressId: any = '';
   cardId: any = '';
+  navTo: any = '';
+  intialSlide: number = 0;
   constructor(private storage: Storage,
      private http: HttpClient,
      private authService: AuthService) { }

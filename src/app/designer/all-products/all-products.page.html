@@ -30,7 +30,7 @@
     </div>
     <ion-text *ngIf="statusType == 'approved'" color="success">
         <b class="animated fadeInRight delay-1s">{{product.isPublished | titlecase}}</b>
-        <small *ngIf="product.oos">(Out of stock)</small>
+        <small *ngIf="product.oos"> (Out of stock)</small>
     </ion-text>
     <ion-text *ngIf="statusType == 'review'" color="warning">
         <b class="animated fadeInRight delay-1s">{{product.isPublished | titlecase}}</b>

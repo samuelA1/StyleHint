@@ -25,6 +25,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Stripe } from '@ionic-native/stripe/ngx';
 
 
 
@@ -53,6 +54,7 @@ import { Crop } from '@ionic-native/crop/ngx';
     Geolocation,
     ScreenOrientation,
     SocialSharing,
+    Stripe,
     Camera,
     Crop,
     OneSignal,

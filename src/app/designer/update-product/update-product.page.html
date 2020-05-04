@@ -50,19 +50,18 @@
           <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
           <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
       </ion-text>
-      <div>
-          <ion-label>Small:</ion-label>
-          <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
-          <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
-          
-          <ion-label>Medium:</ion-label>
-          <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
-          <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
-
-          <ion-label>Large:</ion-label>
-          <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" [disabled]="true"></ion-input>
-          <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
-      </div>
+      <div >
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let cloth of product?.cloth" size="4">
+                <p>color: <b>{{cloth.color}}</b></p>
+                <div *ngFor="let info of cloth.info">
+                  <p>size: {{info.size}}; Quantity: {{info.qantity}}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
     </div>
 
     <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
@@ -70,41 +69,161 @@
     </ion-button>
   </form>
 
-  <form *ngIf="!product.reason"  #f="ngForm" style="display: grid;">
-    <ion-label>Price: $</ion-label>
-    <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
-    <small *ngIf="price.errors?.pattern">Please enter price of product</small>
-
-    <ion-label>Type of product:</ion-label>
-    <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
-    <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
-
-    <div class="ion-text-center">
-      <h6><b>Quantity and sizes</b></h6>
-      <ion-text color="tertiary">
-          <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
-          <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
-      </ion-text>
-      <div>
-          <ion-label>Small:</ion-label>
-          <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" required></ion-input>
-          <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
-          
-          <ion-label>Medium:</ion-label>
-          <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" required></ion-input>
-          <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
-
-          <ion-label>Large:</ion-label>
-          <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" required></ion-input>
-          <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
+  <!-- update product if not denied -->
+  <div *ngIf="product.type == 'clothing'">
+    <form *ngIf="!product.reason"  #f1="ngForm" style="display: grid;">
+      <ion-label>Price: $</ion-label>
+      <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
+      <small *ngIf="price.errors?.pattern">Please enter price of product</small>
+  
+      <ion-label>Type of product:</ion-label>
+      <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+      <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
+  
+      <div >
+        <div  class="ion-text-center" class="horizontal-line" >
+          <ion-label>Color of product:</ion-label>
+          <ion-input  name="color" [(ngModel)]= "cloth1.color" type="text"  required></ion-input>
+          <h6><b>Quantity and sizes</b></h6>
+          <ion-text color="tertiary">
+              <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+              <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+          </ion-text>
+          <div>
+              <div *ngFor="let info of cloth1.info">
+                  <ion-label>{{info.size | titlecase}}:</ion-label>
+                  <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+              </div>          
+          </div>
+        </div>
       </div>
-    </div>
+      
+    </form>
+  
+    <form *ngIf="!product.reason && cloth2.color !== ''"  #f2="ngForm" style="display: grid;">
+        <div >
+          <div  class="ion-text-center" class="horizontal-line" >
+            <ion-label>Color of product:</ion-label>
+            <ion-input  name="color" [(ngModel)]= "cloth2.color" type="text"  required></ion-input>
+            <h6><b>Quantity and sizes</b></h6>
+            <ion-text color="tertiary">
+                <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+            </ion-text>
+            <div>
+                <div *ngFor="let info of cloth2.info">
+                    <ion-label>{{info.size | titlecase}}:</ion-label>
+                    <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+                </div>          
+            </div>
+          </div>
+        </div>
+        
+      </form>
+  
+    <form *ngIf="!product.reason && cloth3.color !== ''"  #f3="ngForm" style="display: grid;">
+        <div >
+          <div  class="ion-text-center" class="horizontal-line" >
+            <ion-label>Color of product:</ion-label>
+            <ion-input  name="color" [(ngModel)]= "cloth3.color" type="text"  required></ion-input>
+            <h6><b>Quantity and sizes</b></h6>
+            <ion-text color="tertiary">
+                <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+            </ion-text>
+            <div>
+                <div *ngFor="let info of cloth3.info">
+                    <ion-label>{{info.size | titlecase}}:</ion-label>
+                    <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+                </div>          
+            </div>
+          </div>
+        </div>
+      </form>
+      <ion-button color="warning" shape="round" (click)="updateProduct()" expand="block" size="large">
+          Update product
+      </ion-button>
+      <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
+          Delete product
+      </ion-button>
+  </div>
 
-    <ion-button color="warning" shape="round" (click)="updateProduct()" expand="block" size="large" [disabled]="!f.dirty">
-        Update product
-    </ion-button>
-    <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
-        Delete product
-    </ion-button>
-  </form>
+  <!-- update product if not denied  SHOE-->
+  <div *ngIf="product.type == 'shoe'">
+    <form *ngIf="!product.reason"  #f1="ngForm" style="display: grid;">
+      <ion-label>Price: $</ion-label>
+      <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
+      <small *ngIf="price.errors?.pattern">Please enter price of product</small>
+  
+      <ion-label>Type of product:</ion-label>
+      <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+      <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
+  
+      <div >
+        <div  class="ion-text-center" class="horizontal-line" >
+          <ion-label>Color of product:</ion-label>
+          <ion-input  name="color" [(ngModel)]= "shoe1.color" type="text"  required></ion-input>
+          <h6><b>Quantity and sizes</b></h6>
+          <ion-text color="tertiary">
+              <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+              <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+          </ion-text>
+          <div>
+              <div *ngFor="let info of shoe1.info">
+                  <ion-label>{{info.size}}:</ion-label>
+                  <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+              </div>          
+          </div>
+        </div>
+      </div>
+      
+    </form>
+  
+    <form *ngIf="!product.reason && shoe2 !== undefined"  #f2="ngForm" style="display: grid;">
+        <div >
+          <div  class="ion-text-center" class="horizontal-line" >
+            <ion-label>Color of product:</ion-label>
+            <ion-input  name="color" [(ngModel)]= "shoe2.color" type="text"  required></ion-input>
+            <h6><b>Quantity and sizes</b></h6>
+            <ion-text color="tertiary">
+                <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+            </ion-text>
+            <div>
+                <div *ngFor="let info of shoe2.info">
+                    <ion-label>{{info.size}}:</ion-label>
+                    <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+                </div>          
+            </div>
+          </div>
+        </div>
+        
+      </form>
+  
+    <form *ngIf="!product.reason && shoe3 !== undefined"  #f3="ngForm" style="display: grid;">
+        <div >
+          <div  class="ion-text-center" class="horizontal-line" >
+            <ion-label>Color of product:</ion-label>
+            <ion-input  name="color" [(ngModel)]= "shoe3.color" type="text"  required></ion-input>
+            <h6><b>Quantity and sizes</b></h6>
+            <ion-text color="tertiary">
+                <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+            </ion-text>
+            <div>
+                <div *ngFor="let info of shoe3.info">
+                    <ion-label>{{info.size}}:</ion-label>
+                    <ion-input  name="{{info.size}}" [(ngModel)]="info.quantity" type="text" pattern="[0-9]*" required></ion-input>
+                </div>          
+            </div>
+          </div>
+        </div>
+      </form>
+      <ion-button color="warning" shape="round" (click)="updateProduct()" expand="block" size="large">
+          Update product
+      </ion-button>
+      <ion-button color="danger" shape="round" (click)="deleteProduct()" expand="block" size="large" >
+          Delete product
+      </ion-button>
+    </div>
 </ion-content>

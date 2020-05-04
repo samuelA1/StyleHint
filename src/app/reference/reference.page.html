@@ -99,11 +99,12 @@
         <ion-searchbar (ionChange)="searchFriends()" name="search" [(ngModel)]="search"  placeholder="search friends"></ion-searchbar>
         <p *ngIf="searched && friends?.length == 0">None of your friends have the name <ion-text color="danger">{{search}}</ion-text></p>
         <ion-item *ngFor="let friend of friends">
-            <ion-avatar style="font-size: xx-large;padding-top: 3px;">
-                <ion-icon name="contact"></ion-icon>
+            <ion-avatar  slot="start">
+                <img style="height: 100%; max-height: 100%; border-radius: 100%"  [src]="friend.picture">
             </ion-avatar>
             <ion-label>
-                <h2>@{{friend.username}}</h2> 
+                <h2>{{friend.name | titlecase}}</h2>
+                <h5>@{{friend.username}}</h5>
             </ion-label>
             <ion-checkbox (ionChange)="selectFriend()" [(ngModel)]="friend.selected"  slot="end"></ion-checkbox>
         </ion-item>

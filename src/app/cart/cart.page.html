@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-back-button color="dark" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cart</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <p *ngIf="businessService.numCart === 0">No products in cart yet.</p>
+          <small *ngIf="businessService.numCart > 0" (click)="clearCart()" class="ion-float-left" style="color: red;"><b>clear cart</b></small>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of cart">
+      <ion-col size="5">
+        <img class="item-img" [src]="item?.img" alt="cart item">
+      </ion-col>
+      <ion-col size="6" >
+          <h6><b>{{item?.whatYouSell}}</b></h6>
+          <i>{{item?.size}} {{item?.color}}</i> 
+          <p style="color: lightcoral">${{item?.price}}</p>
+          <ion-row>
+            <ion-col (click)="presentQuantityActionSheet(item?._id, item?.size, item?.productId, item?.color)">
+              {{item?.quantity}} <ion-icon name="arrow-down"></ion-icon>
+            </ion-col>
+            <ion-col (click)="addToWishlist(item, item?._id)">
+              <small><b>save</b></small>
+            </ion-col>
+          </ion-row>
+      </ion-col>
+      <ion-col size="1" (click)="deleteItem(item?._id)">
+          <ion-icon name="close"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <!-- wishlist -->
+    <div style="border-top: 2px solid #ccc; margin-bottom: 130px;" *ngIf="wishlist?.length > 0">
+        <h4>My wishlist</h4>
+        <ion-row>
+          <ion-col class="animated fadeInRight delay-1s"  size="6" *ngFor="let item of wishlist">
+            <div class="product">
+              <img [src]="item?.img" alt="product image">
+              <div >
+                <h6><b>{{item?.whatYouSell}}</b></h6> 
+                <p style="color: lightcoral; margin: 0;">${{item?.price}}</p>
+                <small (click)="removeFromWishlist(item, item?._id)" style="color: blue"><b>Add to cart</b></small> 
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+    </div>
+  </ion-grid>
+
+  <div class="modal-content" *ngIf="businessService.numCart > 0">
+    <ion-row>
+      <ion-col>
+        <p><b>Total for {{totalItems}} items</b></p>
+      </ion-col>
+      <ion-col>
+          <p><b>${{totalAmount}}</b></p>
+      </ion-col>
+    </ion-row>
+      <ion-button color="primary" expand="block"  size="medium" [routerDirection]="'forward'" [routerLink]="['/checkout']">
+          Proceed to checkout
+      </ion-button>
+      <small style="color: #ccc; margin: 2px;"><ion-icon  name="lock"></ion-icon>Payments are completely secured</small>
+  </div>
+</ion-content>

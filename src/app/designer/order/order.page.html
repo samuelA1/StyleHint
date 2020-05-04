@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="dark" text=""></ion-back-button>
+      </ion-buttons>
+    <ion-title>Order {{order._id}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+      <ion-row>
+        <p>Ordered on: {{order.orderedAt | date: 'fullDate'}}</p>
+        <p>Order# <b>{{order._id}}</b></p>
+        <ion-col>
+          <h4>Shipping Address</h4>
+          <div>
+              <p style="padding: 0;margin: 0"><b>{{order.from.name | titlecase}}</b></p>
+              <p style="padding: 0;margin: 0">{{order.address.main}}</p>
+              <p style="padding: 0;margin: 0">{{order.address.city}}, {{order.address.state | uppercase}} {{order.address.zip}}</p>
+              <p style="padding: 0;margin: 0">{{order.address.country}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
+    <ion-grid>
+        <ion-row *ngFor="let item of order.products">
+          <ion-col size="5">
+            <img class="item-img" [src]="item?.img" alt="cart item">
+          </ion-col>
+          <ion-col size="7">
+              <h6><b>{{item?.whatYouSell}}</b></h6>
+              <i>{{item?.size}} {{item?.color}}</i> 
+              <p style="color: lightcoral">${{item?.price}}</p>
+              <ion-row>
+                <ion-col>
+                  You should ship <b>{{item?.quantity}}</b> of this product to the buyer.
+                </ion-col>
+              </ion-row>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

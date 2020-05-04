@@ -36,4 +36,49 @@ export class DesignerService {
     return this.http.delete(apiUrl + `designer/delete-product/${this.productId}`, {headers: await this.headers()}).toPromise();
   }
 
+  //sum of all orders and finances
+  async sumFinancesOrders() {
+    return this.http.get(apiUrl + `designer/total-finances-orders`, {headers: await this.headers()}).toPromise();
+  }
+
+  //get all orders
+  async allOrders(page: any) {
+    return this.http.post(apiUrl + `designer/order-status?page=${page-1}`, {}, {headers: await this.headers()}).toPromise();
+  }
+
+  async dailyOrders() {
+    return this.http.get(apiUrl + `designer/daily-orders`, {headers: await this.headers()}).toPromise();
+  }
+
+  async weeklyOrders() {
+    return this.http.get(apiUrl + `designer/weekly-orders`, {headers: await this.headers()}).toPromise();
+  }
+
+  async monthlyOrders(statistics: any) {
+    return this.http.post(apiUrl + `designer/monthly-orders`, statistics,  {headers: await this.headers()}).toPromise();
+  }
+
+  async yearlyOrders(statistics: any) {
+    return this.http.post(apiUrl + `designer/yearly-orders`, statistics,  {headers: await this.headers()}).toPromise();
+  }
+
+  async chartStatistics(statistics: any) {
+    return this.http.post(apiUrl + 'designer/chart-orders', statistics, {headers: await this.headers()}).toPromise();
+  }
+
+  async financeStatistics(statistics: any) {
+    return this.http.post(apiUrl + 'designer/chart-finances', statistics, {headers: await this.headers()}).toPromise();
+  }
+
+  async dailyFinances() {
+    return this.http.get(apiUrl + 'designer/daily-finances', {headers: await this.headers()}).toPromise();
+  }
+
+  async monthlyFinances(statistics: any) {
+    return this.http.post(apiUrl + 'designer/monthly-finances', statistics,  {headers: await this.headers()}).toPromise();
+  }
+
+  async yearlyFinances(statistics: any) {
+    return this.http.post(apiUrl + 'designer/yearly-finances', statistics,  {headers: await this.headers()}).toPromise();
+  }
 }

@@ -60,6 +60,12 @@ const routes: Routes = [
   { path: 'all-reviews', loadChildren: './admin/all-reviews/all-reviews.module#AllReviewsPageModule' },
   { path: 'decision', loadChildren: './admin/decision/decision.module#DecisionPageModule' },
   { path: 'update-product', loadChildren: './designer/update-product/update-product.module#UpdateProductPageModule' },
+  { path: 'product', loadChildren: './product/product.module#ProductPageModule' },
+  { path: 'cart', loadChildren: './cart/cart.module#CartPageModule' },
+  { path: 'checkout', loadChildren: './checkout/checkout.module#CheckoutPageModule' },
+  { path: 'my-orders', loadChildren: './my-orders/my-orders.module#MyOrdersPageModule' },
+  { path: 'my-single-order', loadChildren: './my-single-order/my-single-order.module#MySingleOrderPageModule' },
+  { path: 'order', loadChildren: './designer/order/order.module#OrderPageModule' },
 ];
 
 @NgModule({

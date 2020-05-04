@@ -1,9 +1,29 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>info</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+          <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Designer Info</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  <form #f="ngForm">
+    <div>
+      <textarea placeholder="Say something captivation about yourself." [(ngModel)]="user.description" name="description" cols="30" rows="10"></textarea>
+    </div>
+    <ion-label margin><b>Choose interested occasions:</b></ion-label>
+    <ion-select multiple="true" name="category" [(ngModel)]="user.category"  placeholder="select occasion">
+      <ion-select-option *ngFor="let occasion of occasions" value="{{occasion.name}}">{{occasion.name | titlecase}}</ion-select-option>
+    </ion-select>
+    <ion-label margin><b>Stripe Account#</b></ion-label>
+    <ion-input disabled="true" name="stripeAcct" [(ngModel)]="user.stripeAcct" type="text" placeholder="stripeAcct" required></ion-input>
+            
 
+    <ion-button color="warning" shape="round" (click)="updateUser()" expand="block" size="large" [disabled]="!f.dirty">
+      Update account
+  </ion-button>
+  </form>
 </ion-content>

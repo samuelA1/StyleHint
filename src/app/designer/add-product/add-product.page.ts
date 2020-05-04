@@ -13,19 +13,150 @@ socket: any;
 product: any = {
   price: '',
   whatYouSell: '',
-  small: '',
-  medium: '',
-  large: '',
+  shoe: [],
+  cloth: [],
   mainImage: '',
   imgOne: '',
   imgTwo: '',
   imgThree: '',
+  type: ''
+}
+
+secondProduct: boolean = true;
+thirdProduct: boolean = true;
+
+cloth1: any = {
+  color: '',
+  info: [
+    {size: 'xsmall', quantity: 0},
+    {size: 'small', quantity: 0},
+    {size: 'medium', quantity: 0},
+    {size: 'large', quantity: 0},
+    {size: 'xlarge', quantity: 0},
+  ]
+}
+
+cloth2: any = {
+  color: '',
+  info: [
+    {size: 'xsmall', quantity: 0},
+    {size: 'small', quantity: 0},
+    {size: 'medium', quantity: 0},
+    {size: 'large', quantity: 0},
+    {size: 'xlarge', quantity: 0},
+  ]
+}
+
+cloth3: any = {
+  color: '',
+  info: [
+    {size: 'xsmall', quantity: 0},
+    {size: 'small', quantity: 0},
+    {size: 'medium', quantity: 0},
+    {size: 'large', quantity: 0},
+    {size: 'xlarge', quantity: 0},
+  ]
+}
+
+shoe1: any = {
+  color: '',
+  info: [
+    {size: 4, quantity: 0},
+    {size: 4.5, quantity: 0},
+    {size: 5, quantity: 0},
+    {size: 5.5, quantity: 0},
+    {size: 6, quantity: 0},
+    {size: 6.5, quantity: 0},
+    {size: 7, quantity: 0},
+    {size: 7.5, quantity: 0},
+    {size: 8, quantity: 0},
+    {size: 8.5, quantity: 0},
+    {size: 9, quantity: 0},
+    {size: 9.5, quantity: 0},
+    {size: 10, quantity: 0},
+    {size: 10.5, quantity: 0},
+    {size: 11, quantity: 0},
+    {size: 11.5, quantity: 0},
+    {size: 12, quantity: 0},
+    {size: 12.5, quantity: 0},
+    {size: 13, quantity: 0},
+    {size: 13.5, quantity: 0},
+    {size: 14, quantity: 0},
+    {size: 14.5, quantity: 0},
+    {size: 15, quantity: 0},
+    {size: 16, quantity: 0},
+  ]
+}
+
+shoe2: any = {
+  color: '',
+  info: [
+    {size: 4, quantity: 0},
+    {size: 4.5, quantity: 0},
+    {size: 5, quantity: 0},
+    {size: 5.5, quantity: 0},
+    {size: 6, quantity: 0},
+    {size: 6.5, quantity: 0},
+    {size: 7, quantity: 0},
+    {size: 7.5, quantity: 0},
+    {size: 8, quantity: 0},
+    {size: 8.5, quantity: 0},
+    {size: 9, quantity: 0},
+    {size: 9.5, quantity: 0},
+    {size: 10, quantity: 0},
+    {size: 10.5, quantity: 0},
+    {size: 11, quantity: 0},
+    {size: 11.5, quantity: 0},
+    {size: 12, quantity: 0},
+    {size: 12.5, quantity: 0},
+    {size: 13, quantity: 0},
+    {size: 13.5, quantity: 0},
+    {size: 14, quantity: 0},
+    {size: 14.5, quantity: 0},
+    {size: 15, quantity: 0},
+    {size: 16, quantity: 0},
+  ]
+}
+
+shoe3: any = {
+  color: '',
+  info: [
+    {size: 4, quantity: 0},
+    {size: 4.5, quantity: 0},
+    {size: 5, quantity: 0},
+    {size: 5.5, quantity: 0},
+    {size: 6, quantity: 0},
+    {size: 6.5, quantity: 0},
+    {size: 7, quantity: 0},
+    {size: 7.5, quantity: 0},
+    {size: 8, quantity: 0},
+    {size: 8.5, quantity: 0},
+    {size: 9, quantity: 0},
+    {size: 9.5, quantity: 0},
+    {size: 10, quantity: 0},
+    {size: 10.5, quantity: 0},
+    {size: 11, quantity: 0},
+    {size: 11.5, quantity: 0},
+    {size: 12, quantity: 0},
+    {size: 12.5, quantity: 0},
+    {size: 13, quantity: 0},
+    {size: 13.5, quantity: 0},
+    {size: 14, quantity: 0},
+    {size: 14.5, quantity: 0},
+    {size: 15, quantity: 0},
+    {size: 16, quantity: 0},
+  ]
 }
 
 base64Image: string;
 imgOne: string;
 imgTwo: string;
 imgThree: string;
+
+type: any[] = [
+  {name: 'clothing'},
+  {name: 'shoe'},
+]
 
   constructor(private camera: Camera,
     private alertCtrl: AlertController,
@@ -35,6 +166,14 @@ imgThree: string;
      }
 
   ngOnInit() {
+  }
+
+  viewSecond () {
+    this.secondProduct = !this.secondProduct;
+  }
+
+  viewThird () {
+    this.thirdProduct = !this.thirdProduct;
   }
 
   getMainImage() {
@@ -113,7 +252,30 @@ imgThree: string;
     
   }
 
+  processProduct() {
+    if (this.product.type == 'clothing') {
+      this.product.cloth.push(this.cloth1);
+      if (this.cloth2.color !== '') {
+        this.product.cloth.push(this.cloth2);
+      }
+      if (this.cloth3.color !== '') {
+        this.product.cloth.push(this.cloth3);
+      }
+      this.product.cloth = JSON.stringify(this.product.cloth);
+    } else {
+      this.product.shoe.push(this.shoe1);
+      if (this.shoe2.color !== '') {
+        this.product.shoe.push(this.shoe2);
+      }
+      if (this.shoe3.color !== '') {
+        this.product.shoe.push(this.shoe3);
+      }
+      this.product.shoe = JSON.stringify(this.product.shoe);
+    }
+  }
+
   async addProduct() {
+    this.processProduct();
     if (this.base64Image) {
       if (this.imgOne) {
         if (this.imgTwo) {

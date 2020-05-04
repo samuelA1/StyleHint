@@ -24,6 +24,7 @@ addresses: any[];
   }
 
   toAddress() {
+    this.customizeService.navTo = 'address';
     this.navCtrl.navigateRoot('add-address', {animationDirection: 'forward'});
   }
 

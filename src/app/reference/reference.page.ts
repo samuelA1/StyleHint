@@ -66,6 +66,9 @@ export class ReferencePage implements OnInit {
 
  
   navigateBack() {
+    if (this.hintService.backRoute == 'product') {
+      this.navCtrl.back();
+    } else
     this.navCtrl.navigateBack(this.hintService.backRoute);
   }
 

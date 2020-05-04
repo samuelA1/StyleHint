@@ -1,0 +1,52 @@
+ion-badge {
+  position: relative;
+  right: 10px;
+  bottom: 8px;
+  font-size: x-small;
+}
+
+.product-icons {
+    position: absolute;
+    top: 40px;
+}
+
+.product-inner-icon {
+    background-color: white;
+    border-radius: 100%;
+    padding: 3px;
+}
+  /* Fading animation */
+  .fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+
+  .fadeOut {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+    display: none;
+  }
+  
+  @-webkit-keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+  
+  @keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+
+  @-webkit-keyframes fadeOut {
+    from {opacity: .1} 
+    to {opacity: 0}
+  }
+  
+  @keyframes fadeOut {
+    from {opacity: 1} 
+    to {opacity: 0}
+  }

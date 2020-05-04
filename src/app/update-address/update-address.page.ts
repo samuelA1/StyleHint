@@ -18,7 +18,7 @@ export class UpdateAddressPage implements OnInit {
       if (this.customizeService.addressId !== '') {
         this.getAddress();
       }
-      }
+  }
 
      navigateBack() {
       this.navCtrl.navigateBack('address');

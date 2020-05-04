@@ -15,5 +15,44 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-grid>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: red;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-finances']">
+        <p>Money made for the day</p>
+        <b>${{dailyFinances}}</b>
+      </ion-col>
+      <ion-col style="background-color: lightcoral;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-orders']">
+        <p>Orders for the day</p>
+        <b>{{dailyOrders}}</b>
+      </ion-col>
+      <ion-col style="background-color: yellow;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-orders']">
+        <p>Orders for the week</p>
+        <b>{{weeklyOrders}}</b>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: lightblue;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-orders']">
+        <p>Orders for <b>{{date | date:'MMMM'}}</b></p>
+        <b>{{monthlyOrders}}</b>
+      </ion-col>
+      <ion-col style="background-color:Green;  border-radius: 100%" size="6"  [routerDirection]="'forward'" [routerLink]="['/all-finances']">
+        <p>Lifetime money made</p>
+        <b>${{sumFinances}}</b>
+      </ion-col>
+      <ion-col style="background-color: brown;  border-radius: 100%"  [routerDirection]="'forward'" [routerLink]="['/all-orders']">
+        <p>Orders for <b>{{date | date:'y'}}</b></p>
+        <b>{{yearlyOrders}}</b>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <ion-col style="background-color: violet;  border-radius: 100%" [routerDirection]="'forward'" [routerLink]="['/all-finances']"> 
+        <p>Money made for the month <b>{{date | date:'MMMM'}}</b></p>
+        <b>${{monthlyFinances}}</b>
+      </ion-col>
+      <ion-col style="background-color: purple;  border-radius: 100%" [routerLink]="['/all-finances']">
+        <p>Money made for the year <b>{{date | date:'y'}}</b></p>
+        <b>${{yearlyFinances}}</b>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

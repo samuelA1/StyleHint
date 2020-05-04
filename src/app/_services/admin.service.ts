@@ -9,10 +9,11 @@ const apiUrl = environment.apiUrl;
 })
 export class AdminService {
   token: any;
-  id: any;
+  id: any = '';
   hintId: any; //id for hint update
   newsId: any; //id for news
-  productId: any;
+  productId: any = '';
+  navFromProduct: any = ''; //navigation from product
   constructor(private storage: Storage, private http: HttpClient) { }
 
   async headers() {
@@ -131,7 +132,9 @@ export class AdminService {
   }
 
   async getSingleProduct() {
-    return this.http.get(apiUrl + `hints/customer-product/${this.productId}`, {headers: await this.headers()}).toPromise();
+    if (this.productId !== undefined) {
+      return this.http.get(apiUrl + `hints/customer-product/${this.productId}`, {headers: await this.headers()}).toPromise();
+    }
   }
 
   //product review decion

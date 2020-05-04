@@ -46,7 +46,7 @@ unionRegex = RegExp('^62\\d{0,14}');
       }
 
      navigateBack() {
-      this.navCtrl.navigateBack('card');
+      this.navCtrl.navigateBack(this.customizeService.navTo);
     }
 
     //create spaces btween card number
@@ -135,7 +135,7 @@ unionRegex = RegExp('^62\\d{0,14}');
         if (cardInfo['success']) {
           this.presentToast(cardInfo['message'])
           this.loading = false;
-          this.navCtrl.navigateBack('card');
+          this.navCtrl.navigateBack(this.customizeService.navTo);
         } else {
           this.loading = false;
           this.presentAlert('Sorry, an error occured while trying to add a new card');

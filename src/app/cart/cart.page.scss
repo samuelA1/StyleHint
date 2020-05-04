@@ -1,0 +1,30 @@
+.item-img {
+    border-radius: 12px;
+}
+
+.product {
+    transition: 0.3s;
+    border-radius: 10px;
+  }
+  
+  .container {
+    padding: 2px 16px;
+  }
+
+  .modal-content {
+    display: grid;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+    overflow: scroll;
+   scroll-behavior: smooth;
+   -webkit-overflow-scrolling: touch;
+    width: 93%;
+    height: 20%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }

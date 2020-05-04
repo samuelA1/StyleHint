@@ -54,29 +54,380 @@
               <ion-input #price  name="price" [(ngModel)]="product.price" type="text" pattern="[0-9]*" placeholder="Price" required></ion-input>
               <small *ngIf="price.errors?.pattern">Please enter price of product</small>
 
+              <ion-label margin><b>Select the category which nest applies to your product</b></ion-label>
+              <ion-select  name="type" [(ngModel)]="product.type"  placeholder="select category">
+                <ion-select-option *ngFor="let category of type" value="{{category.name}}">{{category.name | titlecase}}</ion-select-option>
+              </ion-select>
+
               <ion-label>Type of product:</ion-label>
-              <i>Precise name of what you sell. For example, shoe, t-shirts, shirt, pants etc</i>
+              <i>Precise name of what you sell. For example, limited edition gucci shoes, all new Zara t-shirts etc</i>
               <ion-input  name="whatYouSell" [(ngModel)]="product.whatYouSell" type="text"  required></ion-input>
 
-              <div class="ion-text-center">
-                <h6><b>Quantity and sizes</b></h6>
-                <ion-text color="tertiary">
-                    <i>Please put in the amount of this product you have in stock in regards to it's sizes.</i>
-                    <i>For example if you have 5 <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
-                </ion-text>
-                <div>
-                    <ion-label>Small:</ion-label>
-                    <ion-input #small name="small" [(ngModel)]="product.small" type="text" pattern="[0-9]*" required></ion-input>
-                    <small *ngIf="small.errors?.pattern">Please quantity of small product you have in stock.</small>
-                    
-                    <ion-label>Medium:</ion-label>
-                    <ion-input #medium  name="medium" [(ngModel)]="product.medium" type="text" pattern="[0-9]*" required></ion-input>
-                    <small *ngIf="medium.errors?.pattern">Please quantity of medium product you have in stock.</small>
+              <!-- clothings -->
+              <div *ngIf="product.type == 'clothing'">
+                  <div  class="ion-text-center">
+                    <ion-label>Color of product:</ion-label>
+                    <ion-input  name="color" [(ngModel)]="cloth1.color" type="text"  required></ion-input>
+                    <h6><b>Quantity and sizes</b></h6>
+                    <ion-text color="tertiary">
+                        <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                        <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                    </ion-text>
+                    <div>
+                        <ion-label>Xtra Small:</ion-label>
+                        <ion-input #xsmall name="xsmall" [(ngModel)]="cloth1.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        <small *ngIf="xsmall.errors?.pattern">Please enter the quantity of xsmall products you have in stock.</small>
+    
+                        <ion-label>Small:</ion-label>
+                        <ion-input #small name="small" [(ngModel)]="cloth1.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        <small *ngIf="small.errors?.pattern">Please enter the quantity of small products you have in stock.</small>
+                        
+                        <ion-label>Medium:</ion-label>
+                        <ion-input #medium  name="medium" [(ngModel)]="cloth1.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        <small *ngIf="medium.errors?.pattern">Please enter the quantity of medium products you have in stock.</small>
+    
+                        <ion-label>Large:</ion-label>
+                        <ion-input #large  name="large" [(ngModel)]="cloth1.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        <small *ngIf="large.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+    
+                        <ion-label>Xtra Large:</ion-label>
+                        <ion-input #xlarge  name="xlarge" [(ngModel)]="cloth1.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        <small *ngIf="xlarge.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+                    </div>
+                  </div>
+    
+                  <ion-text color="secondary" (click)="viewSecond()" padding>
+                    <p>Add another color <b *ngIf="!secondProduct">&#62;</b><b *ngIf="secondProduct">&#8593;</b></p>
+                  </ion-text>
+    
+                  <div *ngIf="product.type == 'clothing' && secondProduct && cloth1.color !== ''" class="ion-text-center">
+                      <ion-label>Color of product:</ion-label>
+                      <ion-input  name="color" [(ngModel)]="cloth2.color" type="text"  ></ion-input>
+                      <h6><b>Quantity and sizes</b></h6>
+                      <ion-text color="tertiary">
+                          <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                          <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                      </ion-text>
+                      <div>
+                          <ion-label>Xtra Small:</ion-label>
+                          <ion-input #xsmall name="xsmall" [(ngModel)]="cloth2.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          <small *ngIf="xsmall.errors?.pattern">Please enter the quantity of xsmall products you have in stock.</small>
+      
+                          <ion-label>Small:</ion-label>
+                          <ion-input #small name="small" [(ngModel)]="cloth2.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          <small *ngIf="small.errors?.pattern">Please enter the quantity of small products you have in stock.</small>
+                          
+                          <ion-label>Medium:</ion-label>
+                          <ion-input #medium  name="medium" [(ngModel)]="cloth2.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          <small *ngIf="medium.errors?.pattern">Please enter the quantity of medium products you have in stock.</small>
+      
+                          <ion-label>Large:</ion-label>
+                          <ion-input #large  name="large" [(ngModel)]="cloth2.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          <small *ngIf="large.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+      
+                          <ion-label>Xtra Large:</ion-label>
+                          <ion-input #xlarge  name="xlarge" [(ngModel)]="cloth2.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          <small *ngIf="xlarge.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+                      </div>
+                    </div>
+    
+                  <ion-text color="secondary" (click)="viewThird()" padding>
+                      <p>Add final color <b *ngIf="!thirdProduct">&#62;</b><b *ngIf="thirdProduct">&#8593;</b></p>
+                    </ion-text>
+    
+                    <div *ngIf="product.type == 'clothing' && thirdProduct && cloth2.color !== ''" class="ion-text-center">
+                        <ion-label>Color of product:</ion-label>
+                        <ion-input  name="color" [(ngModel)]="cloth3.color" type="text"  ></ion-input>
+                        <h6><b>Quantity and sizes</b></h6>
+                        <ion-text color="tertiary">
+                            <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                            <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                        </ion-text>
+                        <div>
+                            <ion-label>Xtra Small:</ion-label>
+                            <ion-input #xsmall name="xsmall" [(ngModel)]="cloth3.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                            <small *ngIf="xsmall.errors?.pattern">Please enter the quantity of xsmall products you have in stock.</small>
+        
+                            <ion-label>Small:</ion-label>
+                            <ion-input #small name="small" [(ngModel)]="cloth3.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                            <small *ngIf="small.errors?.pattern">Please enter the quantity of small products you have in stock.</small>
+                            
+                            <ion-label>Medium:</ion-label>
+                            <ion-input #medium  name="medium" [(ngModel)]="cloth3.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                            <small *ngIf="medium.errors?.pattern">Please enter the quantity of medium products you have in stock.</small>
+        
+                            <ion-label>Large:</ion-label>
+                            <ion-input #large  name="large" [(ngModel)]="cloth3.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                            <small *ngIf="large.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+        
+                            <ion-label>Xtra Large:</ion-label>
+                            <ion-input #xlarge  name="xlarge" [(ngModel)]="cloth3.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                            <small *ngIf="xlarge.errors?.pattern">Please enter the quantity of large products you have in stock.</small>
+                        </div>
+                      </div>
+              </div>
 
-                    <ion-label>Large:</ion-label>
-                    <ion-input #large  name="large" [(ngModel)]="product.large" type="text" pattern="[0-9]*" required></ion-input>
-                    <small *ngIf="large.errors?.pattern">Please quantity of large product you have in stock.</small>
-                </div>
+              <!-- shoes -->
+              <div *ngIf="product.type == 'shoe'">
+                  <div  class="ion-text-center">
+                    <ion-label>Color of product:</ion-label>
+                    <ion-input  name="color" [(ngModel)]="shoe1.color" type="text"  required></ion-input>
+                    <h6><b>Quantity and sizes</b></h6>
+                    <ion-text color="tertiary">
+                        <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                        <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                    </ion-text>
+                    <div>
+                        <ion-label>4:</ion-label>
+                        <ion-input #4 name="4" [(ngModel)]="shoe1.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+    
+                        <ion-label>4.5:</ion-label>
+                        <ion-input #4half name="4half" [(ngModel)]="shoe1.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        
+                        <ion-label>5:</ion-label>
+                        <ion-input #5 name="5" [(ngModel)]="shoe1.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>5.5:</ion-label>
+                        <ion-input #5half name="5half" [(ngModel)]="shoe1.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>6:</ion-label>
+                        <ion-input #6 name="6" [(ngModel)]="shoe1.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>6.5:</ion-label>
+                        <ion-input #6half name="6half" [(ngModel)]="shoe1.info[5].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>7:</ion-label>
+                        <ion-input #7 name="7" [(ngModel)]="shoe1.info[6].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>7.5:</ion-label>
+                        <ion-input #7half name="7half" [(ngModel)]="shoe1.info[7].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>8:</ion-label>
+                        <ion-input #8 name="8" [(ngModel)]="shoe1.info[8].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>8.5:</ion-label>
+                        <ion-input #8half name="8half" [(ngModel)]="shoe1.info[9].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>9:</ion-label>
+                        <ion-input #9 name="9" [(ngModel)]="shoe1.info[10].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>9.5:</ion-label>
+                        <ion-input #9half name="9half" [(ngModel)]="shoe1.info[11].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>10:</ion-label>
+                        <ion-input #10 name="10" [(ngModel)]="shoe1.info[12].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>10.5:</ion-label>
+                        <ion-input #10half name="10half" [(ngModel)]="shoe1.info[13].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>11:</ion-label>
+                        <ion-input #11 name="11" [(ngModel)]="shoe1.info[14].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>11.5:</ion-label>
+                        <ion-input #11half name="11half" [(ngModel)]="shoe1.info[15].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>12:</ion-label>
+                        <ion-input #12 name="12" [(ngModel)]="shoe1.info[16].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>12.5:</ion-label>
+                        <ion-input #12half name="12half" [(ngModel)]="shoe1.info[17].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>13:</ion-label>
+                        <ion-input #13 name="13" [(ngModel)]="shoe1.info[18].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>13.5:</ion-label>
+                        <ion-input #13half name="13half" [(ngModel)]="shoe1.info[19].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>14:</ion-label>
+                        <ion-input #14 name="14" [(ngModel)]="shoe1.info[20].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>14.5:</ion-label>
+                        <ion-input #14half name="14half" [(ngModel)]="shoe1.info[21].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>15:</ion-label>
+                        <ion-input #15 name="15" [(ngModel)]="shoe1.info[22].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>16:</ion-label>
+                        <ion-input #16 name="16" [(ngModel)]="shoe1.info[23].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                    </div>
+                  </div>
+    
+                  <ion-text color="secondary" (click)="viewSecond()" padding>
+                    <p>Add another color <b *ngIf="!secondProduct">&#62;</b><b *ngIf="secondProduct">&#8593;</b></p>
+                  </ion-text>
+    
+                  <div *ngIf="product.type == 'shoe' && secondProduct && shoe1.color !== ''" class="ion-text-center">
+                      <ion-label>Color of product:</ion-label>
+                      <ion-input  name="color" [(ngModel)]="shoe2.color" type="text"  ></ion-input>
+                      <h6><b>Quantity and sizes</b></h6>
+                      <ion-text color="tertiary">
+                          <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                          <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                      </ion-text>
+                      <div>
+                        <ion-label>4:</ion-label>
+                        <ion-input #4 name="4" [(ngModel)]="shoe2.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+    
+                        <ion-label>4.5:</ion-label>
+                        <ion-input #4half name="4half" [(ngModel)]="shoe2.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                        
+                        <ion-label>5:</ion-label>
+                        <ion-input #5 name="5" [(ngModel)]="shoe2.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>5.5:</ion-label>
+                        <ion-input #5half name="5half" [(ngModel)]="shoe2.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>6:</ion-label>
+                        <ion-input #6 name="6" [(ngModel)]="shoe2.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>6.5:</ion-label>
+                        <ion-input #6half name="6half" [(ngModel)]="shoe2.info[5].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>7:</ion-label>
+                        <ion-input #7 name="7" [(ngModel)]="shoe2.info[6].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>7.5:</ion-label>
+                        <ion-input #7half name="7half" [(ngModel)]="shoe2.info[7].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>8:</ion-label>
+                        <ion-input #8 name="8" [(ngModel)]="shoe2.info[8].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>8.5:</ion-label>
+                        <ion-input #8half name="8half" [(ngModel)]="shoe2.info[9].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>9:</ion-label>
+                        <ion-input #9 name="9" [(ngModel)]="shoe2.info[10].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>9.5:</ion-label>
+                        <ion-input #9half name="9half" [(ngModel)]="shoe2.info[11].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>10:</ion-label>
+                        <ion-input #10 name="10" [(ngModel)]="shoe2.info[12].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>10.5:</ion-label>
+                        <ion-input #10half name="10half" [(ngModel)]="shoe2.info[13].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>11:</ion-label>
+                        <ion-input #11 name="11" [(ngModel)]="shoe2.info[14].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>11.5:</ion-label>
+                        <ion-input #11half name="11half" [(ngModel)]="shoe2.info[15].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>12:</ion-label>
+                        <ion-input #12 name="12" [(ngModel)]="shoe2.info[16].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>12.5:</ion-label>
+                        <ion-input #12half name="12half" [(ngModel)]="shoe2.info[17].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>13:</ion-label>
+                        <ion-input #13 name="13" [(ngModel)]="shoe2.info[18].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>13.5:</ion-label>
+                        <ion-input #13half name="13half" [(ngModel)]="shoe2.info[19].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>14:</ion-label>
+                        <ion-input #14 name="14" [(ngModel)]="shoe2.info[20].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>14.5:</ion-label>
+                        <ion-input #14half name="14half" [(ngModel)]="shoe2.info[21].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>15:</ion-label>
+                        <ion-input #15 name="15" [(ngModel)]="shoe2.info[22].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                        <ion-label>16:</ion-label>
+                        <ion-input #16 name="16" [(ngModel)]="shoe2.info[23].quantity" type="text" pattern="[0-9]*" required></ion-input>
+
+                      </div>
+                    </div>
+    
+                  <ion-text color="secondary" (click)="viewThird()" padding>
+                      <p>Add final color <b *ngIf="!thirdProduct">&#62;</b><b *ngIf="thirdProduct">&#8593;</b></p>
+                    </ion-text>
+    
+                    <div *ngIf="product.type == 'shoe' && thirdProduct && shoe2.color !== ''" class="ion-text-center">
+                        <ion-label>Color of product:</ion-label>
+                        <ion-input  name="color" [(ngModel)]="shoe3.color" type="text"  ></ion-input>
+                        <h6><b>Quantity and sizes</b></h6>
+                        <ion-text color="tertiary">
+                            <i>Please put in the amount of this product with the color above you have in stock in regards to it's sizes.</i>
+                            <i>For example if you have 5 red <b>small</b> pants in stock, put 5 under the <b>small</b> section, if you have 10 <b>large</b>pants in stock put 10 under the <b>large section</b></i>
+                        </ion-text>
+                        <div>
+                          <ion-label>4:</ion-label>
+                          <ion-input #4 name="4" [(ngModel)]="shoe3.info[0].quantity" type="text" pattern="[0-9]*" required></ion-input>
+      
+                          <ion-label>4.5:</ion-label>
+                          <ion-input #4half name="4half" [(ngModel)]="shoe3.info[1].quantity" type="text" pattern="[0-9]*" required></ion-input>
+                          
+                          <ion-label>5:</ion-label>
+                          <ion-input #5 name="5" [(ngModel)]="shoe3.info[2].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>5.5:</ion-label>
+                          <ion-input #5half name="5half" [(ngModel)]="shoe3.info[3].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>6:</ion-label>
+                          <ion-input #6 name="6" [(ngModel)]="shoe3.info[4].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>6.5:</ion-label>
+                          <ion-input #6half name="6half" [(ngModel)]="shoe3.info[5].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>7:</ion-label>
+                          <ion-input #7 name="7" [(ngModel)]="shoe3.info[6].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>7.5:</ion-label>
+                          <ion-input #7half name="7half" [(ngModel)]="shoe3.info[7].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>8:</ion-label>
+                          <ion-input #8 name="8" [(ngModel)]="shoe3.info[8].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>8.5:</ion-label>
+                          <ion-input #8half name="8half" [(ngModel)]="shoe3.info[9].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>9:</ion-label>
+                          <ion-input #9 name="9" [(ngModel)]="shoe3.info[10].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>9.5:</ion-label>
+                          <ion-input #9half name="9half" [(ngModel)]="shoe3.info[11].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>10:</ion-label>
+                          <ion-input #10 name="10" [(ngModel)]="shoe3.info[12].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>10.5:</ion-label>
+                          <ion-input #10half name="10half" [(ngModel)]="shoe3.info[13].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>11:</ion-label>
+                          <ion-input #11 name="11" [(ngModel)]="shoe3.info[14].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>11.5:</ion-label>
+                          <ion-input #11half name="11half" [(ngModel)]="shoe3.info[15].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>12:</ion-label>
+                          <ion-input #12 name="12" [(ngModel)]="shoe3.info[16].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>12.5:</ion-label>
+                          <ion-input #12half name="12half" [(ngModel)]="shoe3.info[17].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>13:</ion-label>
+                          <ion-input #13 name="13" [(ngModel)]="shoe3.info[18].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>13.5:</ion-label>
+                          <ion-input #13half name="13half" [(ngModel)]="shoe3.info[19].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>14:</ion-label>
+                          <ion-input #14 name="14" [(ngModel)]="shoe3.info[20].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>14.5:</ion-label>
+                          <ion-input #14half name="14half" [(ngModel)]="shoe3.info[21].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>15:</ion-label>
+                          <ion-input #15 name="15" [(ngModel)]="shoe3.info[22].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                          <ion-label>16:</ion-label>
+                          <ion-input #16 name="16" [(ngModel)]="shoe3.info[23].quantity" type="text" pattern="[0-9]*" required></ion-input>
+  
+                        </div>
+                      </div>
               </div>
               
   

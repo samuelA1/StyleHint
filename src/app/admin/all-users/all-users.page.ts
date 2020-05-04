@@ -18,9 +18,9 @@ export class AllUsersPage implements OnInit {
   barChart: Chart;
   labels: any[] = [];
   data: any[] = [];
-  years: any[] = [2019, 2020, 2021]
+  years: any[] = [new Date().getFullYear(), new Date().getFullYear() + 1, new Date().getFullYear() + 2]
   year: any ={
-    year: 2019
+    year: new Date().getFullYear()
   };
   date = this.year['year'];
 

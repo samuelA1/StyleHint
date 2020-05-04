@@ -1,9 +1,61 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>all-finances</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+          <ion-icon color="dark" style="height: 41px; width: 32px;" name="aperture"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Finances</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+        refreshingSpinner="circles"
+        refreshingText="Getting orders...">
+      </ion-refresher-content>
+    </ion-refresher>
+    <!-- //chart -->
+  <div>
+      <ion-button shape="round" *ngIf="toggleChart"  size="small" (click)="toggleCharts()">Hide chart</ion-button>
+      <ion-button shape="round" *ngIf="!toggleChart"  size="small" (click)="toggleCharts()">Show chart</ion-button>
+  </div>
+  <div *ngIf="toggleChart">
+    <h6>Showing user chart for the year <b>{{date}}</b></h6>
+    <ion-select (ionChange)="financeStatistics()" name="year" [(ngModel)]="year.year" interface="alert" role="combobox" aria-expanded="false" aria-haspopup="dialog" aria-labelledby="ion-sel-5-lbl" required>
+      <ion-select-option *ngFor="let year of years" [value]="year" role="option" id="ion-selopt-45">{{year}}</ion-select-option>
+    </ion-select>
+    <canvas #barCanvas></canvas>
+  </div>
 
+  <div *ngIf="monthNumber !== -1">
+    <p *ngIf="month && finances?.length == 0">There are no finances for <b *ngIf="month">{{month}}</b> of <b>{{date}}</b>.</p>
+    <h4 *ngIf="month && finances?.length !== 0">Showing finances for <b>{{month}}</b> of <b>{{date}}</b></h4>
+  </div>
+  <div>
+    <div>
+      <ion-badge color="warning">${{totalSold}} made from {{totalOrders}} orders.</ion-badge> 
+    </div>
+</div>
+
+  <p *ngIf="monthNumber == -1 && finances?.length == 0">There are no finances because you have no orders yet.</p>
+
+
+  <ion-list>
+    <ion-item *ngFor="let finance of finances">
+      <ion-label>
+        <h3><b>You received</b>: ${{finance?.designerReceived}}</h3>
+        <p>Company received: ${{finance?.companyReceived}}</p>
+        <h4><small>{{finance?.orderedAt | date: 'fullDate'}}</small></h4>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- status actionsheet -->
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="light" (click)="monthlyActionSheet()">
+        <ion-icon name="options"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -12,7 +12,35 @@ import * as io from 'socket.io-client';
 })
 export class UpdateProductPage implements OnInit {
   socket: any;
-  product: any = {};
+  product: any = {
+    price: '',
+    whatYouSell: '',
+    shoe: [],
+    cloth: [],
+    mainImage: '',
+    imgOne: '',
+    imgTwo: '',
+    imgThree: '',
+    type: ''
+  }
+  cloth1: any = {
+    color: ''
+  };
+  cloth2: any = {
+    color: ''
+  };
+  cloth3: any = {
+    color: ''
+  };
+  shoe1: any = {
+    color: ''
+  };
+  shoe2: any = {
+    color: ''
+  };
+  shoe3: any = {
+    color: ''
+  };
 
   constructor(private adminService: AdminService,
     private designerService: DesignerService,
@@ -21,8 +49,8 @@ export class UpdateProductPage implements OnInit {
     private navCtrl: NavController) { 
       if (this.adminService.productId !== '') {
         this.getProduct();
-        this.socket = io('http://www.thestylehint.com');
       }
+      this.socket = io('http://www.thestylehint.com');
     }
 
   ngOnInit() {
@@ -32,18 +60,16 @@ export class UpdateProductPage implements OnInit {
     try {
       const productInfo = await this.adminService.getSingleProduct();
       if (productInfo['success']) {
-        this.product = Object.assign({}, {small: productInfo['product'].info[0].quantity,
-                                          medium: productInfo['product'].info[1].quantity,
-                                          large: productInfo['product'].info[0].quantity,
-                                          price: productInfo['product'].price,
-                                          whatYouSell: productInfo['product'].whatYouSell,
-                                          reason: productInfo['product'].reason,
-                                          isPublished: productInfo['product'].isPublished,
-                                          mainImage: productInfo['product'].mainImage,
-                                          imgOne: productInfo['product'].imgOne,
-                                          imgTwo: productInfo['product'].imgTwo,
-                                          imgThree: productInfo['product'].imgThree,
-                                          createdAt: productInfo['product'].createdAt});
+        this.product = productInfo['product'];
+        if (productInfo['product'].type == 'clothing') {
+          this.cloth1 = productInfo['product'].cloth[0];
+          this.cloth2 = productInfo['product'].cloth[1];
+          this.cloth3 = productInfo['product'].cloth[2];
+        } else if(productInfo['product'].type == 'shoe') {
+          this.shoe1 = productInfo['product'].shoe[0];
+          this.shoe2 = productInfo['product'].shoe[1];
+          this.shoe3 = productInfo['product'].shoe[2];
+        }
       } else {
         this.presentAlert('Sorry, an error occured while getting a product');
       }
@@ -52,7 +78,30 @@ export class UpdateProductPage implements OnInit {
     }
   }
 
+  processProduct() {
+    if (this.product.type == 'clothing') {
+      this.product.cloth = [];
+      this.product.cloth.push(this.cloth1);
+      if (this.cloth2.color !== '') {
+        this.product.cloth.push(this.cloth2);
+      }
+      if (this.cloth3.color !== '') {
+        this.product.cloth.push(this.cloth3);
+      }
+    } else {
+      this.product.shoe = [];
+      this.product.shoe.push(this.shoe1);
+      if (this.shoe2 && this.shoe2.color !== '') {
+        this.product.shoe.push(this.shoe2);
+      }
+      if (this.shoe3 && this.shoe3.color !== '') {
+        this.product.shoe.push(this.shoe3);
+      }
+    }
+  }
+
   async updateProduct() {
+    this.processProduct();
     try {
       const productInfo = await this.designerService.updateProduct(this.product);
       if (productInfo['success']) {
@@ -63,6 +112,7 @@ export class UpdateProductPage implements OnInit {
     } catch (error) {
       this.presentAlert('Sorry, an error occured while trying to update a product.')
     }
+    
   }
 
   async removeProduct() {

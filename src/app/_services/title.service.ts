@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class TitleService {
     showSplitPane: boolean  = false;
-    modal: boolean = true;
     isAdmin: boolean = false;
     isDesigner: boolean = false;
     actMenu: boolean = false; //controls the showing and hiding of main side menu icon/image after visiting the designer/admin section
